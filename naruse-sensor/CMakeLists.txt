@@ -1,0 +1,2 @@
+choreonoid_add_simple_controller(NaruseD435OnController naruse-d435-on.cpp)
+choreonoid_add_simple_controller(NaruseD435SaveController naruse-d435-save.cpp)

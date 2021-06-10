@@ -1,0 +1,297 @@
+#
+# Choreonoid body file for strecher
+#   Author:  Keitaro Naruse
+#   Date:    2021-05-29
+#   License: MIT-License
+#
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: Naruse Streacher
+links:
+  -
+    name: Top-Board
+    translation: [ 2.0, 0, 0.790 ]
+    jointType: free
+    elements: 
+      -
+        type: RigidBody
+        centerOfMass: [ 0, 0, 0 ]
+        mass: 16.2
+        inertia: [
+          0.486, 0,      0,
+          0,     5.400,  0,
+          0,     0,      5.886 ]
+        elements:
+          Shape:
+            geometry: 
+              type: Box
+              size: [2.000, 0.600, 0.020]
+            appearance: &AluminumArroyAppearance
+              material: 
+                diffuseColor: [ 0.5, 0.5, 0.5 ] 
+                specularColor: [ 0.5, 0.5, 0.5]
+                shininess: 0.5
+  -
+    name: Cushon
+    parent: Top-Board
+    translation: [ 0, 0, 0.05 ]
+    jointType: fixed
+    elements: 
+      -
+        type: RigidBody
+        centerOfMass: [ 0, 0, 0 ]
+        mass: 1.92
+        inertia: [
+          0.0576, 0,       0,
+          0,      0.6400,  0,
+          0,      0,       0.6976 ]
+        elements:
+          Shape:
+            geometry: 
+              type: Box
+              size: [2.000, 0.600, 0.080]
+            appearance: &CushonAppearance
+              material: 
+                diffuseColor: [ 1, 0.25, 0 ] 
+                specularColor: [ 0.5, 0.5, 0.5]
+                shininess: 0.5
+  -
+    name: Side-Frame-1
+    parent: Top-Board
+    translation: [ 0, -0.280, -0.550 ]
+    jointType: fixed
+    elements: &SideFrame
+      -
+        type: RigidBody
+        centerOfMass: [ 0, 0, 0 ]
+        mass: 8.2944
+        inertia: [
+          0.0022, 0,       0,
+          0,      2.5491,  0,
+          0,      0,       2.5491 ]
+        elements:
+          Shape:
+            geometry: 
+              type: Box
+              size: [1.920, 0.040, 0.040]
+            appearance: *AluminumArroyAppearance
+  -
+    name: Side-Frame-2
+    parent: Top-Board
+    translation: [ 0,  0.280, -0.550 ]
+    jointType: fixed
+    elements: *SideFrame
+  -
+    name: Front-Frame-1
+    parent: Top-Board
+    translation: [ 0.980,  0.000, -0.550 ]
+    jointType: fixed
+    elements: &FrontFrame
+      -
+        type: RigidBody
+        centerOfMass: [ 0, 0, 0 ]
+        mass: 2.4192
+        inertia: [
+          0.2176, 0,       0,
+          0,      0.0022,  0,
+          0,      0,       0.2179 ]
+        elements:
+          Shape:
+            geometry: 
+              type: Box
+              size: [0.040, 0.520, 0.040]
+            appearance: *AluminumArroyAppearance
+  -
+    name: Front-Frame-2
+    parent: Top-Board
+    translation: [-0.980,  0.000, -0.550 ]
+    jointType: fixed
+    elements: *FrontFrame
+  -
+    name: Leg1
+    parent: Top-Board
+    translation: [ -0.980, -0.280, -0.290 ]
+    jointType: fixed
+    elements: &LegFrame
+      -
+        type: RigidBody
+        centerOfMass: [ 0, 0, 0 ]
+        mass: 2.4192
+        inertia: [
+          0.0635,  0,       0,
+          0,       0.0635,  0,
+          0,       0,       6.4512e-4 ]
+        elements:
+          Shape:
+            geometry: 
+              type: Box
+              size: [0.040, 0.040, 0.560]
+            appearance: *AluminumArroyAppearance
+  -
+    name: Caster-Horizontal-Plate1
+    parent: Leg1
+    translation: [ -0.000, -0.000, -0.281 ]
+    jointType: revolute
+    jointAxis: Z
+    jointRange: unlimited
+    jointId: 0
+    elements: &Caster-Horizontal-Frame
+      - 
+        type: Transform
+        translation: [ 0, 0, 0 ]
+        rotation: [ 1, 0, 0, 90 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.0098
+          inertia: [
+            4.723e-07, 0,         0,
+            0,         4.723e-07, 0,
+            0,         0,         2.814e-06 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.002
+                radius: 0.024
+              appearance: *AluminumArroyAppearance
+  -
+    name: Caster-Vertical-Plate1
+    parent: Caster-Horizontal-Plate1
+    translation: [ -0.000,  0.018, -0.076 ]
+    jointType: fixed
+    elements: &Caster-Vertical-Frame
+      - 
+        type: RigidBody
+        centerOfMass: [ 0, 0, 0 ]
+        mass: 0.0324
+        inertia: [
+          6.0793e-05, 0,         0,
+          0,          6.183e-05, 0,
+          0,          0,         1.123e-06 ]
+        elements:
+          Shape:
+            geometry: 
+              type: Box
+              size: [0.020, 0.004, 0.150]
+            appearance: *AluminumArroyAppearance
+  -
+    name: Wheel1
+    parent: Caster-Vertical-Plate1
+    translation: [ -0.000,  -0.025, -0.043 ]
+    jointType: revolute
+    jointAxis: Y
+    jointRange: unlimited
+    jointId: 1
+    elements: &Wheel
+      - 
+        type: RigidBody
+        centerOfMass: [ 0, 0, 0 ]
+        mass: 1.2566
+        inertia: [
+          0.0012, 0,      0,
+          0,      0.0063, 0,
+          0,      0,      0.0012 ]
+        elements:
+          Shape:
+            geometry:
+              type: Cylinder
+              height: 0.04
+              radius: 0.10
+              divisionNumber: 256
+            appearance: &WheelAppearance
+              material:
+               diffuseColor: [ 0.2, 0.2, 0.2 ]
+               specularColor: [ 0.2, 0.2, 0.2 ]
+               shininess: 0.3
+  -
+    name: Leg2
+    parent: Top-Board
+    translation: [ -0.980,  0.280, -0.290 ]
+    jointType: fixed
+    elements: *LegFrame
+  -
+    name: Caster-Horizontal-Plate2
+    parent: Leg2
+    translation: [ -0.000, -0.000, -0.281 ]
+    jointType: revolute
+    jointAxis: Z
+    jointRange: unlimited
+    jointId: 2
+    elements: *Caster-Horizontal-Frame
+  -
+    name: Caster-Vertical-Plate2
+    parent: Caster-Horizontal-Plate2
+    translation: [ -0.000,  -0.018, -0.076 ]
+    jointType: fixed
+    elements: *Caster-Vertical-Frame
+  -
+    name: Wheel2
+    parent: Caster-Vertical-Plate2
+    translation: [ -0.000,   0.025, -0.043 ]
+    jointType: revolute
+    jointAxis: Y
+    jointRange: unlimited
+    jointId: 3
+    elements: *Wheel
+  -
+    name: Leg3
+    parent: Top-Board
+    translation: [  0.980,  0.280, -0.290 ]
+    jointType: fixed
+    elements: *LegFrame
+  -
+    name: Caster-Horizontal-Plate3
+    parent: Leg3
+    translation: [ -0.000, -0.000, -0.281 ]
+    jointType: revolute
+    jointAxis: Z
+    jointRange: unlimited
+    jointId: 4
+    elements: *Caster-Horizontal-Frame
+  -
+    name: Caster-Vertical-Plate3
+    parent: Caster-Horizontal-Plate3
+    translation: [ -0.000,  -0.018, -0.076 ]
+    jointType: fixed
+    elements: *Caster-Vertical-Frame
+  -
+    name: Wheel3
+    parent: Caster-Vertical-Plate3
+    translation: [ -0.000,   0.025, -0.043 ]
+    jointType: revolute
+    jointAxis: Y
+    jointRange: unlimited
+    jointId: 5
+    elements: *Wheel
+  -
+    name: Leg4
+    parent: Top-Board
+    translation: [  0.980, -0.280, -0.290 ]
+    jointType: fixed
+    elements: *LegFrame
+  -
+    name: Caster-Horizontal-Plate4
+    parent: Leg4
+    translation: [ -0.000, -0.000, -0.281 ]
+    jointType: revolute
+    jointAxis: Z
+    jointRange: unlimited
+    jointId: 6
+    elements: *Caster-Horizontal-Frame
+  -
+    name: Caster-Vertical-Plate4
+    parent: Caster-Horizontal-Plate4
+    translation: [ -0.000,   0.018, -0.076 ]
+    jointType: fixed
+    elements: *Caster-Vertical-Frame
+  -
+    name: Wheel4
+    parent: Caster-Vertical-Plate4
+    translation: [ -0.000,  -0.025, -0.043 ]
+    jointType: revolute
+    jointAxis: Y
+    jointRange: unlimited
+    jointId: 7
+    elements: *Wheel

@@ -1,0 +1,233 @@
+#
+# naruse-arm.yaml
+#   Choreonoid body file of NaruseArm, 6 DoF arm
+#   Author: Keitaro Naruse
+#   Date: 2021-06-04
+#   MIT License
+#   model is finished 
+#
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: NaruseArm
+
+links: 
+  - name: Base
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0.05 ]
+        rotation: [ 1, 0, 0, 90 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 2.1206
+          inertia: [
+            0.0035, 0,       0,
+            0,      0.0027,  0,
+            0,      0,       0.0035 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.100
+                radius: 0.050
+              appearance: &GrayAluminumArroyAppearance
+                material: 
+                  diffuseColor: [ 0.5, 0.5, 0.5 ] 
+                  specularColor: [ 0.5, 0.5, 0.5]
+                  shininess: 0.5
+  -
+    name: Joint1
+    parent: Base
+    translation: [0, 0, 0.1]
+    jointType: revolute
+    jointAxis: Z
+    jointRange: unlimited
+    maxJointVeocity: 90
+    jointId: 0
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0.05 ]
+        rotation: [ 1, 0, 0, 90 ]
+        elements: &Joint 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 2.1206
+          inertia: [
+            0.0035, 0,       0,
+            0,      0.0027,  0,
+            0,      0,       0.0035 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.100
+                radius: 0.050
+              appearance: &GreenAluminumArroyAppearance
+                material: 
+                  diffuseColor: [ 0.4, 0.8, 0.4 ] 
+                  specularColor: [ 0.5, 0.5, 0.5]
+                  shininess: 0.5
+  -
+    name: Link1
+    parent: Joint1
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0.150 ]
+        rotation: [ 1, 0, 0, 90 ]
+        elements: &Link
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.2545
+          inertia: [
+            0.0019, 0,       0,
+            0,      1.2723e-5,  0,
+            0,      0,       0.0019 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.300
+                radius: 0.010
+              appearance: *GrayAluminumArroyAppearance
+  -
+    name: Joint2
+    parent: Link1
+    translation: [0, 0, 0.30]
+    jointType: revolute
+    jointAxis: Y
+    jointRange: unlimited
+    maxJointVeocity: 90
+    jointId: 1
+    elements: *Joint
+  -
+    name: Link2
+    parent: Joint2
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0.150 ]
+        rotation: [ 1, 0, 0, 90 ]
+        elements: *Link
+  -
+    name: Joint3
+    parent: Link2
+    translation: [0, 0, 0.30]
+    jointType: revolute
+    jointAxis: Y
+    jointRange: unlimited
+    maxJointVeocity: 90
+    jointId: 2
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0 ]
+        rotation: [ 0, 1, 0, 90 ]
+        elements: *Joint 
+  -
+    name: Link3
+    parent: Joint3
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0.150 ]
+        rotation: [ 1, 0, 0, 90 ]
+        elements: *Link
+  -
+    name: Joint4
+    parent: Link3
+    translation: [0, 0, 0.30]
+    jointType: revolute
+    jointAxis: Z
+    jointRange: unlimited
+    maxJointVeocity: 90
+    jointId: 3
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0 ]
+        rotation: [ 1, 0, 0, 90 ]
+        elements: *Joint 
+  -
+    name: Link4
+    parent: Joint4
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0.150 ]
+        rotation: [ 1, 0, 0, 90 ]
+        elements: *Link
+  -
+    name: Joint5
+    parent: Link4
+    translation: [0, 0, 0.30]
+    jointType: revolute
+    jointAxis: Y
+    jointRange: unlimited
+    maxJointVeocity: 90
+    jointId: 4
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0 ]
+        rotation: [ 0, 1, 0, 90 ]
+        elements: *Joint 
+  -
+    name: Link5
+    parent: Joint5
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0.150 ]
+        rotation: [ 1, 0, 0, 90 ]
+        elements: *Link
+  -
+    name: Joint6
+    parent: Link5
+    translation: [0, 0, 0.30]
+    jointType: revolute
+    jointAxis: Z
+    jointRange: unlimited
+    maxJointVeocity: 90
+    jointId: 5
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0 ]
+        rotation: [ 1, 0, 0, 90 ]
+        elements: *Joint 
+  -
+    name: Link6
+    parent: Joint6
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0.150 ]
+        rotation: [ 1, 0, 0, 90 ]
+        elements: *Link
+      -
+        type: Camera
+        name: D435
+        translation: [  0.02, 0.0, 0.3 ]
+        # Camera view vector is -Z
+        rotation: [ [ 1, 0, 0, 90 ], [ 0, 1, 0, -90 ]]
+        format: COLOR_DEPTH
+        fieldOfView: 91.2
+        nearClipDistance: 0.2
+        width: 320
+        height: 108
+        frameRate: 30
+        elements: &D435Frame
+          Shape: 
+            geometry: 
+              type: Box
+              size: [0.100, 0.020, 0.020]
+            appearance: 
+              material: 
+                diffuseColor: [ 0.2, 0.2, 0.8 ]
+                specularColor: [ 0.6, 0.6, 1.0 ]
+                shininess: 0.6

@@ -1,0 +1,40 @@
+#
+# naruse-arm.yaml
+#   Choreonoid body file of NaruseArm, 6 DoF arm
+#   Author: Keitaro Naruse
+#   Date: 2021-06-04
+#   MIT License
+#   model is finished 
+#
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: LIDAR
+
+links: 
+  - name: Base
+    jointType: fixed
+    elements: 
+      -
+        type: RangeSensor
+        name: VLP-16
+        translation: [ 0, 0, 0.1 ]
+        rotation: [ [ 1, 0, 0, 90 ], [ 0, 1, 0, -90 ] ]
+        yawRange: 360.0
+        yawStep:  0.4
+        pitchRange: 30.0
+        pitchStep: 2.0
+        scanRate:  5
+        maxDistance: 100.0
+        on: false
+        elements: &VLP16Frame
+          Shape: 
+            geometry: 
+              type: Cylinder
+              radius: 0.1
+              height: 0.1
+            appearance: 
+              material: 
+                diffuseColor: [ 0.2, 0.2, 0.8 ]
+                specularColor: [ 0.6, 0.6, 1.0 ]
+                shininess: 0.6
