@@ -216,10 +216,11 @@ links:
         # Camera view vector is -Z
         rotation: [ [ 1, 0, 0, 90 ], [ 0, 1, 0, -90 ]]
         format: COLOR_DEPTH
-        fieldOfView: 91.2
+        fieldOfView: 85.2
         nearClipDistance: 0.2
-        width: 320
-        height: 108
+        farClipDistance: 3.0
+        width: 428
+        height: 240
         frameRate: 30
         elements: &D435Frame
           Shape: 
