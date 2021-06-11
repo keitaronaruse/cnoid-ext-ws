@@ -60,20 +60,9 @@ public:
             ofs << "HEIGHT 240" << std::endl;
             ofs << "VIEWPOINT 0 0 0 1 0 0 0" << std::endl;
             ofs << "POINTS " << d435Device->constPoints().size() << std::endl;
-            ofs << "DATA ascii";
-//            ofs.setf(ios_base::fixed, ios_base::floatfield);
-//            ofs.precision(5);
+            ofs << "DATA ascii" << std::endl; 
             for (const auto& e : d435Device->constPoints()) {
-                ofs << std::endl;
-                ofs << e(0) << " " << e(1) << " " << e(2);
-                // if(isfinite(e(0))) ofs << e(0);
-                // else ofs << "inf";
-                // ofs << " ";
-                // if(isfinite(e(1))) ofs << e(1);
-                // else ofs << "inf";
-                // ofs << " ";
-                // if(isfinite(e(2))) ofs << e(2);
-                // else ofs << "inf";
+                ofs << e(0) << " " << e(1) << " " << e(2) << std::endl;
             }
             os << "Saved a pcd file" << std::endl;
         }
