@@ -31,9 +31,9 @@ items:
             jointPositions: [  ]
             initialRootPosition: [ 0, 0, 0 ]
             initialRootAttitude: [ 
-              -1.29638744e-10, 0.615661475, 0.788010754, 
-              2.10699791e-11, 0.788010754, -0.615661475, 
-              -1, -2.10699791e-11, -1.29638744e-10 ]
+              -1.98945971e-10, 0.615661475, 0.788010754, 
+              4.46382376e-11, 0.788010754, -0.615661475, 
+              -1, -4.46382376e-11, -1.98945971e-10 ]
             staticModel: true
             collisionDetection: true
             selfCollisionDetection: false
@@ -344,6 +344,18 @@ toolbars:
     speedScale: 1
     syncToOngoingUpdates: true
     autoExpansion: true
+  "LeggedBodyBar": 
+    stanceWidth: 0.15
+  "KinematicsBar": 
+    forward_kinematics: true
+    inverse_kinematics: true
+    preset_kinematics: true
+    enablePositionDragger: true
+    penetrationBlock: false
+    collisionLinkHighlight: false
+    snapDistance: 0.025
+    penetrationBlockDepth: 0.0005
+    lazyCollisionDetectionMode: true
   "BodyMotionGenerationBar": 
     autoGenerationForNewBody: true
     balancer: false
@@ -377,18 +389,6 @@ toolbars:
     waistHeightRelaxation: false
     gravity: 9.8
     dynamicsTimeRatio: 1
-  "LeggedBodyBar": 
-    stanceWidth: 0.15
-  "KinematicsBar": 
-    forward_kinematics: true
-    inverse_kinematics: true
-    preset_kinematics: true
-    enablePositionDragger: true
-    penetrationBlock: false
-    collisionLinkHighlight: false
-    snapDistance: 0.025
-    penetrationBlockDepth: 0.0005
-    lazyCollisionDetectionMode: true
 Body: 
   "BodyMotionEngine": 
     updateJointVelocities: false
@@ -399,14 +399,14 @@ Body:
     editableSceneBodies: 
       - 
         bodyItem: 2
-        showCenterOfMass: false
-        showPpcom: false
-        showZmp: false
+        show_cm: false
+        show_cm_projection: false
+        show_zmp: false
       - 
         bodyItem: 5
-        showCenterOfMass: false
-        showPpcom: false
-        showZmp: false
+        show_cm: false
+        show_cm_projection: false
+        show_zmp: false
   "KinematicFaultChecker": 
     checkJointPositions: true
     angleMargin: 0
@@ -438,7 +438,7 @@ viewAreas:
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 450, 450 ]
+              sizes: [ 451, 451 ]
               children: 
                 - 
                   type: pane
@@ -450,7 +450,7 @@ viewAreas:
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 675, 225 ]
+              sizes: [ 677, 225 ]
               children: 
                 - 
                   type: pane
@@ -462,7 +462,7 @@ viewAreas:
         - 
           type: splitter
           orientation: vertical
-          sizes: [ 179, 721 ]
+          sizes: [ 179, 723 ]
           children: 
             - 
               type: pane
@@ -470,7 +470,7 @@ viewAreas:
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 261, 454 ]
+              sizes: [ 262, 455 ]
               children: 
                 - 
                   type: pane
@@ -478,7 +478,7 @@ viewAreas:
                 - 
                   type: splitter
                   orientation: vertical
-                  sizes: [ 224, 224 ]
+                  sizes: [ 225, 224 ]
                   children: 
                     - 
                       type: pane

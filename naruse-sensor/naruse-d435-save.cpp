@@ -69,27 +69,8 @@ public:
             }
             os << "constPoints().size(): " << i << std::endl;
             os << "cloud.size(): " << cloud.points.size() << std::endl;
-//            pcl::io::savePCDFileASCII ("test-pcd.pcd", cloud);
             pcl::io::savePCDFileBinaryCompressed ("test-pcd.pcd", cloud);
             os << "Saved a pcd file" << std::endl;
-/*            
-            ofstream ofs("test-points.pcd");
-            ofs << "# .PCD v.7 - Point Cloud Data file format" << std::endl;
-            ofs << "VERSION .7" << std::endl;
-            ofs << "FIELDS x y z" << std::endl;
-            ofs << "SIZE 4 4 4" << std::endl;
-            ofs << "TYPE F F F" << std::endl;
-            ofs << "COUNT 1 1 1" << std::endl;
-            ofs << "WIDTH 428" << std::endl;
-            ofs << "HEIGHT 240" << std::endl;
-            ofs << "VIEWPOINT 0 0 0 1 0 0 0" << std::endl;
-            ofs << "POINTS " << d435Device->constPoints().size() << std::endl;
-            ofs << "DATA ascii" << std::endl; 
-            for (const auto& e : d435Device->constPoints()) {
-                ofs << e(0) << " " << e(1) << " " << e(2) << std::endl;
-            }
-            os << "Saved a pcd file" << std::endl;
-*/
         }
         d435PrevButtonState = buttonState;
 
