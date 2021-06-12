@@ -1,1 +1,5 @@
+cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+find_package(PCL 1.2 REQUIRED)
+include_directories(${PCL_INCLUDE_DIRS})
+add_definitions(${PCL_DEFINITIONS})
 choreonoid_add_simple_controller(NaruseD435SaveController naruse-d435-save.cpp)

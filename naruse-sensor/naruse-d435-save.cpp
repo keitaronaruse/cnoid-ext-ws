@@ -12,6 +12,8 @@
 #include <cnoid/RangeCamera>
 #include <cnoid/Joystick>
 
+#include <pcl/io/pcd_io.h>
+#include <pcl/point_types.h>
 
 using namespace std;
 using namespace cnoid;
@@ -49,6 +51,28 @@ public:
             ostream& os = io->os();
             d435Device->constImage().save("test-image.png");
             os << "Saved an image file" << std::endl;
+
+            //  PCD file save
+            //  Initialize point cloud
+            pcl::PointCloud<pcl::PointXYZ> cloud;
+            // Fill in the cloud data
+            cloud.width    = 428;
+            cloud.height   = 240;
+            cloud.is_dense = false;
+            cloud.points.resize(cloud.width * cloud.height);
+            std::size_t i = 0;
+            for(const auto& e: d435Device->constPoints()) {
+                cloud[i].x = e(0);
+                cloud[i].y = e(1);
+                cloud[i].z = e(2);
+                ++i;
+            }
+            os << "constPoints().size(): " << i << std::endl;
+            os << "cloud.size(): " << cloud.points.size() << std::endl;
+//            pcl::io::savePCDFileASCII ("test-pcd.pcd", cloud);
+            pcl::io::savePCDFileBinaryCompressed ("test-pcd.pcd", cloud);
+            os << "Saved a pcd file" << std::endl;
+/*            
             ofstream ofs("test-points.pcd");
             ofs << "# .PCD v.7 - Point Cloud Data file format" << std::endl;
             ofs << "VERSION .7" << std::endl;
@@ -65,6 +89,7 @@ public:
                 ofs << e(0) << " " << e(1) << " " << e(2) << std::endl;
             }
             os << "Saved a pcd file" << std::endl;
+*/
         }
         d435PrevButtonState = buttonState;
 
