@@ -25,15 +25,15 @@ items:
             format: CHOREONOID-BODY
             rootPosition: [ 0, 0, 0 ]
             rootAttitude: [ 
-              -2.82763146e-10, 0.615661475, 0.788010754, 
-              6.8206385e-11, 0.788010754, -0.615661475, 
-              -1, -6.8206385e-11, -2.82763146e-10 ]
+              -4.23633129e-10, 0.615661475, 0.788010754, 
+              1.16301913e-10, 0.788010754, -0.615661475, 
+              -1, -1.16301913e-10, -4.23633129e-10 ]
             jointPositions: [  ]
             initialRootPosition: [ 0, 0, 0 ]
             initialRootAttitude: [ 
-              -1.98945971e-10, 0.615661475, 0.788010754, 
-              4.46382376e-11, 0.788010754, -0.615661475, 
-              -1, -4.46382376e-11, -1.98945971e-10 ]
+              -2.6835556e-10, 0.615661475, 0.788010754, 
+              6.8502648e-11, 0.788010754, -0.615661475, 
+              -1, -6.8502648e-11, -2.6835556e-10 ]
             staticModel: true
             collisionDetection: true
             selfCollisionDetection: false
@@ -340,7 +340,7 @@ toolbars:
     frameRate: 1000
     playbackFrameRate: 60
     idleLoopDrivenMode: false
-    currentTime: 2.169
+    currentTime: 11.395
     speedScale: 1
     syncToOngoingUpdates: true
     autoExpansion: true
@@ -438,7 +438,7 @@ viewAreas:
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 451, 451 ]
+              sizes: [ 450, 450 ]
               children: 
                 - 
                   type: pane
@@ -450,7 +450,7 @@ viewAreas:
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 677, 225 ]
+              sizes: [ 675, 225 ]
               children: 
                 - 
                   type: pane
@@ -462,7 +462,7 @@ viewAreas:
         - 
           type: splitter
           orientation: vertical
-          sizes: [ 179, 723 ]
+          sizes: [ 179, 721 ]
           children: 
             - 
               type: pane
@@ -470,7 +470,7 @@ viewAreas:
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 262, 455 ]
+              sizes: [ 261, 454 ]
               children: 
                 - 
                   type: pane
@@ -478,7 +478,7 @@ viewAreas:
                 - 
                   type: splitter
                   orientation: vertical
-                  sizes: [ 225, 224 ]
+                  sizes: [ 224, 224 ]
                   children: 
                     - 
                       type: pane

@@ -49,15 +49,22 @@ public:
         bool buttonState = joystick.getButtonState(Joystick::A_BUTTON);
         if(buttonState && !d435PrevButtonState){
             ostream& os = io->os();
-            d435Device->constImage().save("test-image.png");
+            const Image& d435RGBImage = d435Device->constImage();
+
+            d435RGBImage.save("test-image.png");
             os << "Saved an image file" << std::endl;
 
+            const int width = d435RGBImage.width(), 
+                height = d435RGBImage.height(); 
+            //  pixel array stored in an image
+            const unsigned char* pixels = d435RGBImage.pixels();
+            
             //  PCD file save
             //  Initialize point cloud
-            pcl::PointCloud<pcl::PointXYZ> cloud;
+            pcl::PointCloud<pcl::PointXYZRGB> cloud;
             // Fill in the cloud data
-            cloud.width    = 428;
-            cloud.height   = 240;
+            cloud.width    = width;
+            cloud.height   = height;
             cloud.is_dense = false;
             cloud.points.resize(cloud.width * cloud.height);
             std::size_t i = 0;
@@ -65,9 +72,11 @@ public:
                 cloud[i].x = e(0);
                 cloud[i].y = e(1);
                 cloud[i].z = e(2);
+                cloud[i].r = pixels[3*i + 0];
+                cloud[i].g = pixels[3*i + 1];
+                cloud[i].b = pixels[3*i + 2];
                 ++i;
             }
-            os << "constPoints().size(): " << i << std::endl;
             os << "cloud.size(): " << cloud.points.size() << std::endl;
             pcl::io::savePCDFileBinaryCompressed ("test-pcd.pcd", cloud);
             os << "Saved a pcd file" << std::endl;
