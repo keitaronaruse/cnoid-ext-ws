@@ -19,21 +19,22 @@ items:
           name: "D435"
           plugin: Body
           class: BodyItem
+          is_selected: true
           is_checked: true
           data: 
             file: "d435.yaml"
             format: CHOREONOID-BODY
             rootPosition: [ 0, 0, 0 ]
             rootAttitude: [ 
-              -4.23633129e-10, 0.615661475, 0.788010754, 
-              1.16301913e-10, 0.788010754, -0.615661475, 
-              -1, -1.16301913e-10, -4.23633129e-10 ]
+              2.22044605e-16, -6.16297582e-33, 1, 
+              6.123234e-17, 1, -6.16297582e-33, 
+              -1, 6.123234e-17, 2.22044605e-16 ]
             jointPositions: [  ]
             initialRootPosition: [ 0, 0, 0 ]
             initialRootAttitude: [ 
-              -2.6835556e-10, 0.615661475, 0.788010754, 
-              6.8502648e-11, 0.788010754, -0.615661475, 
-              -1, -6.8502648e-11, -2.6835556e-10 ]
+              2.22044605e-16, -6.16297582e-33, 1, 
+              6.123234e-17, 1, -6.16297582e-33, 
+              -1, 6.123234e-17, 2.22044605e-16 ]
             staticModel: true
             collisionDetection: true
             selfCollisionDetection: false
@@ -52,8 +53,8 @@ items:
                     class: PointCloudVisualizerItem
                     name: D435
                     is_checked: true
-                    translation: [ 0.236403, -0.184698, -0.02 ]
-                    rotation: [ 0.309575, 0.89907, -0.309575, 96.0845 ]
+                    translation: [ 0.3, 1.22465e-18, -0.02 ]
+                    rotation: [ 3.06162e-17, 1, 3.06162e-17, 90 ]
                     angle_unit: degree
                     renderingMode: Point
                     pointSize: 0
@@ -68,7 +69,6 @@ items:
               name: "SimpleController"
               plugin: Body
               class: SimpleControllerItem
-              is_selected: true
               data: 
                 isNoDelayMode: false
                 controllerOptions: ""
@@ -340,7 +340,7 @@ toolbars:
     frameRate: 1000
     playbackFrameRate: 60
     idleLoopDrivenMode: false
-    currentTime: 11.395
+    currentTime: 6.268
     speedScale: 1
     syncToOngoingUpdates: true
     autoExpansion: true
@@ -393,8 +393,8 @@ Body:
   "BodyMotionEngine": 
     updateJointVelocities: false
   "BodySelectionManager": 
-    current_body_item: 5
-    current_link: "Root"
+    current_body_item: 2
+    current_link: "Base"
   "EditableSceneBody": 
     editableSceneBodies: 
       - 

@@ -1,42 +1,94 @@
 /*
     naruse-d435-on.cpp
+        Simple controller for d435 range camera
+            - Sensor on
+            - Save an image file and pcd one when A button is pushed down
         Author: Keitaro Naruse
-        Date:   2021-06-10
+        Date:   2021-06-14
 */
+//  For file save in c++ lang.
 #include <iostream>
 #include <fstream>
 
+//  For choreonoid
 #include <cnoid/SimpleController>
-#include <cnoid/SpotLight>
 #include <cnoid/Camera>
 #include <cnoid/RangeCamera>
 #include <cnoid/Joystick>
 
+//  For pcl
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
 
+//  For namespace
 using namespace std;
-using namespace cnoid;
 
-class NaruseD435SaveController : public SimpleController
+/*
+    class NaruseD435SaveController 
+*/
+class NaruseD435SaveController : public cnoid::SimpleController
 {
-    SimpleControllerIO* io;
-    Joystick joystick;
-    RangeCamera* d435Device;
+private:
+    //  Class instance 
+    cnoid::SimpleControllerIO* io;
+    cnoid::Joystick joystick;
+    cnoid::RangeCamera* d435Device;
     bool d435PrevButtonState;
+
+    //  Make a colored point cloud of a current scene
+    pcl::PointCloud<pcl::PointXYZRGB> makeColoredPointCloudOfCurrentScene() {
+        //  Get a cuurent scene as image 
+        const cnoid::Image& d435RGBImage = d435Device->constImage();
+
+        //  Image width and height
+        const int width  = d435RGBImage.width();
+        const int height = d435RGBImage.height();
+        //  Pixel pointer 
+        //  Each pixel i has unsgined r[i], g[i], b[i];
+        const unsigned char* pixels = d435RGBImage.pixels();
+        
+        // Make a colored point cloud from a scene
+        // Make an instance of a point cloud
+        pcl::PointCloud<pcl::PointXYZRGB> cloud;
+        // Initialize the instance
+        cloud.width    = width;
+        cloud.height   = height;
+        cloud.is_dense = false;
+        cloud.points.resize(cloud.width * cloud.height);
+        
+        //  Conver a 3D point in RangeCamera and color in Camera to a colored point cloud
+        //  Each point i in cloud is represented as
+        //      cloud[i].x, cloud[i].y, cloud[i].z: (x,y,z) position 
+        //      cloud[i].r, cloud[i].g, cloud[i].b: color data
+        //  points are alligned in 1D as Vector3f of x, y, and z
+        //  pixels are alligned in 1D with 3 components of r,g,b
+        std::size_t i = 0;
+        //  for each point e from points in RangeCamera
+        for(const auto& e: d435Device->constPoints()) {
+            //  Set x, y, z from e
+            cloud[i].x = e(0);
+            cloud[i].y = e(1);
+            cloud[i].z = e(2);
+            //  Find a corresponding pixel and set color 
+            cloud[i].r = pixels[3*i + 0];
+            cloud[i].g = pixels[3*i + 1];
+            cloud[i].b = pixels[3*i + 2];
+            ++i;
+        }
+        return(cloud);
+    };
 public:
-    
-    virtual bool initialize(SimpleControllerIO* io) override
+    virtual bool initialize(cnoid::SimpleControllerIO* io) override
     {
         this->io = io;
-        Body* body = io->body();
+        cnoid::Body* body = io->body();
 
         // Turn on D435
-        d435Device = body->findDevice<RangeCamera>("D435");
+        d435Device = body-> findDevice<cnoid::RangeCamera>("D435");
         d435Device->on(true);
         d435Device->notifyStateChange();
         d435PrevButtonState = false;
-        // Enable IO
+        // Enable IO of D435
         io->enableInput(d435Device);
 
         return true;
@@ -46,39 +98,19 @@ public:
     {
         joystick.readCurrentState();
         bool stateChanged = false;
-        bool buttonState = joystick.getButtonState(Joystick::A_BUTTON);
+        bool buttonState = joystick.getButtonState(cnoid::Joystick::A_BUTTON);
         if(buttonState && !d435PrevButtonState){
             ostream& os = io->os();
-            const Image& d435RGBImage = d435Device->constImage();
-
+            //  Get a cuurent scene as image 
+            const cnoid::Image& d435RGBImage = d435Device->constImage();
+            //  Save it as an image file
             d435RGBImage.save("test-image.png");
             os << "Saved an image file" << std::endl;
 
-            const int width = d435RGBImage.width(), 
-                height = d435RGBImage.height(); 
-            //  pixel array stored in an image
-            const unsigned char* pixels = d435RGBImage.pixels();
-            
-            //  PCD file save
-            //  Initialize point cloud
-            pcl::PointCloud<pcl::PointXYZRGB> cloud;
-            // Fill in the cloud data
-            cloud.width    = width;
-            cloud.height   = height;
-            cloud.is_dense = false;
-            cloud.points.resize(cloud.width * cloud.height);
-            std::size_t i = 0;
-            for(const auto& e: d435Device->constPoints()) {
-                cloud[i].x = e(0);
-                cloud[i].y = e(1);
-                cloud[i].z = e(2);
-                cloud[i].r = pixels[3*i + 0];
-                cloud[i].g = pixels[3*i + 1];
-                cloud[i].b = pixels[3*i + 2];
-                ++i;
-            }
-            os << "cloud.size(): " << cloud.points.size() << std::endl;
-            pcl::io::savePCDFileBinaryCompressed ("test-pcd.pcd", cloud);
+            //  Make a cuurent scene as colored point cloud
+            pcl::PointCloud<pcl::PointXYZRGB> cloud = makeColoredPointCloudOfCurrentScene();
+            //  Save it as PCD file in binary and compressed format
+            pcl::io::savePCDFileBinaryCompressed ("test-image.pcd", cloud);
             os << "Saved a pcd file" << std::endl;
         }
         d435PrevButtonState = buttonState;
