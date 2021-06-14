@@ -6,7 +6,7 @@
         Author: Keitaro Naruse
         Date:   2021-06-14
 */
-//  For file save in c++ lang.
+//  For file save in c++ language
 #include <iostream>
 #include <fstream>
 
@@ -20,11 +20,11 @@
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
 
-//  For namespace
-using namespace std;
-
 /*
-    class NaruseD435SaveController 
+    class NaruseD435SaveController {}
+        Simple controller for Naruse D435 Range Camera
+            Save an image file and a PCD file 
+            when A-button of joystick is pressed down
 */
 class NaruseD435SaveController : public cnoid::SimpleController
 {
@@ -32,13 +32,13 @@ private:
     //  Class instance 
     cnoid::SimpleControllerIO* io;
     cnoid::Joystick joystick;
-    cnoid::RangeCamera* d435Device;
+    cnoid::RangeCamera* d435RangeCamera;
     bool d435PrevButtonState;
 
     //  Make a colored point cloud of a current scene
     pcl::PointCloud<pcl::PointXYZRGB> makeColoredPointCloudOfCurrentScene() {
         //  Get a cuurent scene as image 
-        const cnoid::Image& d435RGBImage = d435Device->constImage();
+        const cnoid::Image& d435RGBImage = d435RangeCamera->constImage();
 
         //  Image width and height
         const int width  = d435RGBImage.width();
@@ -64,7 +64,7 @@ private:
         //  pixels are alligned in 1D with 3 components of r,g,b
         std::size_t i = 0;
         //  for each point e from points in RangeCamera
-        for(const auto& e: d435Device->constPoints()) {
+        for(const auto& e: d435RangeCamera->constPoints()) {
             //  Set x, y, z from e
             cloud[i].x = e(0);
             cloud[i].y = e(1);
@@ -83,13 +83,10 @@ public:
         this->io = io;
         cnoid::Body* body = io->body();
 
-        // Turn on D435
-        d435Device = body-> findDevice<cnoid::RangeCamera>("D435");
-        d435Device->on(true);
-        d435Device->notifyStateChange();
+        // Turn on and Enable IO of D435 for both Camera and RangeCamera
+        d435RangeCamera = body-> findDevice<cnoid::RangeCamera>("D435");
+        io->enableInput(d435RangeCamera);
         d435PrevButtonState = false;
-        // Enable IO of D435
-        io->enableInput(d435Device);
 
         return true;
     }
@@ -100,9 +97,9 @@ public:
         bool stateChanged = false;
         bool buttonState = joystick.getButtonState(cnoid::Joystick::A_BUTTON);
         if(buttonState && !d435PrevButtonState){
-            ostream& os = io->os();
+            std::ostream& os = io->os();
             //  Get a cuurent scene as image 
-            const cnoid::Image& d435RGBImage = d435Device->constImage();
+            const cnoid::Image& d435RGBImage = d435RangeCamera->constImage();
             //  Save it as an image file
             d435RGBImage.save("test-image.png");
             os << "Saved an image file" << std::endl;

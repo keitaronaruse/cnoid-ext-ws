@@ -18,7 +18,8 @@ links:
       -
         type: Camera
         name: D435
-        translation: [  0.02, 0.0, 0.3 ]
+        translation: [  0, 0.0, 1.0 ]
+        rotation: [ [0, 1, 0, 90], [0, 0, 1, 90] ]
         # Camera view vector is -Z
         format: COLOR_DEPTH
         fieldOfView: 85.2
