@@ -1,0 +1,88 @@
+#
+#   pt-d435.yaml
+#       Choreonoid body file of Pan Tild D435
+#       Author: Keitaro Naruse
+#       Date:   2021-06-15
+#       License: MIT License
+#
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: PT-D435
+
+links: 
+  - name: Base
+    translation: [ 0, 0, 1.0 ]
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        rotation: [ 1, 0, 0, 90 ]
+        elements: &Disc
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.2121
+          inertia: [
+            1.7848e-4, 0,          0,
+            0,         2.6507e-4,  0,
+            0,         0,          1.7848e-4 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.010
+                radius: 0.050
+              appearance: &GrayAluminumArroyAppearance
+                material: 
+                  diffuseColor: [ 0.5, 0.5, 0.5 ] 
+                  specularColor: [ 0.5, 0.5, 0.5]
+                  shininess: 0.5
+  - name: PanPlate
+    translation: [ 0, 0, 0.010 ]
+    parent: Base
+    jointType: revolute
+    jointAxis: Z
+    jointRange: unlimited
+    maxJointVeocity: 90
+    jointId: 0
+    elements: 
+      -
+        type: Transform
+        rotation: [ 1, 0, 0, 90 ]
+        elements: *Disc
+  - name: TiltPlate
+    parent: PanPlate
+    translation: [ 0, 0, 0.035 ]
+    jointType: revolute
+    jointAxis: Y
+    jointRange: [-30, 30]
+    maxJointVeocity: 90
+    jointId: 1
+    elements: 
+      -
+        type: Transform
+        rotation: [ 1, 0, 0, 90 ]
+        elements: *Disc
+      -
+        type: Camera
+        name: D435
+        translation: [  0, 0.0, 0.015 ]
+        rotation: [ [0, 1, 0, 90], [0, 0, 1, 90] ]
+        # Camera view vector is -Z
+        format: COLOR_DEPTH
+        fieldOfView: 85.2
+        nearClipDistance: 0.2
+        farClipDistance: 3.0
+        width: 428
+        height: 240
+        frameRate: 30
+        elements: &D435Frame
+          Shape: 
+            geometry: 
+              type: Box
+              size: [0.100, 0.020, 0.020]
+            appearance: 
+              material: 
+                diffuseColor: [ 0.8, 0.8, 0.8 ]
+                specularColor: [ 0.2, 0.2, 0.2 ]
+                shininess: 0.2

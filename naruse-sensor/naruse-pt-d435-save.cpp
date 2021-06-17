@@ -1,7 +1,7 @@
 /*
-    naruse-d435-on.cpp
-        Simple controller for d435 range camera
-            - Sensor on
+    naruse-pt-d435-on.cpp
+        Simple controller for d435 range camera with pan and tilt control
+            - Pan angle: +Delta by L button, -Delta by   
             - Save an image file and pcd one when A button is pushed down
         Author: Keitaro Naruse
         Date:   2021-06-14
@@ -21,19 +21,30 @@
 #include <pcl/point_types.h>
 
 /*
-    class NaruseD435SaveController {}
+    class NarusePT-D435SaveController {}
         Simple controller for Naruse D435 Range Camera
             Save an image file and a PCD file 
             when A-button of joystick is pressed down
 */
-class NaruseD435SaveController : public cnoid::SimpleController
+class NarusePTD435SaveController : public cnoid::SimpleController
 {
 private:
     //  Class instance 
+    //  SimpleController
     cnoid::SimpleControllerIO* io;
+    //  Joystick
     cnoid::Joystick joystick;
+    //  RangeCamera
     cnoid::RangeCamera* d435RangeCamera;
+    //  Button flag
     bool d435PrevButtonState;
+    //  Joint
+    cnoid::Link* panPlate;
+    cnoid::Link* tiltPlate;
+
+    //  Reference
+    double qref_pan;
+    double qref_tilt;
 
     //  Make a colored point cloud of a current scene
     pcl::PointCloud<pcl::PointXYZRGB> makeColoredPointCloudOfCurrentScene() {
@@ -88,16 +99,32 @@ public:
         io->enableInput(d435RangeCamera);
         d435PrevButtonState = false;
 
+        //  Set pan and tilt joints
+        panPlate = io->body()->link("PanPlate");
+        tiltPlate = io->body()->link("TiltPlate");
+        panPlate -> setActuationMode(cnoid::Link::JointDisplacement);
+        tiltPlate -> setActuationMode(cnoid::Link::JointDisplacement);
+        io->enableOutput(panPlate);
+        io->enableOutput(tiltPlate);
+        //  Set initial reference angles of pan and tilt
+        qref_pan = 0.0;
+        qref_tilt = 0.0;
+
         return true;
     }
 
     virtual bool control() override
     {
+        //  Read joystick status 
         joystick.readCurrentState();
+        
+        //  Set output stream
+        std::ostream& os = io->os();
+
+        //  Check A button for save files
         bool stateChanged = false;
         bool buttonState = joystick.getButtonState(cnoid::Joystick::A_BUTTON);
         if(buttonState && !d435PrevButtonState){
-            std::ostream& os = io->os();
             //  Get a cuurent scene as image 
             const cnoid::Image& d435RGBImage = d435RangeCamera->constImage();
             //  Save it as an image file
@@ -108,13 +135,37 @@ public:
             pcl::PointCloud<pcl::PointXYZRGB> cloud = makeColoredPointCloudOfCurrentScene();
             //  Save it as PCD file in binary and compressed format
             pcl::io::savePCDFileBinaryCompressed ("test-image.pcd", cloud);
-            // pcl::io::savePCDFileASCII ("test-image.pcd", cloud);
             os << "Saved a pcd file" << std::endl;
         }
         d435PrevButtonState = buttonState;
+        
+        //  L key, Rotate pan negative
+        if(joystick.getPosition(2) > 0.5)  {
+            qref_pan -= 0.001;
+            os << "qref_pan[deg]:" << qref_pan/3.14*180.0 << std::endl;
+        }
+        //  J key, Rotate pan positive
+        else if(joystick.getPosition(2) < -0.5) {
+            qref_pan += 0.001;
+            os << "qref_pan[deg]:" << qref_pan/3.14*180.0 << std::endl;
+        } 
+        //  K key, Rotate tilt positive
+        if(joystick.getPosition(3) > 0.5)  {
+            qref_tilt += 0.001;
+            os << "qref_tilt[deg]:" << qref_tilt/3.14*180.0 << std::endl;
+        }
+        //  I key, Rotatetilt negative
+        else if(joystick.getPosition(3) < -0.5) {
+            qref_tilt -= 0.001;
+            os << "qref_tilt[deg]:" << qref_tilt/3.14*180.0 << std::endl;
+        } 
+
+        //  Acutation by angle
+        panPlate -> q_target() = qref_pan;
+        tiltPlate -> q_target() = qref_tilt;
 
         return true;
     }
 };
 
-CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(NaruseD435SaveController)
+CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(NarusePTD435SaveController)
