@@ -135,6 +135,8 @@ public:
             pcl::PointCloud<pcl::PointXYZRGB> cloud = makeColoredPointCloudOfCurrentScene();
             //  Save it as PCD file in binary and compressed format
             pcl::io::savePCDFileBinaryCompressed ("test-image.pcd", cloud);
+            //  Save it as PCD file in the ASCII format
+            // pcl::io::savePCDFileASCII("test-image.pcd", cloud);
             os << "Saved a pcd file" << std::endl;
         }
         d435PrevButtonState = buttonState;
