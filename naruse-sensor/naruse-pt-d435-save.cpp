@@ -1,5 +1,5 @@
 /*
-    naruse-pt-d435-on.cpp
+    naruse-pt-d435-save.cpp
         Simple controller for d435 range camera with pan and tilt control
             - Pan angle: +Delta by L button, -Delta by   
             - Save an image file and pcd one when A button is pushed down

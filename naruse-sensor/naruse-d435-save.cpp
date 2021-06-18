@@ -1,5 +1,5 @@
 /*
-    naruse-d435-on.cpp
+    naruse-d435-save.cpp
         Simple controller for d435 range camera
             - Sensor on
             - Save an image file and pcd one when A button is pushed down

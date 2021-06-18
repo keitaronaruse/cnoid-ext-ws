@@ -19,7 +19,6 @@ items:
           name: "D435"
           plugin: Body
           class: BodyItem
-          is_selected: true
           is_checked: true
           data: 
             file: "d435.yaml"
@@ -110,7 +109,6 @@ items:
           name: "AISTSimulator"
           plugin: Body
           class: AISTSimulatorItem
-          is_selected: true
           data: 
             timeStep: 0.001
             realtimeSync: true
@@ -156,24 +154,6 @@ items:
                 enableHeadLight: true
                 enableAdditionalLights: true
                 antiAliasing: false
-        - 
-          id: 8
-          name: "GLVisionSimulator"
-          plugin: Body
-          class: GLVisionSimulatorItem
-          data: 
-            enabled: true
-            maxFrameRate: 1000
-            maxLatency: 1
-            recordVisionData: false
-            threadMode: Sensor
-            bestEffort: false
-            allSceneObjects: false
-            rangeSensorPrecisionRatio: 2
-            depthError: 0
-            enableHeadLight: true
-            enableAdditionalLights: true
-            antiAliasing: false
 views: 
   - 
     id: 0
@@ -438,7 +418,7 @@ viewAreas:
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 450, 450 ]
+              sizes: [ 451, 449 ]
               children: 
                 - 
                   type: pane
