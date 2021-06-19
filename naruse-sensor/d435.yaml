@@ -2,7 +2,7 @@
 #   d435.yaml
 #       Choreonoid body file of D435
 #       Author: Keitaro Naruse
-#       Date:   2021-06-15
+#       Date:   2021-06-19
 #       License: MIT License
 #
 format: ChoreonoidBody
@@ -17,8 +17,8 @@ links:
       -
         type: Camera
         name: D435
-        translation: [  0, 0.0, 1.0 ]
-        rotation: [ [0, 1, 0, 90], [0, 0, 1, 90] ]
+        translation: [  0, 0, 1.0 ]
+        rotation: [ [0, 1, 0, -90], [0, 0, 1, -90] ]
         # Camera view vector is -Z
         format: COLOR_DEPTH
         fieldOfView: 85.2
