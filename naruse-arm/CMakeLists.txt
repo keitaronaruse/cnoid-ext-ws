@@ -1,0 +1,1 @@
+choreonoid_add_simple_controller(NaruseIKInputController naruse-ik-input.cpp)
