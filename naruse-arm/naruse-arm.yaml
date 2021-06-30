@@ -209,6 +209,13 @@ links:
         translation: [ 0, 0, 0.150 ]
         rotation: [ 1, 0, 0, 90 ]
         elements: *Link
+  -
+    name: Tip
+    parent: Link6
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0.150 ]
       -
         type: Camera
         name: D435
