@@ -19,6 +19,7 @@ items:
           name: "AISTSimulator"
           plugin: Body
           class: AISTSimulatorItem
+          is_selected: true
           data: 
             timeStep: 0.001
             realtimeSync: true
@@ -182,7 +183,6 @@ items:
           name: "PT-D435"
           plugin: Body
           class: BodyItem
-          is_selected: true
           is_checked: true
           data: 
             file: "../naruse-sensor/pt-d435.yaml"
@@ -206,6 +206,28 @@ items:
             location_editable: false
             scene_sensitive: true
             zmp: [ 0, 0, 0 ]
+          children: 
+            - 
+              id: 10
+              name: "SensorVisualizer"
+              plugin: Body
+              class: SensorVisualizerItem
+              data: 
+                sub_items: 
+                  - 
+                    class: PointCloudVisualizerItem
+                    name: D435
+                    is_checked: true
+                    translation: [ 3, 0, 0.66 ]
+                    rotation: [ 0.57735, 0.57735, 0.57735, 120 ]
+                    angle_unit: degree
+                    renderingMode: Point
+                    pointSize: 0
+                    voxelSize: 0.01
+                    isEditable: false
+                  - 
+                    class: CameraImageVisualizerItem
+                    name: D435_Image
 views: 
   - 
     id: 0
@@ -218,7 +240,7 @@ views:
     class: ItemTreeView
     mounted: true
     state: 
-      expanded: [ 1, 2, 4, 5, 6 ]
+      expanded: [ 1, 2, 4, 5, 6, 9, 10 ]
   - 
     id: 2
     name: "Location"
@@ -333,6 +355,9 @@ views:
       current_body_item: 9
       body_items: 
         - 
+          id: 9
+          selected_links: [ 2 ]
+        - 
           id: 8
           selected_links: [ 1 ]
   - 
@@ -367,7 +392,7 @@ toolbars:
     frameRate: 1000
     playbackFrameRate: 60
     idleLoopDrivenMode: false
-    currentTime: 78.888
+    currentTime: 6.691
     speedScale: 1
     syncToOngoingUpdates: true
     autoExpansion: true
@@ -465,17 +490,17 @@ viewAreas:
     contents: 
       type: splitter
       orientation: horizontal
-      sizes: [ 1044, 230 ]
+      sizes: [ 1568, 346 ]
       children: 
         - 
           type: splitter
           orientation: horizontal
-          sizes: [ 185, 853 ]
+          sizes: [ 278, 1284 ]
           children: 
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 310, 310 ]
+              sizes: [ 458, 458 ]
               children: 
                 - 
                   type: pane
@@ -487,7 +512,7 @@ viewAreas:
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 513, 107 ]
+              sizes: [ 758, 158 ]
               children: 
                 - 
                   type: pane
@@ -499,7 +524,7 @@ viewAreas:
         - 
           type: splitter
           orientation: vertical
-          sizes: [ 172, 448 ]
+          sizes: [ 254, 662 ]
           children: 
             - 
               type: pane
@@ -507,7 +532,7 @@ viewAreas:
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 304, 138 ]
+              sizes: [ 451, 205 ]
               children: 
                 - 
                   type: pane
