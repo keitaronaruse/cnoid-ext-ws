@@ -85,7 +85,7 @@ items:
               data: 
                 isNoDelayMode: false
                 controllerOptions: ""
-                controller: "${HOME}/choreonoid/build/lib/choreonoid-1.8/simplecontroller/NaruseIKInputController"
+                controller: "${HOME}/choreonoid/build/lib/choreonoid-1.8/simplecontroller/NaruseArmAngleController"
                 baseDirectory: "None"
                 reloading: false
                 exportSymbols: false
@@ -201,7 +201,7 @@ views:
           far: 200
           eye: [ -7.42375, -2.34653, 3.67389 ]
           direction: [ 0.89827, 0.253679, -0.358829 ]
-          up: [ 0.345323, 0.0975219, 0.933403 ]
+          up: [ 0.345323, 0.0975218, 0.933403 ]
         - 
           camera: [ System, Orthographic ]
           orthoHeight: 20
@@ -261,7 +261,7 @@ views:
     class: LinkPositionView
     mounted: true
     state: 
-      coordinate_mode: base
+      coordinate_mode: world
       preferred_coordinate_mode: base
       show_rpy: true
       unique_rpy: false
@@ -286,7 +286,7 @@ toolbars:
     frameRate: 1000
     playbackFrameRate: 60
     idleLoopDrivenMode: false
-    currentTime: 4.25
+    currentTime: 9.55
     speedScale: 1
     syncToOngoingUpdates: true
     autoExpansion: true
@@ -374,17 +374,17 @@ viewAreas:
     contents: 
       type: splitter
       orientation: horizontal
-      sizes: [ 1415, 499 ]
+      sizes: [ 945, 333 ]
       children: 
         - 
           type: splitter
           orientation: horizontal
-          sizes: [ 367, 1042 ]
+          sizes: [ 245, 694 ]
           children: 
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 450, 450 ]
+              sizes: [ 332, 332 ]
               children: 
                 - 
                   type: pane
@@ -396,7 +396,7 @@ viewAreas:
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 675, 225 ]
+              sizes: [ 498, 166 ]
               children: 
                 - 
                   type: pane
@@ -408,7 +408,7 @@ viewAreas:
         - 
           type: splitter
           orientation: vertical
-          sizes: [ 179, 721 ]
+          sizes: [ 172, 492 ]
           children: 
             - 
               type: pane
@@ -416,7 +416,7 @@ viewAreas:
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 358, 357 ]
+              sizes: [ 253, 233 ]
               children: 
                 - 
                   type: pane

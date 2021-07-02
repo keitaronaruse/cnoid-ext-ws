@@ -2,7 +2,7 @@
     naruse-ik-input.cpp
         Simple controller of joystick for inputs of the inverse kinematics 
         Author: Keitaro Naruse
-        Date:   2021-06-30
+        Date:   2021-07-03
 */
 //  For file save in c++ language
 #include <iostream>
@@ -36,6 +36,8 @@ private:
     double q_ref[6];
     //  Kinematics
     std::shared_ptr< cnoid::JointPath > jp;
+    //  Target joint id of angle control 
+    int target_joint_id_angle_control;
     
 public:
     virtual bool initialize(cnoid::SimpleControllerIO* io) override
@@ -61,7 +63,7 @@ public:
         io->enableInput(body->link("Tip"), cnoid::Link::LinkPosition);
 
         //  Initial operation mode 0 == position
-        operation_mode = 0;
+        target_joint_id_angle_control = 0;
 
         //  Initial state of prev button
         prevAbuttonState = false;
@@ -74,25 +76,20 @@ public:
 
     virtual bool start() override
     {
-        return(true);
+        return( true );
     }
     
     virtual bool control() override
     {
+        //  Set output stream
+        std::ostream& os = io->os();
+
         //  Set body model
         this->io = io;
         cnoid::Body* body = io->body();
 
         //  Read joystick status 
         joystick.readCurrentState();
-        
-        //  Set output stream
-        std::ostream& os = io->os();
-
-        for(int i = 0; i < 6; i++)  {
-            cnoid::Link* joint = body->joint(i);
-            joint->q_target() = q_ref[i];
-        }
         
         //  Check A button for save files
         bool currAbuttonState = joystick.getButtonState(cnoid::Joystick::A_BUTTON);
@@ -110,6 +107,11 @@ public:
         }
         prevAbuttonState = currAbuttonState;
 
+        for(int i = 0; i < 6; i++)  {
+            cnoid::Link* joint = body->joint(i);
+            joint->q_target() = q_ref[i];
+        }
+        
         return( true );
     }
 };
