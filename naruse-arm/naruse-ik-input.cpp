@@ -36,8 +36,6 @@ private:
     double q_ref[6];
     //  Kinematics
     std::shared_ptr< cnoid::JointPath > jp;
-    cnoid::Vector3d tip_ref_pos;
-    cnoid::Matrix3d tip_ref_rot;
     
 public:
     virtual bool initialize(cnoid::SimpleControllerIO* io) override
@@ -56,12 +54,11 @@ public:
         //  Enable joint output
         for(int i = 0; i < 6; i++)  {
             cnoid::Link* joint = body->joint(i);
-            joint -> setActuationMode(cnoid::Link::JointDisplacement);
-            io->enableOutput(joint);
+            joint -> setActuationMode(cnoid::Link::JointAngle);
+            io -> enableIO(joint);
             q_ref[i] = 0.7354;
         }
         io->enableInput(body->link("Tip"), cnoid::Link::LinkPosition);
-        io->enableOutput(body->link("Tip"), cnoid::Link::LinkPosition);
 
         //  Initial operation mode 0 == position
         operation_mode = 0;
@@ -74,10 +71,12 @@ public:
 
         return( true );
     }
+
     virtual bool start() override
     {
         return(true);
     }
+    
     virtual bool control() override
     {
         //  Set body model
