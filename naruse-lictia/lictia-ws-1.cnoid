@@ -75,9 +75,9 @@ items:
             format: CHOREONOID-BODY
             rootPosition: [ 0, 0, 2.5 ]
             rootAttitude: [ 
-              6.123234e-17, 0, -1, 
-              0, 1, 0, 
-              1, -0, 6.123234e-17 ]
+              2.22044605e-16, -0, -1, 
+              0, 1, -0, 
+              1, 0, 2.22044605e-16 ]
             jointDisplacements: [ 0, 0 ]
             jointPositions: [ 0, 0 ]
             initialRootPosition: [ 0, 0, 2.5 ]
@@ -92,12 +92,46 @@ items:
             location_editable: false
             scene_sensitive: true
             zmp: [ 0, 0, 0 ]
+          children: 
+            - 
+              id: 5
+              name: "SimpleController"
+              plugin: Body
+              class: SimpleControllerItem
+              data: 
+                isNoDelayMode: false
+                controllerOptions: ""
+                controller: "${HOME}/choreonoid/build/lib/choreonoid-1.8/simplecontroller/NarusePTD435SaveController"
+                baseDirectory: "None"
+                reloading: false
+                exportSymbols: false
+                isOldTargetVariableMode: false
+            - 
+              id: 6
+              name: "SensorVisualizer"
+              plugin: Body
+              class: SensorVisualizerItem
+              data: 
+                sub_items: 
+                  - 
+                    class: PointCloudVisualizerItem
+                    name: D435
+                    is_checked: true
+                    translation: [ -0.06, 0, 2.5 ]
+                    rotation: [ 8.04061e-17, 8.04061e-17, 1, 90 ]
+                    angle_unit: degree
+                    renderingMode: Point
+                    pointSize: 0
+                    voxelSize: 0.01
+                    isEditable: false
+                  - 
+                    class: CameraImageVisualizerItem
+                    name: D435_Image
         - 
-          id: 5
+          id: 7
           name: "Table-120x120"
           plugin: Body
           class: BodyItem
-          is_checked: true
           data: 
             file: "../../LICTiA/model/Table-120x120.body"
             format: CHOREONOID-BODY
@@ -119,12 +153,10 @@ items:
             scene_sensitive: true
             zmp: [ 0, 0, 0 ]
         - 
-          id: 6
+          id: 8
           name: "Table-120x60"
           plugin: Body
           class: BodyItem
-          is_selected: true
-          is_checked: true
           data: 
             file: "../../LICTiA/model/Table-120x60.body"
             format: CHOREONOID-BODY
@@ -145,6 +177,35 @@ items:
             location_editable: false
             scene_sensitive: true
             zmp: [ 0, 0, 0 ]
+        - 
+          id: 9
+          name: "PT-D435"
+          plugin: Body
+          class: BodyItem
+          is_selected: true
+          is_checked: true
+          data: 
+            file: "../naruse-sensor/pt-d435.yaml"
+            format: CHOREONOID-BODY
+            rootPosition: [ 3, 0, 0.6 ]
+            rootAttitude: [ 
+              1, 0, 0, 
+              0, 1, 0, 
+              0, 0, 1 ]
+            jointDisplacements: [ 0, 0 ]
+            jointPositions: [ 0, 0 ]
+            initialRootPosition: [ 3, 0, 0.6 ]
+            initialRootAttitude: [ 
+              1, 0, 0, 
+              0, 1, 0, 
+              0, 0, 1 ]
+            initialJointPositions: [ 0, 0 ]
+            staticModel: false
+            collisionDetection: true
+            selfCollisionDetection: false
+            location_editable: false
+            scene_sensitive: true
+            zmp: [ 0, 0, 0 ]
 views: 
   - 
     id: 0
@@ -157,7 +218,7 @@ views:
     class: ItemTreeView
     mounted: true
     state: 
-      expanded: [ 1, 2 ]
+      expanded: [ 1, 2, 4, 5, 6 ]
   - 
     id: 2
     name: "Location"
@@ -269,6 +330,11 @@ views:
     state: 
       element_type: all
       listingMode: list
+      current_body_item: 9
+      body_items: 
+        - 
+          id: 8
+          selected_links: [ 1 ]
   - 
     id: 9
     name: "Link Position"
@@ -297,11 +363,11 @@ views:
 toolbars: 
   "TimeBar": 
     minTime: 0
-    maxTime: 30
+    maxTime: 78.888
     frameRate: 1000
     playbackFrameRate: 60
     idleLoopDrivenMode: false
-    currentTime: 5.672
+    currentTime: 78.888
     speedScale: 1
     syncToOngoingUpdates: true
     autoExpansion: true
@@ -354,8 +420,8 @@ Body:
   "BodyMotionEngine": 
     updateJointVelocities: false
   "BodySelectionManager": 
-    current_body_item: 6
-    current_link: "Leg"
+    current_body_item: 9
+    current_link: "TiltPlate"
   "EditableSceneBody": 
     editableSceneBodies: 
       - 
@@ -364,12 +430,17 @@ Body:
         show_cm_projection: false
         show_zmp: false
       - 
-        bodyItem: 5
+        bodyItem: 7
         show_cm: false
         show_cm_projection: false
         show_zmp: false
       - 
-        bodyItem: 6
+        bodyItem: 8
+        show_cm: false
+        show_cm_projection: false
+        show_zmp: false
+      - 
+        bodyItem: 9
         show_cm: false
         show_cm_projection: false
         show_zmp: false
@@ -394,17 +465,17 @@ viewAreas:
     contents: 
       type: splitter
       orientation: horizontal
-      sizes: [ 1569, 345 ]
+      sizes: [ 1044, 230 ]
       children: 
         - 
           type: splitter
           orientation: horizontal
-          sizes: [ 279, 1284 ]
+          sizes: [ 185, 853 ]
           children: 
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 450, 450 ]
+              sizes: [ 310, 310 ]
               children: 
                 - 
                   type: pane
@@ -416,7 +487,7 @@ viewAreas:
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 745, 155 ]
+              sizes: [ 513, 107 ]
               children: 
                 - 
                   type: pane
@@ -428,7 +499,7 @@ viewAreas:
         - 
           type: splitter
           orientation: vertical
-          sizes: [ 179, 721 ]
+          sizes: [ 172, 448 ]
           children: 
             - 
               type: pane
@@ -436,23 +507,15 @@ viewAreas:
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 261, 454 ]
+              sizes: [ 304, 138 ]
               children: 
                 - 
                   type: pane
-                  views: [ 9 ]
+                  views: [ 9, 7, 8 ]
+                  current: 8
                 - 
-                  type: splitter
-                  orientation: vertical
-                  sizes: [ 224, 224 ]
-                  children: 
-                    - 
-                      type: pane
-                      views: [ 8, 7 ]
-                      current: 7
-                    - 
-                      type: pane
-                      views: [ 5 ]
+                  type: pane
+                  views: [ 5 ]
 layoutOfToolBars: 
   rows: 
     - 
