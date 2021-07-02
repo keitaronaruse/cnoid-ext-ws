@@ -27,15 +27,13 @@ private:
     //  RangeCamera
     cnoid::RangeCamera* d435RangeCamera;
     //  Joystick
-    cnoid::Joystick joystick;
-    //  Button flag
-    //  Joint
-    cnoid::Link* joint[6];
+    cnoid::Joystick joystick; 
     //  Operation mode of Joystick 0 == Position, 1 == Rotation
     int operation_mode;
-    //  For smooth key input
+    //  Button flag
     bool prevAbuttonState;
-
+    //  Reference angle
+    double q_ref[6];
     //  Kinematics
     std::shared_ptr< cnoid::JointPath > jp;
     cnoid::Vector3d tip_ref_pos;
@@ -56,15 +54,14 @@ public:
         io->enableInput(d435RangeCamera);
 
         //  Enable joint output
-        joint[0] = io->body()->link("Joint1");
-        joint[1] = io->body()->link("Joint2");
-        joint[2] = io->body()->link("Joint3");
-        joint[3] = io->body()->link("Joint4");
-        joint[4] = io->body()->link("Joint5");
-        joint[5] = io->body()->link("Joint6");
         for(int i = 0; i < 6; i++)  {
-            joint[i] -> setActuationMode(cnoid::Link::JointDisplacement);
+            cnoid::Link* joint = body->joint(i);
+            joint -> setActuationMode(cnoid::Link::JointDisplacement);
+            io->enableOutput(joint);
+            q_ref[i] = 0.7354;
         }
+        io->enableInput(body->link("Tip"), cnoid::Link::LinkPosition);
+        io->enableOutput(body->link("Tip"), cnoid::Link::LinkPosition);
 
         //  Initial operation mode 0 == position
         operation_mode = 0;
@@ -73,11 +70,14 @@ public:
         prevAbuttonState = false;
 
         //  Set Joint Path
-        jp = cnoid::JointPath::getCustomPath(body, body->rootLink(), body->link("Tip"));
+        // jp = cnoid::JointPath::getCustomPath(body, body->rootLink(), body->link("Tip"));
 
         return( true );
     }
-
+    virtual bool start() override
+    {
+        return(true);
+    }
     virtual bool control() override
     {
         //  Set body model
@@ -90,15 +90,24 @@ public:
         //  Set output stream
         std::ostream& os = io->os();
 
+        for(int i = 0; i < 6; i++)  {
+            cnoid::Link* joint = body->joint(i);
+            joint->q_target() = q_ref[i];
+        }
+        
         //  Check A button for save files
         bool currAbuttonState = joystick.getButtonState(cnoid::Joystick::A_BUTTON);
         if( !prevAbuttonState && currAbuttonState ) {
+            // jp -> calcForwardKinematics();
             operation_mode = ( 0 == operation_mode )? 1 : 0; 
             os << "Operation mode is " << operation_mode << std::endl;
-            cnoid::Vector3 tip_ref_pos = body->link("Tip")->p();
-            cnoid::Matrix3 tip_ref_rot = body->link("Tip")->R();
-            os << tip_ref_pos << std::endl;
-            os << tip_ref_rot << std::endl;
+            // cnoid::Vector3 tip_ref_pos = body->link("Tip")->p();
+            // cnoid::Matrix3 tip_ref_rot = body->link("Tip")->R();
+            cnoid::Position tip_T = body->link("Tip")->position();
+            cnoid::Vector3 tip_p = tip_T.translation();
+            cnoid::Matrix3 tip_R = tip_T.rotation();
+            os << tip_p << std::endl;
+            os << tip_R << std::endl;
         }
         prevAbuttonState = currAbuttonState;
 
