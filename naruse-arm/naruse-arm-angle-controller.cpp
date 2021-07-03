@@ -1,23 +1,28 @@
 /*
-    naruse-arm-angle-control.cpp
+    naruse-arm-angle-controller.cpp
         Simple controller of naruse-arm by joint angle
         Author: Keitaro Naruse
         Date:   2021-07-03
 */
-//  For c++
+//  C++ include files
+//  For stream
 #include <iostream>
-#include <fstream>
+//  For vector
 #include <vector>
 
-//  For choreonoid
+//  Choreonoid include files
+//  For simple controller
 #include <cnoid/SimpleController>
+//  For range camera (D435)
 #include <cnoid/RangeCamera>
+//  For joystick
 #include <cnoid/Joystick>
+//  For kinematics (JointPath)
 #include <cnoid/JointPath>
 
 /*
-    class NaruseArmAngleController {}
-        Simple controller for joystich for inputs of the inverse kinematics
+    class NaruseArmAngleController
+        Simple controller for joystick input of the inverse kinematics
 */
 class NaruseArmAngleController : public cnoid::SimpleController
 {
@@ -34,7 +39,7 @@ private:
     bool prevBButtonState;
     bool prevXButtonState;
     bool prevYButtonState;
-    //  Reference angle
+    //  Reference joint angle
     std::vector<double> q_ref;
     //  Target joint id of angle control
     int target_joint_id;
@@ -55,21 +60,22 @@ public:
 
         //  Enable joint output
         for(int i = 0; i < body -> numJoints(); i++)  {
-            //  For each of the joints
+            //  For each of the joint links
             cnoid::Link* joint = body->joint(i);
-            //  Control joints by angle
+            //  Set a control mode as a joint angle
             joint -> setActuationMode(cnoid::Link::JointAngle);
-            //  Enable input and output for the joint
+            //  Enable input and output
             io -> enableIO(joint);
-            //  Initial referece angle
+            //  Set an initial referece angle
             q_ref.push_back(0.0);
         }
+        //  Enable input of the link of Tip for reading a joint frame of T
         io->enableInput(body->link("Tip"), cnoid::Link::LinkPosition);
 
         //  Initial joint id of angle control is 0
         target_joint_id = 0;
 
-        //  Initial state of prev button
+        //  Initial value of a previous state of joystick buttons
         prevAButtonState = false;
         prevBButtonState = false;
         prevXButtonState = false;
@@ -92,15 +98,16 @@ public:
         this->io = io;
         cnoid::Body* body = io->body();
 
-        //  Read joystick status 
+        //  Read joystick state
         joystick.readCurrentState();
         
-        //  Flag of showing a message at os
+        //  Flag of messaging to os; Show a message if it is true
         bool isMessageOut = false;
 
-        //  Push A button for decrease joint id 
+        //  Decrease a joint id if A button is pushed down at this moment
         bool currAButtonState = joystick.getButtonState(cnoid::Joystick::A_BUTTON);
         if( !prevAButtonState && currAButtonState ) {
+            //  target id changes as a ring: 0 -> numJoints()-1
             if( -1 == --target_joint_id)    {
                 target_joint_id = body->numJoints()-1;
             }
@@ -108,9 +115,10 @@ public:
         }
         prevAButtonState = currAButtonState;
 
-        //  Push Y button for increase joint id
+        //  Increase a joint id if Y button is pushed down at this moment
         bool currYButtonState = joystick.getButtonState(cnoid::Joystick::Y_BUTTON);
         if( !prevYButtonState && currYButtonState ) {
+            //  target id changes as a ring: numJoints()-1 -> 0
             if( body->numJoints() == ++target_joint_id)    {
                 target_joint_id = 0;
             }
@@ -118,7 +126,7 @@ public:
         }
         prevYButtonState = currYButtonState;
         
-        //  Push B button for increase referecen angle 
+        //  Increase a reference angle of joint id if B button is pushed down at this moment
         bool currBButtonState = joystick.getButtonState(cnoid::Joystick::B_BUTTON);
         if( !prevBButtonState && currBButtonState ) {
             q_ref[target_joint_id] += 0.1;
@@ -126,7 +134,7 @@ public:
         }
         prevBButtonState = currBButtonState;
 
-        //  Push X button for decrease referecen angle 
+        //  Decrease a reference angle of joint id if X button is pushed down at this moment
         bool currXButtonState = joystick.getButtonState(cnoid::Joystick::X_BUTTON);
         if( !prevXButtonState && currXButtonState ) {
             q_ref[target_joint_id] -= 0.1;
@@ -134,7 +142,7 @@ public:
         }
         prevXButtonState = currXButtonState;
 
-        //  Set target angles as reference ones
+        //  For each of the joints, set a target angle as a reference one
         for(int i = 0; i < body->numJoints(); i++)  {
             cnoid::Link* joint = body->joint(i);
             joint->q_target() = q_ref[i];

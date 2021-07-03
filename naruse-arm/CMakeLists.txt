@@ -1,2 +1,3 @@
 choreonoid_add_simple_controller(NaruseIKInputController naruse-ik-input.cpp)
 choreonoid_add_simple_controller(NaruseArmAngleController naruse-arm-angle-controller.cpp)
+choreonoid_add_simple_controller(NaruseArmIKController naruse-arm-ik-controller.cpp)

@@ -68,7 +68,7 @@ public:
         io->enableInput(body->link("Tip"), cnoid::Link::LinkPosition);
 
         //  Initial operation mode 0 == position
-        target_joint_id_angle_control = 0;
+        operation_mode = 0;
 
         //  Initial state of prev button
         prevAbuttonState = false;

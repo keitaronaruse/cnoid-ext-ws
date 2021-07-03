@@ -85,7 +85,7 @@ items:
               data: 
                 isNoDelayMode: false
                 controllerOptions: ""
-                controller: "${HOME}/choreonoid/build/lib/choreonoid-1.8/simplecontroller/NaruseArmAngleController"
+                controller: "${HOME}/choreonoid/build/lib/choreonoid-1.8/simplecontroller/NaruseArmIKController"
                 baseDirectory: "None"
                 reloading: false
                 exportSymbols: false
@@ -201,7 +201,7 @@ views:
           far: 200
           eye: [ -7.42375, -2.34653, 3.67389 ]
           direction: [ 0.89827, 0.253679, -0.358829 ]
-          up: [ 0.345323, 0.0975218, 0.933403 ]
+          up: [ 0.345323, 0.0975217, 0.933403 ]
         - 
           camera: [ System, Orthographic ]
           orthoHeight: 20
@@ -374,17 +374,17 @@ viewAreas:
     contents: 
       type: splitter
       orientation: horizontal
-      sizes: [ 945, 333 ]
+      sizes: [ 1415, 499 ]
       children: 
         - 
           type: splitter
           orientation: horizontal
-          sizes: [ 245, 694 ]
+          sizes: [ 368, 1041 ]
           children: 
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 332, 332 ]
+              sizes: [ 450, 450 ]
               children: 
                 - 
                   type: pane
@@ -396,7 +396,7 @@ viewAreas:
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 498, 166 ]
+              sizes: [ 675, 225 ]
               children: 
                 - 
                   type: pane
@@ -408,7 +408,7 @@ viewAreas:
         - 
           type: splitter
           orientation: vertical
-          sizes: [ 172, 492 ]
+          sizes: [ 233, 667 ]
           children: 
             - 
               type: pane
@@ -416,7 +416,7 @@ viewAreas:
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 253, 233 ]
+              sizes: [ 344, 317 ]
               children: 
                 - 
                   type: pane
