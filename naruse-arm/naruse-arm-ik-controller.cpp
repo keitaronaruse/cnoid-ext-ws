@@ -2,7 +2,7 @@
     naruse-arm-ik-controller.cpp
         Simple controller of naruse-arm by joint angle
         Author: Keitaro Naruse
-        Date:   2021-07-03
+        Date:   2021-07-04
 */
 //  C++ include files
 //  For stream
@@ -52,39 +52,58 @@ private:
     //  For rotaion around z-axis
     double prevPadHorizaontalPos;
     
-
     //  Reference joint angle
     std::vector<double> q_ref;
     //  Transform (fram) instance of reference (target) of Tip
     cnoid::Isometry3 tip_T_ref;
-    
+
+    //  Kinematics
+    //  ikBody should be declared here because it is a smart pointer
+    cnoid::BodyPtr ikBody;
+    cnoid::Link* ikBase;
+    cnoid::Link* ikTip;
+    std::shared_ptr<cnoid::JointPath> baseToTip;
+
 public:
     virtual bool initialize(cnoid::SimpleControllerIO* io) override
     {
         //  Set body model
         this->io = io;
-        cnoid::Body* body = io->body();
+        cnoid::Body* ioBody = io->body();
         
         //  Set output stream
         std::ostream& os = io->os();
 
         //  Turn on and Enable IO of D435 for both Camera and RangeCamera
-        d435RangeCamera = body-> findDevice<cnoid::RangeCamera>("D435");
+        d435RangeCamera = ioBody-> findDevice<cnoid::RangeCamera>("D435");
         io->enableInput(d435RangeCamera);
 
         //  Enable joint output
-        for(int i = 0; i < body -> numJoints(); i++)  {
+        for(int i = 0; i < ioBody -> numJoints(); i++)  {
             //  For each of the joint links
-            cnoid::Link* joint = body->joint(i);
+            cnoid::Link* joint = ioBody->joint(i);
             //  Set a control mode as a joint angle
-            joint -> setActuationMode(cnoid::Link::JointAngle);
+            joint->setActuationMode(cnoid::Link::JointAngle);
             //  Enable input and output
-            io -> enableIO(joint);
+            io->enableIO(joint);
             //  Set an initial referece angle
-            q_ref.push_back(0.0);
+            q_ref.push_back(0.7);
         }
         //  Enable input of the link of Tip for reading a joint frame of T
-        io->enableInput(body->link("Tip"), cnoid::Link::LinkPosition);
+        io->enableInput(ioBody->link("Tip"), cnoid::Link::LinkPosition);
+
+        //  For Kinematics
+        ikBody = ioBody->clone();
+        ikBase = ikBody->rootLink();
+        ikTip = ikBody->link("Tip");
+        baseToTip = cnoid::JointPath::getCustomPath(ikBody, ikBase, ikTip);
+
+        //  Copy joint angles of a robot model into the ones of an ik model 
+        for(int i = 0; i < ioBody->numJoints(); ++i){
+            cnoid::Link* joint = ioBody->joint(i);
+            ikBody->joint(i)->q() = joint->q();
+        }
+        baseToTip->calcForwardKinematics();
 
         //  Initial value of a previous state of joystick buttons
         prevAButtonState = false;
@@ -127,7 +146,19 @@ public:
         //  if A button is pushed down at this moment
         bool currAButtonState = joystick.getButtonState(cnoid::Joystick::A_BUTTON);
         if( !prevAButtonState && currAButtonState ) {
-            isMessageOut = true;
+            bool isIKSolved = baseToTip->calcInverseKinematics(tip_T_ref);
+            os << "IK solved: " << isIKSolved << std::endl;
+            if(isIKSolved){
+                os << "Num Joints: " << baseToTip->numJoints() << std::endl;
+                for(int i = 0; i < baseToTip->numJoints(); ++i){
+                    //  Wrong line
+                    // cnoid::Link* joint = baseToTip->joint(i);
+                    // q_ref[joint->jointId()] = joint->q();
+                    // os << joint->jointId() << std::endl;
+                    // os << joint->jointId() << " " << q_ref[joint->jointId()] << std::endl;
+                }
+                // isMessageOut = true;
+            }
         }
         prevAButtonState = currAButtonState;
 
