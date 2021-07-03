@@ -4,29 +4,34 @@
         Author: Keitaro Naruse
         Date:   2021-07-03
 */
-//  For file save in c++ language
+//  C++ include files
+//  For file save
 #include <iostream>
 #include <fstream>
 
-//  For choreonoid
+//  Choreonoid include files
+//  For simple controller
 #include <cnoid/SimpleController>
+//  For range camera D435
 #include <cnoid/RangeCamera>
+//  For joystich
 #include <cnoid/Joystick>
+//  For kinematics
 #include <cnoid/JointPath>
 
 /*
-    class NaruseIKInputController {}
-        Simple controller for joystich for inputs of the inverse kinematics
+    class NaruseIKInputController
+        Simple controller of joystick reading for inputs of the inverse kinematics
 */
 class NaruseIKInputController : public cnoid::SimpleController
 {
 private:
     //  Class instance 
-    //  SimpleController
+    //  SimpleController instance
     cnoid::SimpleControllerIO* io;
-    //  RangeCamera
+    //  RangeCamera instance
     cnoid::RangeCamera* d435RangeCamera;
-    //  Joystick
+    //  Joystick instance
     cnoid::Joystick joystick; 
     //  Operation mode of Joystick 0 == Position, 1 == Rotation
     int operation_mode;
