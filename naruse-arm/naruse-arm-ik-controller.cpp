@@ -94,10 +94,10 @@ public:
         io->enableInput(ioBody->link("Tip"), cnoid::Link::LinkPosition);
 
         //  Set initial angles
-        ioBody->joint(0)->q() = q_ref[0] =  0.5236;
-        ioBody->joint(1)->q() = q_ref[1] =  0.5236;
-        ioBody->joint(2)->q() = q_ref[2] =  0.5236;
-        ioBody->joint(3)->q() = q_ref[3] =  0.5236;
+        ioBody->joint(0)->q() = q_ref[0] =  0.0;
+        ioBody->joint(1)->q() = q_ref[1] = -1.0472;
+        ioBody->joint(2)->q() = q_ref[2] =  2.0944;
+        ioBody->joint(3)->q() = q_ref[3] =  0.0;
         ioBody->joint(4)->q() = q_ref[4] =  0.5236;
         ioBody->joint(5)->q() = q_ref[5] = -1.5708;
 
@@ -224,6 +224,7 @@ public:
         prevRightStickVerticalPos = currRightStickVerticalPos;
 
         //  left stick vertical axis (e, d)
+        //  Camera roll
         double currLeftStickVerticalPos = joystick.getPosition(1);
         if( ( 0.0 == prevLeftStickVerticalPos ) && ( 0.0 != currLeftStickVerticalPos ) ) {
             if(0.0 < currLeftStickVerticalPos )    {
@@ -243,38 +244,40 @@ public:
         if( ( 0.0 == prevLeftStickHorizontalPos ) && ( 0.0 != currLeftStickHorizontalPos ) ) {
             //  Rotation around z axis
             if(0.0 < currLeftStickHorizontalPos )    {
-                tip_T_ref.rotate( cnoid::AngleAxis( 0.2, cnoid::Vector3::UnitZ() ) );
+                tip_T_ref.rotate( cnoid::AngleAxis( 0.1, cnoid::Vector3::UnitZ() ) );
             }
             else    {
-                tip_T_ref.rotate( cnoid::AngleAxis( -0.2, cnoid::Vector3::UnitZ() ) );
+                tip_T_ref.rotate( cnoid::AngleAxis( -0.1, cnoid::Vector3::UnitZ() ) );
             }
             isMessageOut = true;
         }
         prevLeftStickHorizontalPos = currLeftStickHorizontalPos;
         
         //  Pad horizontal axis (Cursor: Left, Right)
+        //  Camera pan
         double currPadHorizontalPos = joystick.getPosition(4);
         if( ( 0.0 == prevPadHorizaontalPos ) && ( 0.0 != currPadHorizontalPos ) ) {
             //  Rotation around x axis
             if(0.0 < currPadHorizontalPos )    {
-                tip_T_ref.rotate( cnoid::AngleAxis( 0.2, cnoid::Vector3::UnitX() ) );
+                tip_T_ref.rotate( cnoid::AngleAxis( 0.1, cnoid::Vector3::UnitY() ) );
             }                
             else    {
-                tip_T_ref.rotate( cnoid::AngleAxis( -0.2, cnoid::Vector3::UnitX() ) );
+                tip_T_ref.rotate( cnoid::AngleAxis( -0.1, cnoid::Vector3::UnitY() ) );
             }
             isMessageOut = true;
         }
         prevPadHorizaontalPos = currPadHorizontalPos;
 
         //  Pad vertical axis (Cursor: Up, Down)
+        //  Camera tilt
         double currPadVerticalPos = joystick.getPosition(5);
         if( ( 0.0 == prevPadVerticalPos ) && ( 0.0 != currPadVerticalPos ) ) {
             //  Rotation around y-axis
             if(0.0 < currPadVerticalPos )    {
-                tip_T_ref.rotate( cnoid::AngleAxis( 0.2, cnoid::Vector3::UnitY() ) );
+                tip_T_ref.rotate( cnoid::AngleAxis( 0.1, cnoid::Vector3::UnitX() ) );
             }                
             else    {
-                tip_T_ref.rotate( cnoid::AngleAxis( -0.2, cnoid::Vector3::UnitY() ) );
+                tip_T_ref.rotate( cnoid::AngleAxis( -0.1, cnoid::Vector3::UnitX() ) );
             }
             isMessageOut = true;
         }

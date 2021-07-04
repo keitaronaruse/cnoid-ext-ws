@@ -16,35 +16,6 @@ items:
       children: 
         - 
           id: 2
-          name: "Labo1"
-          plugin: Body
-          class: BodyItem
-          is_checked: true
-          data: 
-            file: "${HOME}/choreonoid/share/model/Labo1/Labo1.body"
-            format: CHOREONOID-BODY
-            rootPosition: [ 0, 0, 0 ]
-            rootAttitude: [ 
-              1, 0, 0, 
-              0, 1, 0, 
-              0, 0, 1 ]
-            jointDisplacements: [ -4.07111e-16 ]
-            initialJointDisplacements: [ 0 ]
-            jointPositions: [ -7.10543e-18 ]
-            initialRootPosition: [ 0, 0, 0 ]
-            initialRootAttitude: [ 
-              1, 0, 0, 
-              0, 1, 0, 
-              0, 0, 1 ]
-            initialJointPositions: [ 0 ]
-            staticModel: false
-            collisionDetection: true
-            selfCollisionDetection: false
-            location_editable: true
-            scene_sensitive: true
-            zmp: [ 0, 0, 0 ]
-        - 
-          id: 3
           name: "NaruseArm"
           plugin: Body
           class: BodyItem
@@ -79,7 +50,7 @@ items:
             zmp: [ 0, 0, 0 ]
           children: 
             - 
-              id: 4
+              id: 3
               name: "SimpleController"
               plugin: Body
               class: SimpleControllerItem
@@ -92,7 +63,7 @@ items:
                 exportSymbols: false
                 isOldTargetVariableMode: false
         - 
-          id: 5
+          id: 4
           name: "AISTSimulator"
           plugin: Body
           class: AISTSimulatorItem
@@ -135,7 +106,7 @@ views:
     class: ItemTreeView
     mounted: true
     state: 
-      expanded: [ 1, 2, 3, 4 ]
+      expanded: [ 1, 2, 3 ]
   - 
     id: 2
     name: "Location"
@@ -200,9 +171,9 @@ views:
           fieldOfView: 0.610865
           near: 0.04
           far: 200
-          eye: [ -1.87824, -2.32332, 2.91025 ]
-          direction: [ 0.572694, 0.572513, -0.586729 ]
-          up: [ 0.414945, 0.414814, 0.809783 ]
+          eye: [ 0.555904, -2.60372, 3.06728 ]
+          direction: [ -0.010792, 0.747085, -0.664641 ]
+          up: [ -0.00960006, 0.664571, 0.747163 ]
         - 
           camera: [ System, Orthographic ]
           orthoHeight: 20
@@ -247,14 +218,11 @@ views:
     state: 
       element_type: device
       listingMode: list
-      current_body_item: 3
+      current_body_item: 2
       body_items: 
         - 
-          id: 3
-          selected_links: [ 13 ]
-        - 
           id: 2
-          selected_links: [ 0 ]
+          selected_links: [ 13 ]
   - 
     id: 9
     name: "Link Position"
@@ -287,7 +255,7 @@ toolbars:
     frameRate: 1000
     playbackFrameRate: 60
     idleLoopDrivenMode: false
-    currentTime: 1.703
+    currentTime: 0.692
     speedScale: 1
     syncToOngoingUpdates: true
     autoExpansion: true
@@ -340,17 +308,12 @@ Body:
   "BodyMotionEngine": 
     updateJointVelocities: false
   "BodySelectionManager": 
-    current_body_item: 3
+    current_body_item: 2
     current_link: "Tip"
   "EditableSceneBody": 
     editableSceneBodies: 
       - 
         bodyItem: 2
-        show_cm: false
-        show_cm_projection: false
-        show_zmp: false
-      - 
-        bodyItem: 3
         show_cm: false
         show_cm_projection: false
         show_zmp: false
