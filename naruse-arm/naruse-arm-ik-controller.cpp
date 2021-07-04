@@ -7,6 +7,7 @@
 //  C++ include files
 //  For stream
 #include <iostream>
+#include <iomanip>
 //  For vector
 #include <vector>
 
@@ -54,7 +55,7 @@ private:
     
     //  Reference joint angle
     std::vector<double> q_ref;
-    //  Transform (fram) instance of reference (target) of Tip
+    //  Transform (frame) instance of reference (target) of Tip
     cnoid::Isometry3 tip_T_ref;
 
     //  Kinematics
@@ -87,23 +88,29 @@ public:
             //  Enable input and output
             io->enableIO(joint);
             //  Set an initial referece angle
-            q_ref.push_back(0.7);
+            q_ref.push_back(0.0);
         }
         //  Enable input of the link of Tip for reading a joint frame of T
         io->enableInput(ioBody->link("Tip"), cnoid::Link::LinkPosition);
 
-        //  For Kinematics
+        //  Set initial angles
+        ioBody->joint(0)->q() = q_ref[0] =  0.5236;
+        ioBody->joint(1)->q() = q_ref[1] =  0.5236;
+        ioBody->joint(2)->q() = q_ref[2] =  0.5236;
+        ioBody->joint(3)->q() = q_ref[3] =  0.5236;
+        ioBody->joint(4)->q() = q_ref[4] =  0.5236;
+        ioBody->joint(5)->q() = q_ref[5] = -1.5708;
+
+        //  For Kinematics setting
         ikBody = ioBody->clone();
         ikBase = ikBody->rootLink();
         ikTip = ikBody->link("Tip");
-        baseToTip = cnoid::JointPath::getCustomPath(ikBody, ikBase, ikTip);
-
         //  Copy joint angles of a robot model into the ones of an ik model 
         for(int i = 0; i < ioBody->numJoints(); ++i){
             cnoid::Link* joint = ioBody->joint(i);
             ikBody->joint(i)->q() = joint->q();
         }
-        baseToTip->calcForwardKinematics();
+        baseToTip = cnoid::JointPath::getCustomPath(ikBody, ikBase, ikTip);
 
         //  Initial value of a previous state of joystick buttons
         prevAButtonState = false;
@@ -119,15 +126,10 @@ public:
 
         //  Set initial value of tip_T_ref as Identity (No change transfor)
         tip_T_ref = cnoid::Isometry3::Identity();
-
+        
         return( true );
     }
 
-    virtual bool start() override
-    {
-        return( true );
-    }
-    
     virtual bool control() override
     {
         //  Set output stream
@@ -135,7 +137,7 @@ public:
 
         //  Set body model
         this->io = io;
-        cnoid::Body* body = io->body();
+        cnoid::Body* ioBody = io->body();
 
         //  Read joystick state
         joystick.readCurrentState();
@@ -143,43 +145,50 @@ public:
         //  Flag of messaging to os; Show a message if it is true
         bool isMessageOut = false;
 
-        //  if A button is pushed down at this moment
+        //  When A button is pushed down 
+        //  Solve inverse kinematics
         bool currAButtonState = joystick.getButtonState(cnoid::Joystick::A_BUTTON);
         if( !prevAButtonState && currAButtonState ) {
-            bool isIKSolved = baseToTip->calcInverseKinematics(tip_T_ref);
-            os << "IK solved: " << isIKSolved << std::endl;
-            if(isIKSolved){
-                os << "Num Joints: " << baseToTip->numJoints() << std::endl;
-                for(int i = 0; i < baseToTip->numJoints(); ++i){
-                    //  Wrong line
-                    // cnoid::Link* joint = baseToTip->joint(i);
-                    // q_ref[joint->jointId()] = joint->q();
-                    // os << joint->jointId() << std::endl;
-                    // os << joint->jointId() << " " << q_ref[joint->jointId()] << std::endl;
-                }
-                // isMessageOut = true;
+            //  Set forward kinematics, first 
+            //  Copy joint angles of the actual robot model to the ik model
+            for(int i = 0; i < ioBody->numJoints(); ++i){
+                ikBody->joint(i)->q() = ioBody->joint(i)->q();
             }
+            baseToTip->calcForwardKinematics();
+            
+            //  Solve inverse kinematics
+            bool isIKSolved = baseToTip->calcInverseKinematics(tip_T_ref);
+            os << "IK solve status: " << isIKSolved << std::endl;
+            if(isIKSolved){
+                for(int i = 0; i < baseToTip->numJoints(); ++i){
+                    q_ref[i] = baseToTip->joint(i)->q();
+                }
+            }
+
         }
         prevAButtonState = currAButtonState;
 
         //  if Y button is pushed down at this moment
         bool currYButtonState = joystick.getButtonState(cnoid::Joystick::Y_BUTTON);
         if( !prevYButtonState && currYButtonState ) {
-            ;
+            isMessageOut = true;
         }
         prevYButtonState = currYButtonState;
         
-        //  If B button is pushed down at this moment
+        //  When B button is pushed down 
+        //  Copy actual T of tip to its reference(target) tip_T_ref 
         bool currBButtonState = joystick.getButtonState(cnoid::Joystick::B_BUTTON);
         if( !prevBButtonState && currBButtonState ) {
-            ;
+            tip_T_ref = ioBody->link("Tip")->position();
+            os << "Copy an actual T of tip to refrece of it." << std::endl;
+            isMessageOut = true;
         }
         prevBButtonState = currBButtonState;
 
         //  If X button is pushed down at this moment
         bool currXButtonState = joystick.getButtonState(cnoid::Joystick::X_BUTTON);
         if( !prevXButtonState && currXButtonState ) {
-            ;
+            isMessageOut = true;
         }
         prevXButtonState = currXButtonState;
 
@@ -188,10 +197,12 @@ public:
         if( ( 0.0 == prevRightStickHorizontalPos ) && ( 0.0 != currRightStickHorizontalPos ) ) {
             //  Position mode
             if(0.0 < currRightStickHorizontalPos )    {
-                tip_T_ref.translate( cnoid::Vector3( 0.1, 0.0, 0.0 ) );
+                // tip_T_ref.translate( cnoid::Vector3( 0.1, 0.0, 0.0 ) );
+                tip_T_ref.translation().x() += 0.1;
             }
             else    {
-                tip_T_ref.translate( cnoid::Vector3( -0.1, 0.0, 0.0 ) );
+                // tip_T_ref.translate( cnoid::Vector3( -0.1, 0.0, 0.0 ) );
+                tip_T_ref.translation().x() -= 0.1;
             }
             isMessageOut = true;
         }
@@ -201,10 +212,12 @@ public:
         double currRightStickVerticalPos = joystick.getPosition(3);
         if( ( 0.0 == prevRightStickVerticalPos ) && ( 0.0 != currRightStickVerticalPos ) ) {
             if(0.0 < currRightStickVerticalPos )    {
-                tip_T_ref.translate( cnoid::Vector3( 0.0, -0.1, 0.0 ) );
+                // tip_T_ref.translate( cnoid::Vector3( 0.0, -0.1, 0.0 ) );
+                tip_T_ref.translation().y() -= 0.1;
             }
             else    {
-                tip_T_ref.translate( cnoid::Vector3( 0.0, 0.1, 0.0 ) );
+                // tip_T_ref.translate( cnoid::Vector3( 0.0, 0.1, 0.0 ) );
+                tip_T_ref.translation().y() += 0.1;
             }
             isMessageOut = true;
         }
@@ -214,10 +227,12 @@ public:
         double currLeftStickVerticalPos = joystick.getPosition(1);
         if( ( 0.0 == prevLeftStickVerticalPos ) && ( 0.0 != currLeftStickVerticalPos ) ) {
             if(0.0 < currLeftStickVerticalPos )    {
-                tip_T_ref.translate( cnoid::Vector3( 0.0, 0.0, -0.1 ) );
+                // tip_T_ref.translate( cnoid::Vector3( 0.0, 0.0, -0.1 ) );
+                tip_T_ref.translation().z() -= 0.1;
             }
             else    {
-                tip_T_ref.translate( cnoid::Vector3( 0.0, 0.0, 0.1 ) );
+                // tip_T_ref.translate( cnoid::Vector3( 0.0, 0.0, 0.1 ) );
+                tip_T_ref.translation().z() += 0.1;
             }
             isMessageOut = true;
         }
@@ -226,11 +241,12 @@ public:
         //  left stick horizontal axis (s, f)
         double currLeftStickHorizontalPos = joystick.getPosition(0);
         if( ( 0.0 == prevLeftStickHorizontalPos ) && ( 0.0 != currLeftStickHorizontalPos ) ) {
+            //  Rotation around z axis
             if(0.0 < currLeftStickHorizontalPos )    {
-                tip_T_ref.rotate( cnoid::AngleAxis( 0.1, cnoid::Vector3::UnitX() ) );
+                tip_T_ref.rotate( cnoid::AngleAxis( 0.2, cnoid::Vector3::UnitZ() ) );
             }
             else    {
-                tip_T_ref.rotate( cnoid::AngleAxis( -0.1, cnoid::Vector3::UnitX() ) );
+                tip_T_ref.rotate( cnoid::AngleAxis( -0.2, cnoid::Vector3::UnitZ() ) );
             }
             isMessageOut = true;
         }
@@ -239,12 +255,12 @@ public:
         //  Pad horizontal axis (Cursor: Left, Right)
         double currPadHorizontalPos = joystick.getPosition(4);
         if( ( 0.0 == prevPadHorizaontalPos ) && ( 0.0 != currPadHorizontalPos ) ) {
-            //  Rotation around z axis
+            //  Rotation around x axis
             if(0.0 < currPadHorizontalPos )    {
-                tip_T_ref.rotate( cnoid::AngleAxis( 0.1, cnoid::Vector3::UnitZ() ) );
+                tip_T_ref.rotate( cnoid::AngleAxis( 0.2, cnoid::Vector3::UnitX() ) );
             }                
             else    {
-                tip_T_ref.rotate( cnoid::AngleAxis( -0.1, cnoid::Vector3::UnitZ() ) );
+                tip_T_ref.rotate( cnoid::AngleAxis( -0.2, cnoid::Vector3::UnitX() ) );
             }
             isMessageOut = true;
         }
@@ -255,27 +271,25 @@ public:
         if( ( 0.0 == prevPadVerticalPos ) && ( 0.0 != currPadVerticalPos ) ) {
             //  Rotation around y-axis
             if(0.0 < currPadVerticalPos )    {
-                tip_T_ref.rotate( cnoid::AngleAxis( 0.1, cnoid::Vector3::UnitY() ) );
+                tip_T_ref.rotate( cnoid::AngleAxis( 0.2, cnoid::Vector3::UnitY() ) );
             }                
             else    {
-                tip_T_ref.rotate( cnoid::AngleAxis( -0.1, cnoid::Vector3::UnitY() ) );
+                tip_T_ref.rotate( cnoid::AngleAxis( -0.2, cnoid::Vector3::UnitY() ) );
             }
             isMessageOut = true;
         }
         prevPadVerticalPos = currPadVerticalPos;
 
-        //  Message out
-        if(isMessageOut)    {
-            cnoid::Vector3 tip_p_ref = tip_T_ref.translation();
-            cnoid::Matrix3 tip_R_ref = tip_T_ref.rotation();
-            os << tip_p_ref << std::endl;
-            os << tip_R_ref << std::endl;
+        //  For each of the joints, set a target angle as a reference one
+        for(int i = 0; i < ioBody->numJoints(); i++)  {
+            ioBody->joint(i)->q_target() = q_ref[i];
         }
 
-        //  For each of the joints, set a target angle as a reference one
-        for(int i = 0; i < body->numJoints(); i++)  {
-            cnoid::Link* joint = body->joint(i);
-            joint->q_target() = q_ref[i];
+        //  Message out
+        if(isMessageOut)    {
+            os << "T_tip_ref" << std::endl;
+            os << std::setprecision(3) << tip_T_ref.translation() << std::endl;
+            // os << std::setprecision(3) << tip_T_ref.linear() << std::endl;
         }
 
         return( true );
