@@ -142,7 +142,7 @@ links:
     parent: Link3
     translation: [0, 0, 0.30]
     jointType: revolute
-    jointAxis: Z
+    jointAxis: X
     jointRange: unlimited
     maxJointVeocity: 90
     jointId: 3
@@ -150,7 +150,7 @@ links:
       -
         type: Transform
         translation: [ 0, 0, 0 ]
-        rotation: [ 1, 0, 0, 90 ]
+        rotation: [ 0, 0, 1, 90 ]
         elements: *Joint 
   -
     name: Link4
