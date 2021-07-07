@@ -2,7 +2,8 @@
     naruse-arm-ik-controller.cpp
         Simple controller of naruse-arm by joint angle
         Author: Keitaro Naruse
-        Date:   2021-07-04
+        Date:   2021-07-06
+        MIT-License
 */
 //  C++ include files
 //  For stream
@@ -61,8 +62,6 @@ private:
     //  Kinematics
     //  ikBody should be declared here because it is a smart pointer
     cnoid::BodyPtr ikBody;
-    cnoid::Link* ikBase;
-    cnoid::Link* ikTip;
     std::shared_ptr<cnoid::JointPath> baseToTip;
 
 public:
@@ -90,28 +89,27 @@ public:
             //  Set an initial referece angle
             q_ref.push_back(0.0);
         }
-        //  Enable input of the link of Tip for reading a joint frame of T
-        io->enableInput(ioBody->link("Tip"), cnoid::Link::LinkPosition);
-
         //  Set initial angles
-        ioBody->joint(0)->q() = q_ref[0] =  0.0;
+        ioBody->joint(0)->q() = q_ref[0] =  0.2618;
         ioBody->joint(1)->q() = q_ref[1] = -1.0472;
         ioBody->joint(2)->q() = q_ref[2] =  2.0944;
-        ioBody->joint(3)->q() = q_ref[3] =  0.0;
+        ioBody->joint(3)->q() = q_ref[3] =  0.2618;
         ioBody->joint(4)->q() = q_ref[4] =  0.5236;
         ioBody->joint(5)->q() = q_ref[5] = -1.5708;
 
         //  For Kinematics setting
         ikBody = ioBody->clone();
-        ikBase = ikBody->rootLink();
-        ikTip = ikBody->link("Tip");
+        //  Enable input of the link of Tip for reading a joint frame of T
+        io->enableInput(ikBody->link("Tip"), cnoid::Link::LinkPosition);
         //  Copy joint angles of a robot model into the ones of an ik model 
         for(int i = 0; i < ioBody->numJoints(); ++i){
-            cnoid::Link* joint = ioBody->joint(i);
-            ikBody->joint(i)->q() = joint->q();
+            ikBody->joint(i)->q() = ioBody->joint(i)->q();
         }
-        baseToTip = cnoid::JointPath::getCustomPath(ikBody, ikBase, ikTip);
-
+        baseToTip = cnoid::JointPath::getCustomPath(ikBody, ikBody->rootLink(), ikBody->link("Tip"));
+        baseToTip->calcForwardKinematics();
+        //  Copy T by forward kinematics of ikBody to tip_T_ref
+        tip_T_ref = ikBody->link("Tip")->position();
+        
         //  Initial value of a previous state of joystick buttons
         prevAButtonState = false;
         prevBButtonState = false;
@@ -124,9 +122,6 @@ public:
         prevPadHorizaontalPos = 0.0;
         prevPadVerticalPos = 0.0;
 
-        //  Set initial value of tip_T_ref as Identity (No change transfor)
-        tip_T_ref = cnoid::Isometry3::Identity();
-        
         return( true );
     }
 
@@ -149,22 +144,23 @@ public:
         //  Solve inverse kinematics
         bool currAButtonState = joystick.getButtonState(cnoid::Joystick::A_BUTTON);
         if( !prevAButtonState && currAButtonState ) {
-            //  Set forward kinematics, first 
-            //  Copy joint angles of the actual robot model to the ik model
-            for(int i = 0; i < ioBody->numJoints(); ++i){
-                ikBody->joint(i)->q() = ioBody->joint(i)->q();
-            }
-            baseToTip->calcForwardKinematics();
-            
             //  Solve inverse kinematics
             bool isIKSolved = baseToTip->calcInverseKinematics(tip_T_ref);
             os << "IK solve status: " << isIKSolved << std::endl;
             if(isIKSolved){
+                //  Set joint angles solved by inverse kinematics to q_ref 
                 for(int i = 0; i < baseToTip->numJoints(); ++i){
                     q_ref[i] = baseToTip->joint(i)->q();
                 }
             }
-
+            else{
+                q_ref[0] =  0.2618;
+                q_ref[1] = -1.0472;
+                q_ref[2] =  2.0944;
+                q_ref[3] =  0.2618;
+                q_ref[4] =  0.5236;
+                q_ref[5] = -1.5708;
+            }
         }
         prevAButtonState = currAButtonState;
 
@@ -179,8 +175,14 @@ public:
         //  Copy actual T of tip to its reference(target) tip_T_ref 
         bool currBButtonState = joystick.getButtonState(cnoid::Joystick::B_BUTTON);
         if( !prevBButtonState && currBButtonState ) {
-            tip_T_ref = ioBody->link("Tip")->position();
-            os << "Copy an actual T of tip to refrece of it." << std::endl;
+            //  Copy joint angles of a robot model into the ones of an ik model 
+            for(int i = 0; i < ioBody->numJoints(); ++i){
+                ikBody->joint(i)->q() = ioBody->joint(i)->q();
+            }
+            baseToTip->calcForwardKinematics();
+            //  Copy T by forward kinematics of ikBody to tip_T_ref
+            tip_T_ref = ikBody->link("Tip")->position();
+            os << "Copy an ikBody T of tip to refrece of it." << std::endl;
             isMessageOut = true;
         }
         prevBButtonState = currBButtonState;
@@ -292,7 +294,7 @@ public:
         if(isMessageOut)    {
             os << "T_tip_ref" << std::endl;
             os << std::setprecision(3) << tip_T_ref.translation() << std::endl;
-            // os << std::setprecision(3) << tip_T_ref.linear() << std::endl;
+            os << std::setprecision(3) << tip_T_ref.linear() << std::endl;
         }
 
         return( true );
