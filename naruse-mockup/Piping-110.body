@@ -1,0 +1,231 @@
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: Piping-110
+
+links:
+  -
+    name: Bottom_piping
+    translation: [ 0.0, 0.0, 0.036 ]
+    jointType: fixed
+    mass: 0.4
+    elements:
+      -
+        type: Visual
+        elements:
+          -
+            type: Resource
+            translation: [ -0.2582, 0.392, -0.0355 ]
+            uri: "resource/Piping.dae"
+            node: ID180
+          -
+            type: Resource
+            translation: [ -0.2582, -0.368, -0.0355 ]
+            uri: "resource/Piping.dae"
+            node: ID240
+      -
+        type: Collision
+        elements:
+          -
+            name: Piping_bl
+            type: Transform
+            translation: [ 0.0, 0.372, -0.0155 ]
+            elements: &BOTTOM_PIPING
+              -
+                type: Shape
+                rotation: [ 0, 0, 1, 90 ]
+                geometry: &BOTTOM_PIPE_F { type: Cylinder, radius: 0.016, height: 0.284 }
+              -
+                type: Transform
+                translation: [ 0.2002, 0.0, 0.0 ]
+                elements: &PIPE_CONNECT
+                  -
+                    type: Shape
+                    rotation: [ 0, 0, 1, 90 ]
+                    geometry: { type: Cylinder, radius: 0.02, height: 0.116 }
+                  -
+                    type: Shape
+                    translation: [ 0.0, 0.0, 0.029 ]
+                    rotation: [ 1, 0, 0, 90 ]
+                    geometry: { type: Cylinder, radius: 0.02, height: 0.058 }
+              -
+                type: Transform
+                translation: [ -0.1998, 0.0, 0.0 ]
+                elements: *PIPE_CONNECT
+          -
+            name: Piping_br
+            type: Transform
+            translation: [ 0.0, -0.388, -0.0155 ]
+            elements: *BOTTOM_PIPING
+  -
+    name: 4legs_piping
+    parent: Bottom_piping
+    jointType: fixed
+    mass: 1.2
+    elements:
+      -
+        type: Visual
+        elements:
+          Resource:
+            translation: [ -0.2162, 0.388, 0.0425 ]
+            uri: "resource/Piping.dae"
+            node: ID281
+      -
+        type: Collision
+        elements:
+          -
+            type: Shape
+            translation: [ 0.1998, 0.372, 0.316 ]
+            rotation: [ 1, 0, 0, 90 ]
+            geometry: &FRONT_PIPE_V { type: Cylinder, radius: 0.016, height: 0.547 }
+          -
+            type: Shape
+            translation: [ -0.2002, 0.372, 0.316 ]
+            rotation: [ 1, 0, 0, 90 ]
+            geometry: *FRONT_PIPE_V
+          -
+            type: Shape
+            translation: [ 0.1998, -0.388, 0.316 ]
+            rotation: [ 1, 0, 0, 90 ]
+            geometry: *FRONT_PIPE_V
+          -
+            type: Shape
+            translation: [ -0.2002, -0.388, 0.316 ]
+            rotation: [ 1, 0, 0, 90 ]
+            geometry: *FRONT_PIPE_V
+  -
+    name: Upper_piping
+    parent: 4legs_piping
+    mass: 2.0
+    elements:
+      -
+        type: Visual
+        elements:
+          Resource:
+            translation: [ -0.2202, 0.393, 0.5896 ]
+            uri: "resource/Piping.dae"
+            node: ID5
+      -
+        type: Collision
+        elements:
+          -
+            type: Transform
+            elements: &FRONT_PIPE
+              -
+                type: Transform
+                translation: [ -0.2002, 0.373, 0.6476 ]
+                rotation: [ [ 0, 1, 0, 90 ], [ 1, 0, 0, 90 ] ]
+                elements: *PIPE_CONNECT
+              -
+                type: Transform
+                translation: [ -0.2002, -0.3878, 0.6476 ]
+                rotation: [ [ 0, 1, 0, 90 ], [ 1, 0, 0, -90 ] ]
+                elements: *PIPE_CONNECT
+              -
+                type: Transform
+                translation: [ -0.2002, -0.0074, 0.6476 ]
+                rotation: [ [ 0, 1, 0, 90 ], [ 0, 0, 1, -90 ] ]
+                elements: *PIPE_CONNECT
+              -
+                type: Shape
+                translation: [ -0.2002, 0.1828, 0.6476 ]
+                geometry: &UF_PIPE_H { type: Cylinder, radius: 0.016, height: 0.2645 }
+              -
+                type: Shape
+                translation: [ -0.2002, -0.1976, 0.6476 ]
+                geometry: *UF_PIPE_H
+          -
+            type: Transform
+            translation: [ -0.0004, -0.0004, 1.2952 ]
+            rotation: [ 0, 1, 0, 180 ]
+            elements: *FRONT_PIPE
+          -
+            type: Shape
+            translation: [ -0.0002, -0.0084, 0.6476 ]
+            rotation: [ 0, 0, 1, 90 ]
+            geometry: { type: Cylinder, radius: 0.016, height: 0.284 }
+          -
+            type: Transform
+            elements: &UF_PIPE
+              -
+                type: Shape
+                translation: [ -0.2002, 0.373, 0.7581 ]
+                rotation: [ 1, 0, 0, 90 ]
+                geometry: &PIPE_105 { type: Cylinder, radius: 0.016, height: 0.105 }
+              -
+                type: Transform
+                elements: &PIPE_CONNECT_2
+                  -
+                    type: Shape
+                    translation: [ -0.2, 0.373, 0.8285 ]
+                    rotation: [ 1, 0, 0, 90 ]
+                    geometry: &PIPE_CONNECT_GEO_2 { type: Cylinder, radius: 0.02, height: 0.077 }
+                  -
+                    type: Shape
+                    translation: [ -0.181, 0.373, 0.848 ]
+                    rotation: [ 0, 0, 1, 90 ]
+                    geometry: *PIPE_CONNECT_GEO_2
+              -
+                type: Shape
+                translation: [ -0.1107, 0.373, 0.848 ]
+                rotation: [ 0, 0, 1, 90 ]
+                geometry: *PIPE_105
+          -
+            type: Transform
+            translation: [ 0.0, -0.7608, 0.0 ]
+            elements: *UF_PIPE
+          -
+            type: Transform
+            translation: [ 0.0, 0.373, 0.848 ]
+            rotation: [ 1, 0, 0, 90 ]
+            elements: *PIPE_CONNECT
+          -
+            type: Transform
+            translation: [ 0.0, -0.3878, 0.848 ]
+            rotation: [ 1, 0, 0, -90 ]
+            elements: *PIPE_CONNECT
+          -
+            type: Shape
+            translation: [ -0.0002, -0.0074, 0.848 ]
+            geometry: &PIPE_645 { type: Cylinder, radius: 0.016, height: 0.645 }
+          -
+            type: Transform
+            elements: &UB_PIPE
+              -
+                type: Shape
+                translation: [ 0.1998, 0.3726, 0.7581 ]
+                rotation: [ 1, 0, 0, 90 ]
+                geometry: *PIPE_105
+              -
+                type: Transform
+                translation: [ 0.1998, 0.3726, 0.847 ]
+                rotation: [ 0, 1, 0, -90 ]
+                elements: *PIPE_CONNECT
+              -
+                type: Shape
+                translation: [ 0.1107, 0.3734, 0.848 ]
+                rotation: [ 0, 0, 1, 90 ]
+                geometry: *PIPE_105
+              -
+                type: Shape
+                translation: [ 0.1998, 0.3726, 0.948 ]
+                rotation: [ 1, 0, 0, 90 ]
+                geometry: *PIPE_105
+          -
+            type: Transform
+            translation: [ -0.1732, 0.1726, 0.1996 ]
+            rotation: [ 0, 0, 1, -90 ]
+            elements: *PIPE_CONNECT_2
+          -
+            type: Transform
+            translation: [ 0.0, -0.7608, 0.0 ]
+            elements: *UB_PIPE
+          -
+            type: Transform
+            translation: [ 0.5728, -0.1874, 0.1996 ]
+            rotation: [ 0, 0, 1, 90 ]
+            elements: *PIPE_CONNECT_2
+          -
+            type: Shape
+            translation: [ 0.1998, -0.0074, 1.0476 ]
+            geometry: *PIPE_645

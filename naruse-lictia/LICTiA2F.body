@@ -1,0 +1,3034 @@
+#####################################################################
+#
+# LICTiA2F.body
+#
+#  Created on: 2020/05/28
+#           Author: Tsuyoshi Anazawa
+#
+#          Outline: LICTiA2階のモデル
+#
+#####################################################################
+
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: LICTiA2F
+
+# APPEARANCE
+WHITE_WALL_APPEARANCE: &WHITE_WALL_APPEARANCE
+  appearance:
+    texture:
+      url: "resources/texture/white_wall.jpg"
+
+ALUMINUM_APPEARANCE: &ALUMINUM_APPEARANCE
+  appearance:
+    texture:
+      url: "resources/texture/Aluminum.jpg"
+
+LIGHT_WOOD_APPEARANCE: &LIGHT_WOOD_APPEARANCE
+  appearance:
+    texture:
+      url: "resources/texture/light_wood.jpg"
+    textureTransform:
+      scale: [ 1, 2 ]
+
+CERAMIC_APPEARANCE: &CERAMIC_APPEARANCE
+  appearance:
+    texture: &CERAMIC_TEX
+      url: "resources/texture/ceramic.jpg"
+    textureTransform:
+      scale: [ 15, 30 ]
+
+CARPET_APPEARANCE: &CARPET_APPEARANCE
+  appearance:
+    texture:
+      url: "resources/texture/pr_carpet.jpg"
+    textureTransform:
+      scale: [ 10, 20 ]
+
+CHECK_TILE_APPEARANCE: &CHECK_TILE_APPEARANCE
+  appearance:
+    texture:
+      url: "resources/texture/large_check_tile.jpg"
+    textureTransform:
+      rotation: 90
+      scale: [ 3, 3 ]
+
+GLASS_APPEARANCE: &GLASS_APPEARANCE
+  appearance:
+    material:
+      diffuseColor: [ 0.8, 0.8, 0.8 ]
+      specularColor: [ 0.9, 0.9, 0.9 ]
+      transparency: 0.8
+
+WHITE_APPEARANCE: &WHITE_APPEARANCE 
+  appearance:
+    material:
+      diffuseColor: [ 1.0, 1.0, 1.0 ]
+      specularColor: [ 0.7, 0.7, 0.7 ]
+
+BLACK_APPEARANCE: &BLACK_APPEARANCE
+  appearance:
+    material:
+      diffuseColor: [ 0.1, 0.1, 0.1 ]
+      specularColor: [ 0.3, 0.3, 0.3 ]
+      shininess: 0.5
+
+links:
+  - # 床
+    name: Floor
+    translation: [ -0.178, 0.0, -0.05 ]
+    jointType: fixed
+    mass: 1000.0
+    material: Ground
+    elements:
+      - # 外壁〜廊下の床
+        name: Corridor_floor
+        type: Shape
+        translation: [ 5.7825, 1.059, -0.05 ]
+        geometry: { type: Box, size: [ 4.58, 20.922, 0.2 ] }
+        <<: *CERAMIC_APPEARANCE
+      - # WC〜プロジェクトルームの床
+        name: Corridor_floor
+        type: Shape
+        translation: [ 9.4215, -0.19, -0.05 ]
+        geometry: { type: Box, size: [ 2.9, 18.428, 0.2 ] }
+        <<: *CERAMIC_APPEARANCE
+      - # プロジェクトルーム
+        name: Project_floor
+        type: Visual
+        translation: [ 7.908, -2.537, 0.052 ]
+        elements:
+          Shape:
+            geometry: { type: Box, size: [ 5.731, 13.53, 0.005 ] }
+            <<: *CARPET_APPEARANCE
+      - # 廊下〜カンファレンス側外壁の床
+        name: Conf_floor
+        type: Shape
+        translation: [ -4.146, 5.4784, -0.05 ]
+        geometry: { type: Box, size: [ 15.277, 12.083, 0.2 ] }
+        appearance:
+          texture: *CERAMIC_TEX
+          textureTransform:
+            scale: [ 30, 14 ]
+      - # カンファレンス2〜湯沸室
+        name: Conf2_floor
+        type: Shape
+        translation: [ -3.619, 13.3539, -0.05 ]
+        geometry: { type: Box, size: [ 16.332, 3.668, 0.2 ] }
+        appearance:
+          texture: *CERAMIC_TEX
+          textureTransform:
+            scale: [ 32, 4 ]
+      - # 収納2の床
+        name: Storage2_floor
+        type: Shape
+        translation: [ 2.5425, -7.6515, -0.05 ]
+        geometry: { type: Box, size: [ 1.9, 3.502, 0.2 ] }
+        appearance:
+          texture: *CERAMIC_TEX
+          textureTransform:
+            scale: [ 4, 4 ]
+      - # UPS室〜電気室の床
+        name: Electric_floor
+        type: Shape
+        translation: [ -4.146, -3.2316, -0.1 ]
+        geometry: { type: Box, size: [ 15.277, 5.337, 0.1 ] }
+        appearance:
+          texture: *CERAMIC_TEX
+          textureTransform:
+            scale: [ 30, 6 ]
+      - # 給気ファン室の床
+        name: Supply_air_fan_floor
+        type: Shape
+        translation: [ -5.096, -7.6511, -0.1 ]
+        geometry: { type: Box, size: [ 13.377, 3.502, 0.1 ] }
+        appearance:
+          texture: *CERAMIC_TEX
+          textureTransform:
+            scale: [ 30, 4 ]
+  - # 階段の壁
+    name: Stair_front_wall
+    parent: Floor
+    translation: [ 4.322, 13.304, 1.545 ]
+    jointType: fixed
+    mass: 100.0
+    elements:
+      -
+        name: Stair_front_wall
+        type: Shape
+        translation: [ 0.0, 0.002, 0.0 ]
+        geometry: { type: Box, size: [ 0.2, 3.769, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Stair_door_left_wall
+        type: Shape
+        translation: [ 0.1835, -1.8315, 0.0 ]
+        geometry: { type: Box, size: [ 0.167, 0.1, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Stair_door_top_wall
+        type: Transform
+        translation: [ 0.667, -1.8315, 1.025 ]
+        elements: &DOOR_TOP_WALL_80
+          Shape:
+            geometry: { type: Box, size: [ 0.8, 0.1, 0.94 ] }
+            <<: *WHITE_WALL_APPEARANCE
+  - # 2F階段のドア
+    name: Stair_door
+    parent: Stair_front_wall
+    translation: [ 0.252, -1.769, -0.47 ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, 1 ]
+    jointAngle: 0
+    jointId: 0
+    elements: &COM_DOOR_80
+      - &LARGE_DOOR_RIGID
+        type: RigidBody
+        centerOfMass: [ 0.0, 0.0, 0.0 ]
+        mass: 82.66
+        inertia: [
+          35.1121,     0.0,    0.0,
+              0.0, 30.2627,    0.0,
+              0.0,     0.0, 6.1749 ]
+      - &LARGE_DOOR_CYLINDER
+        type: Transform
+        rotation: [ 1, 0, 0, 90 ]
+        elements:
+          -
+            name: Top_door_cylinder
+            type: Shape
+            translation: [ 0.0, 0.8, 0.0 ]
+            geometry: &DOOR_CYLINDER { type: Cylinder, radius: 0.015, height: 0.25 }
+          -
+            name: Bottom_door_cylinder
+            type: Shape
+            translation: [ 0.0, -0.8, 0.0 ]
+            geometry: *DOOR_CYLINDER
+      - &LARGE_DOOR_80
+        type: Shape
+        translation: [ 0.415, -0.035, 0.0 ]
+        rotation: [ 0, 0, 1, -90 ]
+        geometry: &DOOR_80 { type: Box, size: [ 0.04, 0.8, 2.05 ] }
+        <<: *WHITE_APPEARANCE
+      - # 内側のドアノブ
+        name: St_door_knob_inside
+        type: Transform
+        translation: [ 0.74, -0.0125, 0.0 ]
+        rotation: [ 0, 1, 0, 180 ]
+        elements: &DOOR_KNOB
+          -
+            type: RigidBody
+            centerOfMass: [ 0.0, 0.0, 0.0 ]
+            mass: 1.0
+            inertia: [
+              3.125E-04,       0.0,       0.0,
+                    0.0, 5.416E-05,       0.0,
+                    0.0,       0.0, 5.416E-05 ]
+          -
+            type: Shape
+            geometry: { type: Cylinder, radius: 0.025, height: 0.005 }
+            <<: *ALUMINUM_APPEARANCE
+          -
+            type: Shape
+            translation: [ 0, 0.0175, 0 ]
+            geometry: { type: Cylinder, radius: 0.0075, height: 0.03 }
+            <<: *ALUMINUM_APPEARANCE
+          -
+            type: Shape
+            translation: [ 0.0275, 0.03625, 0.0 ]
+            rotation: [ 0, 0, 1, 90 ]
+            geometry: { type: Box, size: [ 0.0075, 0.07, 0.015 ] }
+            <<: *ALUMINUM_APPEARANCE
+      - # 外側のドアノブ
+        name: St_door_knob_outside
+        type: Transform
+        translation: [ 0.74, -0.0575, 0.0 ]
+        rotation: [ [ 1, 0, 0, 180 ], [ 0, 1, 0, 180 ] ]
+        elements: *DOOR_KNOB
+  -
+    name: Stair_left_wall
+    parent: Stair_front_wall
+    translation: [ 3.1425, 1.368, 1.105 ]
+    jointType: fixed
+    mass: 1000.0
+    elements:
+      Shape:
+        geometry: { type: Box, size: [ 6.566, 1.037, 5.2 ] }
+        <<: *WHITE_WALL_APPEARANCE
+  -
+    name: Stair_separator
+    parent: Stair_left_wall
+    translation: [ -0.054, -1.834, -0.3 ]
+    jointType: fixed
+    mass: 100.0
+    elements:
+      Shape:
+        geometry: { type: Box, size: [ 3.29, 0.15, 5.0 ] }
+        <<: *WHITE_WALL_APPEARANCE
+  -
+    name: Stair_right_wall
+    parent: Stair_left_wall
+    translation: [ -0.7835, -3.1995, -1.105 ]
+    jointType: fixed
+    mass: 100.0
+    elements:
+      Shape:
+        geometry: { type: Box, size: [ 2.583, 0.1, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+  -
+    name: Stair_back_wall
+    parent: Stair_right_wall
+    translation: [ 4.02, 1.365, 0.0 ]
+    jointType: fixed
+    mass: 200.0
+    elements:
+      Shape:
+        geometry: { type: Box, size: [ 0.347, 2.631, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+  - # エレベーター
+    name: ELV
+    parent: Floor
+    translation: [ 8.0225, 11.0959, 1.545 ]
+    jointType: fixed
+    mass: 300.0
+    elements:
+      -
+        name: ELV_front_left_wall
+        type: Transform
+        elements: &ELV_FRONT_SIDE_WALL
+          Shape:
+            geometry: { type: Box, size: [ 0.1, 0.853, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+      -
+        name: ELV_front_right_wall
+        type: Transform
+        translation: [ 0.0, -1.747, 0.0 ]
+        elements: *ELV_FRONT_SIDE_WALL
+      -
+        name: ELV_left_wall
+        type: Transform
+        translation: [ 1.45, 0.3765, 0.0 ]
+        elements: &ELV_LEFT_WALL
+          Shape:
+            geometry: { type: Box, size: [ 2.8, 0.1, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+      -
+        name: ELV_right_wall
+        type: Transform
+        translation: [ 1.45, -2.1235, 0.0 ]
+        elements: *ELV_LEFT_WALL
+      -
+        name: ELV_back_wall
+        type: Shape
+        translation: [ 2.8, -0.9235, 0.0 ]
+        geometry: { type: Box, size: [ 0.1, 2.5, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: ELV
+        type: Transform
+        translation: [ 0.1, -0.25075, 0.0 ]
+        elements:
+          -
+            name: ELV_OUTSIDE_TOP
+            type: Transform
+            translation: [ -0.1, -0.62275, 1.0925 ]
+            elements:
+              - &ELV_OUTSIDE_TOP
+                type: Shape
+                geometry: { type: Box, size: [ 0.1, 0.894, 0.805 ] }
+                <<: *WHITE_WALL_APPEARANCE
+              -
+                type: Shape
+                translation: [ -0.05, 0.0, -0.4025 ]
+                rotation: [ [ 0, 0, 1, 90 ], [ 1, 0, 0, 30 ] ]
+                geometry: { type: Box, size: [ 0.005, 0.005, 0.005 ] }
+#              -
+#                type: RangeSensor
+#                name: RangeSensor_0
+#                translation: [ -0.05, 0.0, -0.4025 ]
+#                rotation: [ 0, 1, 0, 20 ]
+#                yawRange: 3.0
+#                yawStep: 1.0
+#                pitchRange: 6.0
+#                pitchStep: 1.0
+#                scanRate: 5.0
+#                minDistance: 0.1
+#                maxDistance: 3.0
+#                on: true
+  - # エレベーター外側左ドア
+    name: ELV_DOOR_OUTSIDE_L
+    parent: ELV
+    translation: [ 0.0, -0.648, -0.403 ]
+    jointType: prismatic
+    jointAxis: Y
+    jointRange: [ 0.0, 0.445 ]
+    jointId: 1
+    elements: &ELV_DOOR
+      -
+        type: RigidBody
+        mass: 82.66
+        inertia: [
+          0.05166,     0.0,     0.0,
+              0.0, 0.05166,     0.0,
+              0.0,     0.0, 0.05166 ]
+      -
+        type: Shape
+        geometry: &ELV_DOOR_GEOMETRY { type: Box, size: [ 0.05, 0.447, 2.185 ] }
+  - # エレベーター外側右ドア
+    name: ELV_DOOR_OUTSIDE_R
+    parent: ELV
+    translation: [ 0.0, -1.09495, -0.403 ]
+    jointType: prismatic
+    jointAxis: -Y
+    jointRange: [ 0.0, 0.4491 ]
+    jointId: 2
+    elements: *ELV_DOOR
+  -
+    name: SK
+    parent: ELV
+    translation: [ 2.675, -2.673, 0.0 ]
+    jointType: fixed
+    mass: 100.0
+    elements:
+      -
+        name: SK_back_wall
+        type: Shape
+        geometry: { type: Box, size: [ 0.35, 1.0, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: SK_front_wall
+        type: Transform
+        translation: [ -1.09, 0.0, 0.0 ]
+        elements:
+          -
+            name: SK_fl_wall
+            type: Shape
+            translation: [ 0.0, 0.4145, 0.0 ]
+            geometry: { type: Box, size: [ 0.1, 0.17, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+          -
+            name: SK_fr_wall
+            type: Shape
+            translation: [ 0.0, -0.435, 0.0 ]
+            geometry: { type: Box, size: [ 0.1, 0.13, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+          -
+            name: SK_ft_wall
+            type: Shape
+            translation: [ 0.0, -0.02025, 1.025 ]
+            geometry: { type: Box, size: [ 0.1, 0.7, 0.94 ] }
+            <<: *WHITE_WALL_APPEARANCE
+      - # 流しのドア
+        name: SK_door
+        type: Shape
+        translation: [ -1.09, -0.02025, -0.47 ]
+        geometry: { type: Box, size: [ 0.041, 0.7, 2.05 ] }
+  - # 女子WC
+    name: Woman_wc
+    parent: SK
+    jointType: fixed
+    mass: 250
+    elements:
+      -
+        name: Woman_wc_front_wall
+        type: Transform
+        translation: [ -0.6825, -0.55, 0.0 ]
+        elements:
+          -
+            name: Woman_wc_fl_wall
+            type: Shape
+            geometry: { type: Box, size: [ 1.715, 0.1, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+          -
+            name: Woman_wc_fr_wall
+            type: Shape
+            translation: [ -1.795, 0.0, 0.0 ]
+            geometry: { type: Box, size: [ 0.275, 0.1, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+          -
+            name: Woman_wc_ft_wall
+            type: Transform
+            translation: [ -1.2575, 0.0, 1.025 ]
+            elements: *DOOR_TOP_WALL_80
+      -
+        name: Woman_wc_left_wall
+        type: Shape
+        translation: [ -0.13, -2.3475, 0.0 ]
+        geometry: { type: Box, size: [ 0.61, 3.495, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Woman_wc_right_wall
+        type: Shape
+        translation: [ -2.565, -2.3475, 0.0 ]
+        geometry: { type: Box, size: [ 0.1, 3.495, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Woman_wc_back_wall
+        type: Shape
+        translation: [ -1.22, -4.145, 0.0 ]
+        geometry: { type: Box, size: [ 2.79, 0.1, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      - # 個室の仕切り
+        name: Separator_0
+        type: Shape
+        translation: [ -1.475, -3.32, -0.47 ]
+        geometry: &SEPARATOR_0 { type: Box, size: [ 0.05, 1.55, 2.05 ] }
+      -
+        name: Wc_door_0
+        type: Shape
+        translation: [ -0.96, -2.52, -0.47 ]
+        geometry: &WC_DOOR_0 { type: Box, size: [ 0.8, 0.041, 2.05 ] }
+      -
+        name: Wc_door_wall_0
+        type: Transform
+        translation: [ -0.96, -2.52, -0.47 ]
+        elements: &WC_DOOR_WALL
+          -
+            name: Right_wall
+            type: Shape
+            translation: [ 0.4625, 0.0, 0.0 ]
+            geometry: &WC_DOOR_WALL_0 { type: Box, size: [ 0.125, 0.05, 2.05 ] }
+          -
+            name: Left_wall
+            type: Shape
+            translation: [ -0.4625, 0.0, 0.0 ]
+            geometry: *WC_DOOR_WALL_0
+      -
+        name: Wc_door_1
+        type: Shape
+        translation: [ -1.99, -2.52, -0.47 ]
+        geometry: *WC_DOOR_0
+      -
+        name: Wc_door_wall_0
+        type: Transform
+        translation: [ -1.99, -2.52, -0.47 ]
+        elements: *WC_DOOR_WALL
+  - # 女子WCのドア
+    name: Woman_wc_door
+    parent: Woman_wc
+    translation: [ -1.525, -0.615, -0.47 ]
+    rotation: [ 0, 0, 1, 180 ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, 1 ]
+    jointAngle: 0
+    jointId: 3
+    elements: *COM_DOOR_80
+  - # 男子WC
+    name: Man_wc
+    parent: Woman_wc
+    jointType: fixed
+    mass: 250
+    elements:
+      -
+        name: Man_wc_fl_wall
+        type: Shape
+        translation: [ -3.21, -0.55, 0.0 ]
+        geometry: { type: Box, size: [ 1.19, 0.1, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Man_wc_front_wall
+        type: Transform
+        translation: [ -3.755, -0.475, 0.0 ]
+        elements:
+          -
+            name: Man_wc_fl_wall
+            type: Shape
+            geometry: { type: Box, size: [ 0.1, 0.05, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+          -
+            name: Man_wc_fr_wall
+            type: Shape
+            translation: [ 0.0, 0.9, 0.0 ]
+            geometry: { type: Box, size: [ 0.1, 0.15, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+          -
+            name: Man_wc_ft_wall
+            type: Transform
+            translation: [ 0.0, 0.425, 1.025 ]
+            rotation: [ 0, 0, 1, 90 ]
+            elements: *DOOR_TOP_WALL_80
+      -
+        name: Man_wc_left_wall
+        type: Shape
+        translation: [ -4.185, -4.145, 0.0 ]
+        geometry: { type: Box, size: [ 3.14, 0.1, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Man_wc_right_wall
+        type: Shape
+        translation: [ -4.73, 0.55, 0.0]
+        geometry: { type: Box, size: [ 2.05, 0.1, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Man_wc_back_wall
+        type: Shape
+        translation: [ -5.705, -1.7975, 0.0]
+        geometry: { type: Box, size: [ 0.1, 4.595, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      - # 個室の仕切り
+        name: Separator_1
+        type: Shape
+        translation: [ -4.31, -3.32, -0.47 ]
+        geometry: *SEPARATOR_0
+      -
+        name: Wc_door_1
+        type: Shape
+        translation: [ -4.81, -2.52, -0.47 ]
+        geometry: *WC_DOOR_0
+      -
+        name: Wc_door_wall_1
+        type: Transform
+        translation: [ -4.81, -2.52, -0.47 ]
+        elements: *WC_DOOR_WALL
+      -
+        name: Wc_stall_wall_0
+        type: Shape
+        translation: [ -5.495, -3.295, 0.0 ]
+        geometry: { type: Box, size: [ 0.32, 1.6, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Wc_stall_wall_1
+        type: Shape
+        translation: [ -5.423, -1.86, 0.0 ]
+        geometry: { type: Box, size: [ 0.464, 1.27, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+  - # 男子WCのドア
+    name: Man_wc_door
+    parent: Man_wc
+    translation: [ -3.82, 0.365, -0.47 ]
+    rotation: [ [ 0, 0, 1, 90 ], [ 0, 1, 0, 180 ] ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, 1 ]
+    jointAngle: 0
+    jointId: 4
+    elements: *COM_DOOR_80
+  - # プロジェクトルーム4
+    name: Project_room4
+    parent: Man_wc
+    translation: [ -5.705, -4.28, 0.0 ]
+    jointType: fixed
+    mass: 100.0
+    elements:
+      -
+        name: Pr4_fl_wall
+        type: Shape
+        geometry: { type: Box, size: [ 0.1, 0.17, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Pr4_fr_wall
+        type: Shape
+        translation: [ 0.0, -2.275, 0.0 ]
+        geometry: { type: Box, size: [ 0.1, 1.98, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Pr4_ft_wall
+        type: Transform
+        translation: [ 0.0, -0.685, 1.025 ]
+        elements: &PR_TOP_WALL_120
+          Shape:
+            geometry: { type: Box, size: [ 0.1, 1.2, 0.94 ] }
+            <<: *WHITE_WALL_APPEARANCE
+      - &PR4_RIGHT_WALL
+        name: Pr4_right_wall
+        type: Transform
+        translation: [ 2.915, -3.265, 0.0 ]
+        elements: &PR_SEPARATOR
+          Shape:
+            geometry: { type: Box, size: [ 5.73, 0.05, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+      - &PR4_BACK_WALL
+        name: Pr4_back_wall
+        type: Transform
+        translation: [ 5.83, -0.0775, 0.0 ]
+        elements: &PR_BACK_WALL
+          - &PR4_BL_WALL
+            name: Pr_bl_wall
+            type: Transform
+            elements: &PR_BL_WALL
+              Shape:
+                geometry: { type: Box, size: [ 0.1, 0.425, 2.99 ] }
+                <<: *WHITE_WALL_APPEARANCE
+          - &PR4_BGB_WALL_0
+            name: Pr_bgb_wall_0
+            type: Transform
+            translation: [ 0.0, -0.6375, -0.7475 ]
+            elements: &PR_BGB_WALL
+              Shape:
+                geometry: { type: Box, size: [ 0.1, 0.85, 1.495 ] }
+                <<: *WHITE_WALL_APPEARANCE
+          - &PR4_BGT_WALL_0
+            name: Pr_bgt_wall_0
+            type: Transform
+            translation: [ 0.0, -0.6375, 0.7475 ]
+            elements: &PR_BG_WALL
+              -
+                name: Pr_window_glass
+                type: Shape
+                geometry: { type: Box, size: [ 0.029, 0.768, 1.385 ] }
+                <<: *GLASS_APPEARANCE
+              -
+                name: Pr_window_h_bframe
+                type: Transform
+                translation: [ 0.0, 0.0, -0.72 ]
+                elements: &PR_WINDOW_H_FRAME
+                  Shape:
+                    geometry: { type: Box, size: [ 0.041, 0.85, 0.055 ] }
+                    <<: *ALUMINUM_APPEARANCE
+              -
+                name: Pr_window_h_tframe
+                type: Transform
+                translation: [ 0.0, 0.0, 0.72 ]
+                elements: *PR_WINDOW_H_FRAME
+              -
+                name: Pr_window_v_lframe
+                type: Transform
+                translation: [ 0.0, 0.3975, 0.0 ]
+                elements: &PR_WINDOW_V_FRAME
+                  Shape:
+                    geometry: { type: Box, size: [ 0.041, 0.055, 1.385 ] }
+                    <<: *ALUMINUM_APPEARANCE
+              -
+                name: Pr_window_v_rframe
+                type: Transform
+                translation: [ 0.0, -0.3975, 0.0 ]
+                elements: *PR_WINDOW_V_FRAME
+              -
+                name: Pr_window_knob
+                type: Transform
+                translation: [ -0.03, 0.3775, 0.0 ]
+                elements:
+                  -
+                    type: Shape
+                    translation: [ 0, 0.0175, 0 ]
+                    rotation: [ 0, 0, 1, 90 ]
+                    geometry: { type: Cylinder, radius: 0.0075, height: 0.03 }
+                    <<: *ALUMINUM_APPEARANCE
+                  -
+                    type: Shape
+                    translation: [ -0.01875, -0.01, 0.0 ]
+                    geometry: { type: Box, size: [ 0.0075, 0.07, 0.015 ] }
+                    <<: *ALUMINUM_APPEARANCE
+          - &PR4_BM_WALL
+            name: Pr_bm_wall
+            type: Transform
+            translation: [ 0.0, -1.4875, 0.0 ]
+            elements: &PR_BM_WALL
+              Shape:
+                geometry: { type: Box, size: [ 0.1, 0.85, 2.99 ] }
+                <<: *WHITE_WALL_APPEARANCE
+          - &PR4_BGB_WALL_1
+            name: Pr_bgb_wall_1
+            type: Transform
+            translation: [ 0.0, -2.3375, -0.7475 ]
+            elements: *PR_BGB_WALL
+          - &PR4_BGT_WALL_1
+            name: Pr_bgt_wall_1
+            type: Transform
+            translation: [ 0.0, -2.3375, 0.7475 ]
+            elements: *PR_BG_WALL
+          -
+            name: Pr_bl_wall
+            type: Transform
+            translation: [ 0.0, -2.975, 0.0 ]
+            elements: *PR_BL_WALL
+  - # プロジェクトルーム4のドア
+    name: Pr4_door_0
+    parent: Project_room4
+    translation: [ 0.065, -0.07, -0.47 ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, 1 ]
+    jointAngle: 0
+    jointId: 5
+    elements: &PR_DOOR_80
+      - *LARGE_DOOR_RIGID
+      - *LARGE_DOOR_CYLINDER
+      - &PR_LARGE_DOOR
+        type: Transform
+        translation: [ -0.035, -0.415, 0.0 ]
+        elements:
+          -
+            type: Shape
+            geometry: { type: Box, size: [ 0.04, 0.4, 1.65 ] }
+            <<: *GLASS_APPEARANCE
+          -
+            type: Transform
+            translation: [ 0.0, 0.3, 0.0 ]
+            elements: &DOOR_V_FRAME
+              Shape:
+                geometry: { type: Box, size: [ 0.04, 0.2, 2.05 ] }
+                <<: *WHITE_APPEARANCE
+          -
+            type: Transform
+            translation: [ 0.0, -0.3, 0.0 ]
+            elements: *DOOR_V_FRAME
+          -
+            type: Transform
+            translation: [ 0.0, 0.0, -0.925 ]
+            elements: &DOOR_H_FRAME
+              Shape:
+                geometry: { type: Box, size: [ 0.04, 0.4, 0.2 ] }
+                <<: *WHITE_APPEARANCE
+          -
+            type: Transform
+            translation: [ 0.0, 0.0, 0.925 ]
+            elements: *DOOR_H_FRAME
+      - # 内側のドアノブ
+        name: Pr4_door_knob_inside
+        type: Transform
+        translation: [ -0.0125, -0.6705, 0.0 ]
+        rotation: [ [ 0, 1, 0, 180 ], [ 0, 0, 1, 90 ] ]
+        elements: *DOOR_KNOB
+      - # 外側のドアノブ
+        name: Pr4_door_knob_outside
+        type: Transform
+        translation: [ -0.0575, -0.6705, 0.0 ]
+        rotation: [ 0, 0, 1, 90 ]
+        elements: *DOOR_KNOB
+  - # プロジェクトルーム4のドア
+    name: Pr4_door_1
+    parent: Project_room4
+    translation: [ 0.065, -1.3, -0.47 ]
+    jointType: fixed
+    elements: &PR_DOOR_40
+      - &SMALL_DOOR_RIGID
+        type: RigidBody
+        centerOfMass: [ 0.0, 0.0, 0.0 ]
+        mass: 39.36
+        inertia: [
+          31.3538,     0.0,    0.0,
+              0.0, 30.2627,    0.0,
+              0.0,     0.0, 2.4166  ]
+      - *LARGE_DOOR_CYLINDER
+      - &PR_SMALL_DOOR
+        type: Transform
+        translation: [ -0.035, 0.215, 0.0 ]
+        elements:
+          -
+            type: Shape
+            geometry: { type: Box, size: [ 0.04, 0.4, 2.05 ] }
+            <<: *WHITE_APPEARANCE
+  - # プロジェクトルーム3
+    name: Project_room3
+    parent: Project_room4
+    translation: [ 0.0, -3.4, 0.0 ]
+    jointType: fixed
+    mass: 100.0
+    elements:
+      -
+        name: Pr3_fl_wall
+        type: Shape
+        translation: [ 0.0, 0.0375, 0.0 ]
+        geometry: { type: Box, size: [ 0.1, 0.195, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Pr3_fr_wall
+        type: Shape
+        translation: [ 0.0, -2.2625, 0.0 ]
+        geometry: { type: Box, size: [ 0.1, 2.005, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Pr3_ft_wall
+        type: Transform
+        translation: [ 0.0, -0.66, 1.025 ]
+        elements: *PR_TOP_WALL_120
+      - *PR4_RIGHT_WALL
+      - *PR4_BACK_WALL
+  - # プロジェクトルーム3のドア
+    name: Pr3_door_0
+    parent: Project_room3
+    translation: [ 0.065, -0.045, -0.47 ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, 1 ]
+    jointAngle: 0
+    jointId: 6
+    elements: *PR_DOOR_80
+  - # プロジェクトルーム3のドア
+    name: Pr3_door_1
+    parent: Project_room3
+    translation: [ 0.065, -1.275, -0.47 ]
+    jointType: fixed
+    elements: *PR_DOOR_40
+  - # プロジェクトルーム2
+    name: Project_room2
+    parent: Project_room3
+    translation: [ 0.0, -3.4, 0.0 ]
+    jointType: fixed
+    mass: 100.0
+    elements:
+      - &PR2_FL_WALL
+        name: Pr2_fl_wall
+        type: Shape
+        translation: [ 0.0, -0.065, 0.0 ]
+        geometry: { type: Box, size: [ 0.1, 0.4, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Pr2_fr_wall
+        type: Shape
+        translation: [ 0.0, -2.365, 0.0 ]
+        geometry: { type: Box, size: [ 0.1, 1.8, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Pr2_ft_wall
+        type: Transform
+        translation: [ 0.0, -0.865, 1.025 ]
+        elements: *PR_TOP_WALL_120
+      -
+        name: Pr2_right_wall
+        type: Transform
+        translation: [ 2.915, -3.265, 0.0 ]
+        elements: &PR_RIGHT_WALL
+          Shape:
+            geometry: { type: Box, size: [ 5.73, 0.1, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+      - *PR4_BACK_WALL
+  - # プロジェクトルーム2のドア
+    name: Pr2_door_0
+    parent: Project_room2
+    translation: [ 0.065, -0.25, -0.47 ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, 1 ]
+    jointAngle: 0
+    jointId: 7
+    elements: *PR_DOOR_80
+  - # プロジェクトルーム2のドア
+    name: Pr2_door_1
+    parent: Project_room2
+    translation: [ 0.065, -1.48, -0.47 ]
+    jointType: fixed
+    elements: *PR_DOOR_40
+  - # プロジェクトルーム1
+    name: Project_room1
+    parent: Project_room2
+    translation: [ 0.0, -3.4, 0.0 ]
+    jointType: fixed
+    mass: 100.0
+    elements:
+      - *PR2_FL_WALL
+      -
+        name: Pr1_fr_wall
+        type: Shape
+        translation: [ 0.0, -2.405, 0.0 ]
+        geometry: { type: Box, size: [ 0.1, 1.88, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Pr1_ft_wall
+        type: Transform
+        translation: [ 0.0, -0.865, 1.025 ]
+        elements: *PR_TOP_WALL_120
+      -
+        name: Pr1_right_wall
+        type: Transform
+        translation: [ 2.915, -3.295, 0.0 ]
+        elements: *PR_RIGHT_WALL
+      -
+        name: Pr1_back_wall
+        type: Transform
+        translation: [ 5.83, -0.0775, 0.0 ]
+        elements:
+          - *PR4_BL_WALL
+          - *PR4_BGB_WALL_0
+          - *PR4_BGT_WALL_0
+          - *PR4_BM_WALL
+          - *PR4_BGB_WALL_1
+          - *PR4_BGT_WALL_1
+          -
+            name: Pr_bl_wall
+            type: Transform
+            translation: [ 0.0, -3.0, 0.0 ]
+            elements:
+              Shape:
+                geometry: { type: Box, size: [ 0.1, 0.475, 2.99 ] }
+                <<: *WHITE_WALL_APPEARANCE
+  - # プロジェクトルーム1のドア
+    name: Pr1_door_0
+    parent: Project_room1
+    translation: [ 0.065, -0.25, -0.47 ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, 1 ]
+    jointAngle: 0
+    jointId: 8
+    elements: *PR_DOOR_80
+  - # プロジェクトルーム1のドア
+    name: Pr1_door_1
+    parent: Project_room1
+    translation: [ 0.065, -1.48, -0.47 ]
+    jointType: fixed
+    elements: *PR_DOOR_40
+  - # プロジェクトルーム4前の収納
+    name: Storage0
+    parent: Man_wc
+    translation: [ -7.365, -2.33, 0.995 ]
+    jointType: fixed
+    mass: 150.0
+    elements:
+      -
+        name: Storage0_top
+        type: Shape
+        geometry: { type: Box, size: [ 0.52, 5.665, 1.0 ] }
+      - # 階段側
+        name: Storage0_0
+        type: Transform
+        translation: [ 0.0, 2.4753, -1.5 ]
+        elements: &STORAGE0
+          Shape:
+            geometry: { type: Box, size: [ 0.52, 0.7, 1.98 ] }
+      -
+        name: Storage0_1
+        type: Transform
+        translation: [ 0.0, 1.7681, -1.5 ]
+        elements: *STORAGE0
+      -
+        name: Storage0_2
+        type: Transform
+        translation: [ 0.0, 1.0609, -1.5 ]
+        elements: *STORAGE0
+      -
+        name: Storage0_3
+        type: Transform
+        translation: [ 0.0, 0.3537, -1.5 ]
+        elements: *STORAGE0
+      -
+        name: Storage0_4
+        type: Transform
+        translation: [ 0.0, -0.3535, -1.5 ]
+        elements: *STORAGE0
+      -
+        name: Storage0_5
+        type: Transform
+        translation: [ 0.0, -1.0607, -1.5 ]
+        elements: *STORAGE0
+      -
+        name: Storage0_6
+        type: Transform
+        translation: [ 0.0, -1.7679, -1.5 ]
+        elements: *STORAGE0
+      - # プロジェクトルーム側
+        name: Storage0_7
+        type: Transform
+        translation: [ 0.0, -2.4751, -1.495 ]
+        elements: *STORAGE0
+      -
+        name: Storage0_left_wall
+        type: Transform
+        translation: [ 0.0, -2.8823, -0.995 ]
+        elements: &STORAGE0_V_WALL
+          Shape:
+            geometry: { type: Box, size: [ 0.52, 0.1, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Storage0_right_wall
+        type: Transform
+        translation: [ 0.0, 2.8825, -0.995 ]
+        elements: *STORAGE0_V_WALL
+      -
+        name: Storage0_back_wall
+        type: Shape
+        translation: [ -0.31, 0.0, -0.995 ]
+        geometry: { type: Box, size: [ 0.1, 5.865, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+  - # プロジェクトルーム3前のロッカー
+    name: Locker0
+    parent: Storage0
+    translation: [ 0.0, -5.498, -0.1075 ]
+    jointType: fixed
+    mass: 120.0
+    elements:
+      -
+        name: Locker0_top
+        type: Shape
+        geometry: { type: Box, size: [ 0.52, 2.13, 1.215 ] }
+      - # プロジェクトルーム4側
+        name: Locker0_bottom_0
+        type: Transform
+        translation: [ 0.0, 0.8835, -2.0875 ]
+        elements: &LOCKER0
+          Shape:
+            geometry: { type: Box, size: [ 0.52, 0.35, 0.59 ] }
+      -
+        name: Locker0_middle_0
+        type: Transform
+        translation: [ 0.0, 0.8835, -1.4955 ]
+        elements: *LOCKER0
+      -
+        name: Locker0_top_0
+        type: Transform
+        translation: [ 0.0, 0.8835, -0.9045 ]
+        elements: *LOCKER0
+      -
+        name: Locker0_bottom_1
+        type: Transform
+        translation: [ 0.0, 0.5295, -2.0875 ]
+        elements: *LOCKER0
+      -
+        name: Locker0_middle_1
+        type: Transform
+        translation: [ 0.0, 0.5295, -1.4955 ]
+        elements: *LOCKER0
+      -
+        name: Locker0_top_1
+        type: Transform
+        translation: [ 0.0, 0.5295, -0.9045 ]
+        elements: *LOCKER0
+      -
+        name: Locker0_bottom_2
+        type: Transform
+        translation: [ 0.0, 0.1755, -2.0875 ]
+        elements: *LOCKER0
+      -
+        name: Locker0_middle_2
+        type: Transform
+        translation: [ 0.0, 0.1755, -1.4955 ]
+        elements: *LOCKER0
+      -
+        name: Locker0_top_2
+        type: Transform
+        translation: [ 0.0, 0.1755, -0.9045 ]
+        elements: *LOCKER0
+      -
+        name: Locker0_bottom_3
+        type: Transform
+        translation: [ 0.0, -0.1785, -2.0875 ]
+        elements: *LOCKER0
+      -
+        name: Locker0_middle_3
+        type: Transform
+        translation: [ 0.0, -0.1785, -1.4955 ]
+        elements: *LOCKER0
+      -
+        name: Locker0_top_3
+        type: Transform
+        translation: [ 0.0, -0.1785, -0.9045 ]
+        elements: *LOCKER0
+      -
+        name: Locker0_bottom_4
+        type: Transform
+        translation: [ 0.0, -0.5325, -2.0875 ]
+        elements: *LOCKER0
+      -
+        name: Locker0_middle_4
+        type: Transform
+        translation: [ 0.0, -0.5325, -1.4955 ]
+        elements: *LOCKER0
+      -
+        name: Locker0_top_4
+        type: Transform
+        translation: [ 0.0, -0.5325, -0.9045 ]
+        elements: *LOCKER0
+      -
+        name: Locker0_bottom_5
+        type: Transform
+        translation: [ 0.0, -0.8865, -2.0875 ]
+        elements: *LOCKER0
+      -
+        name: Locker0_middle_5
+        type: Transform
+        translation: [ 0.0, -0.8865, -1.4955 ]
+        elements: *LOCKER0
+      -
+        name: Locker0_top_5
+        type: Transform
+        translation: [ 0.0, -0.8865, -0.9045 ]
+        elements: *LOCKER0
+      -
+        name: Locker0_right_wall
+        type: Transform
+        translation: [ 0.0, 1.115, -0.8875 ]
+        elements: *STORAGE0_V_WALL
+      -
+        name: Locker0_back_wall
+        type: Shape
+        translation: [ -0.31, 0.05, -0.8875 ]
+        geometry: { type: Box, size: [ 0.1, 2.23, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+  -
+    name: PS
+    parent: Stair_front_wall
+    jointType: fixed
+    translation: [ -0.267, 0.005, 0.0 ]
+    mass: 40.0
+    elements:
+      -
+        name: PS_front_wall
+        type: Shape
+        geometry: { type: Box, size: [ 0.05, 3.575, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: PS_left_wall
+        type: Transform
+        translation: [ 0.071, 1.8315, 0.0 ]
+        elements: &PS_V_WALL
+          Shape:
+            geometry: { type: Box, size: [ 0.192, 0.1, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+      -
+        name: PS_right_wall
+        type: Transform
+        translation: [ 0.071, -1.8375, 0.0 ]
+        elements: *PS_V_WALL
+  - # 湯沸室
+    name: Boiler_room
+    parent: PS
+    translation: [ -1.653, -0.1336, 0.0 ]
+    jointType: fixed
+    mass: 100.0
+    elements:
+      -
+        name: Boiler_back_wall
+        type: Shape
+        geometry: { type: Box, size: [ 0.1, 3.325, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Boiler_left_wall
+        type: Shape
+        translation: [ 0.389, -1.7125, 0.0 ]
+        geometry: { type: Box, size: [ 0.878, 0.1, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Boiler_right_wall
+        type: Shape
+        translation: [ 0.2275, 1.7875, 0.0 ]
+        geometry: { type: Box, size: [ 0.555, 0.25, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Boiler_window_wall
+        type: Transform
+        translation: [ 1.056, 1.965, -0.5075 ]
+        elements: &BOILER_WINDOW_109
+          - # 下窓
+            name: Boiler_bottom_window
+            type: Transform
+            elements:
+              -
+                name: Boiler_bottom_glass
+                type: Shape
+                geometry: { type: Box, size: [ 1.035, 0.04, 1.975 ] }
+                <<: *GLASS_APPEARANCE
+              -
+                name: Boiler_bl_v_frame
+                type: Transform
+                translation: [ -0.545, 0.0, 0.0 ]
+                elements: &BOILER_B_VFRAME
+                  Shape:
+                    geometry: { type: Box, size: [ 0.055, 0.105, 1.975 ] }
+                    <<: *ALUMINUM_APPEARANCE
+              -
+                name: Boiler_br_v_frame
+                type: Transform
+                translation: [ 0.545, 0.0, 0.0 ]
+                elements: *BOILER_B_VFRAME
+              -
+                name: Boiler_b_h_frame
+                type: Transform
+                translation: [ 0.0, 0.0, 1.015 ]
+                elements: &BOILER_B_HFRAME
+                  Shape:
+                    geometry: { type: Box, size: [ 1.145, 0.105, 0.055 ] }
+                    <<: *ALUMINUM_APPEARANCE
+              -
+                name: Boiler_tb_h_frame
+                type: Transform
+                translation: [ 0.0, 0.0, 1.07 ]
+                elements: *BOILER_B_HFRAME
+          - # 上窓
+            name: Boiler_top_window
+            type: Transform
+            elements:
+              -
+                name: Boiler_bottom_window
+                type: Shape
+                translation: [ 0.0, 0.0, 1.5225 ]
+                geometry: { type: Box, size: [ 1.035, 0.04, 0.85 ] }
+                <<: *GLASS_APPEARANCE
+              -
+                name: Boiler_tt_h_frame
+                type: Transform
+                translation: [ 0.0, 0.0, 1.975 ]
+                elements: *BOILER_B_HFRAME
+              -
+                name: Boiler_tl_v_frame
+                type: Transform
+                translation: [ -0.545, 0.0, 1.5225 ]
+                elements: &BOILER_T_VFRAME
+                  Shape:
+                    geometry: { type: Box, size: [ 0.055, 0.105, 0.85 ] }
+                    <<: *ALUMINUM_APPEARANCE
+              -
+                name: Boiler_tl_v_frame
+                type: Transform
+                translation: [ 0.545, 0.0, 1.5225 ]
+                elements: *BOILER_T_VFRAME
+  - # 談話スペース
+    name: Common_space
+    parent: Boiler_room
+    translation: [ -1.58, 0.2921, -1.395 ]
+    jointType: fixed
+    mass: 150.0
+    elements:
+      -
+        name: Cs_floor_0
+        type: Shape
+        geometry: { type: Box, size: [ 3.06, 2.95, 0.2 ] }
+        appearance:
+          texture:  &LIGHT_WOOD_TEX
+            url: "resources/texture/light_wood.jpg"
+          textureTransform:
+            scale: [ 1, 2 ]
+      -
+        name: Cs_floor_1
+        type: Shape
+        translation: [ 1.02, -1.7625, 0.0 ]
+        geometry: { type: Box, size: [ 1.02, 0.575, 0.2 ] }
+        appearance:
+          texture:  *LIGHT_WOOD_TEX
+          textureTransform:
+            scale: [ 0.5, 0.3 ]
+      -
+        name: Cs_floor_curve
+        type: Transform
+        translation: [ 0.507, -1.745, -0.0005 ]
+        elements:
+          -
+            name: Cs_floor_curve_0
+            type: Transform
+            rotation: [ 0, 0, 1, -9.0 ]
+            elements: &CS_CURVE
+              Shape:
+                geometry: { type: Box, size: [ 0.102, 0.6, 0.2 ] }
+                appearance:
+                  texture:
+                    url: "resources/texture/light_wood.jpg"
+                  textureTransform:
+                    scale: [ 0.1, 0.1 ]
+          -
+            name: Cs_floor_curve_1
+            type: Transform
+            translation: [ -0.0525, 0.013, 0.0 ]
+            rotation: [ 0, 0, 1, -18.0 ]
+            elements: *CS_CURVE
+          -
+            name: Cs_floor_curve_2
+            type: Transform
+            translation: [ -0.1025, 0.034, 0.0 ]
+            rotation: [ 0, 0, 1, -27.0 ]
+            elements: *CS_CURVE
+          -
+            name: Cs_floor_curve_3
+            type: Transform
+            translation: [ -0.148, 0.062, 0.0 ]
+            rotation: [ 0, 0, 1, -36.0 ]
+            elements: *CS_CURVE
+          -
+            name: Cs_floor_curve_4
+            type: Transform
+            translation: [ -0.189, 0.097, 0.0 ]
+            rotation: [ 0, 0, 1, -45.0 ]
+            elements: *CS_CURVE
+          -
+            name: Cs_floor_curve_5
+            type: Transform
+            translation: [ -0.24, 0.152, 0.0 ]
+            rotation: [ 0, 0, 1, -50.0 ]
+            elements: *CS_CURVE
+          -
+            name: Cs_floor_curve_6
+            type: Transform
+            translation: [ -0.279, 0.198, 0.0 ]
+            rotation: [ 0, 0, 1, -47.5 ]
+            elements: *CS_CURVE
+          -
+            name: Cs_floor_curve_7
+            type: Transform
+            translation: [ -0.326, 0.246, 0.0 ]
+            rotation: [ 0, 0, 1, -45.0 ]
+            elements: *CS_CURVE
+          -
+            name: Cs_floor_curve_8
+            type: Transform
+            translation: [ -0.367, 0.287, 0.0 ]
+            rotation: [ 0, 0, 1, -42.5 ]
+            elements: *CS_CURVE
+          -
+            name: Cs_floor_curve_9
+            type: Transform
+            translation: [ -0.42, 0.332, 0.0 ]
+            rotation: [ 0, 0, 1, -40.0 ]
+            elements: *CS_CURVE
+          -
+            name: Cs_floor_curve_10
+            type: Transform
+            translation: [ -0.469, 0.372, 0.0 ]
+            rotation: [ 0, 0, 1, -38.0 ]
+            elements: *CS_CURVE
+          -
+            name: Cs_floor_curve_11
+            type: Transform
+            translation: [ -0.517, 0.407, 0.0 ]
+            rotation: [ 0, 0, 1, -36.0 ]
+            elements: *CS_CURVE
+          -
+            name: Cs_floor_curve_12
+            type: Transform
+            translation: [ -0.572, 0.447, 0.0 ]
+            rotation: [ 0, 0, 1, -31.5 ]
+            elements: *CS_CURVE
+          -
+            name: Cs_floor_curve_13
+            type: Transform
+            translation: [ -0.644, 0.485, 0.0 ]
+            rotation: [ 0, 0, 1, -27.0 ]
+            elements: *CS_CURVE
+          -
+            name: Cs_floor_curve_14
+            type: Transform
+            translation: [ -0.776, 0.541, 0.0 ]
+            rotation: [ 0, 0, 1, -18.0 ]
+            elements: *CS_CURVE
+      -
+        name: Cs_window_wall_111_0
+        type: Transform
+        translation: [ 1.481, 1.6729, 0.8875 ]
+        elements: &CS_WINDOW_111
+          - # 下窓
+            name: Cs_bottom_window
+            type: Transform
+            elements:
+              -
+                name: Cs_bottom_glass
+                type: Shape
+                geometry: { type: Box, size: [ 1.055, 0.04, 1.975 ] }
+                <<: *GLASS_APPEARANCE
+              -
+                name: Cs_bl_v_frame
+                type: Transform
+                translation: [ -0.555, 0.0, 0.0 ]
+                elements: &CS_B_VFRAME_111
+                  Shape:
+                    geometry: { type: Box, size: [ 0.055, 0.105, 1.975 ] }
+                    <<: *ALUMINUM_APPEARANCE
+              -
+                name: Cs_br_v_frame
+                type: Transform
+                translation: [ 0.555, 0.0, 0.0 ]
+                elements: *CS_B_VFRAME_111
+              -
+                name: Cs_b_h_frame
+                type: Transform
+                translation: [ 0.0, 0.0, 1.015 ]
+                elements: &CS_B_HFRAME_111
+                  Shape:
+                    geometry: { type: Box, size: [ 1.165, 0.105, 0.055 ] }
+                    <<: *ALUMINUM_APPEARANCE
+              -
+                name: Cs_tb_h_frame
+                type: Transform
+                translation: [ 0.0, 0.0, 1.07 ]
+                elements: *CS_B_HFRAME_111
+          - # 上窓
+            name: Cs_top_window
+            type: Transform
+            elements:
+              -
+                name: Cs_bottom_window
+                type: Shape
+                translation: [ 0.0, 0.0, 1.5225 ]
+                geometry: { type: Box, size: [ 1.055, 0.04, 0.85 ] }
+                <<: *GLASS_APPEARANCE
+              -
+                name: Cs_tt_h_frame
+                type: Transform
+                translation: [ 0.0, 0.0, 1.975 ]
+                elements: *CS_B_HFRAME_111
+              -
+                name: Cs_tl_v_frame
+                type: Transform
+                translation: [ -0.555, 0.0, 1.5225 ]
+                elements: &CS_T_VFRAME_111
+                  Shape:
+                    geometry: { type: Box, size: [ 0.055, 0.105, 0.85 ] }
+                    <<: *ALUMINUM_APPEARANCE
+              -
+                name: Cs_tl_v_frame
+                type: Transform
+                translation: [ 0.555, 0.0, 1.5225 ]
+                elements: *CS_T_VFRAME_111
+      -
+        name: Cs_window_wall_111_1
+        type: Transform
+        translation: [ 0.371, 1.6729, 0.8875 ]
+        elements: *CS_WINDOW_111
+      -
+        name: Cs_window_wall_112
+        type: Transform
+        translation: [ -0.744, 1.6729, 0.8875 ]
+        elements: &CS_WINDOW_112
+          - # 下窓
+            name: Cs_bottom_window
+            type: Transform
+            elements:
+              -
+                name: Cs_bottom_glass
+                type: Shape
+                geometry: { type: Box, size: [ 1.065, 0.04, 1.975 ] }
+                <<: *GLASS_APPEARANCE
+              -
+                name: Cs_bl_v_frame
+                type: Transform
+                translation: [ -0.56, 0.0, 0.0 ]
+                elements: &CS_B_VFRAME_112
+                  Shape:
+                    geometry: { type: Box, size: [ 0.055, 0.105, 1.975 ] }
+                    <<: *ALUMINUM_APPEARANCE
+              -
+                name: Cs_br_v_frame
+                type: Transform
+                translation: [ 0.56, 0.0, 0.0 ]
+                elements: *CS_B_VFRAME_112
+              -
+                name: Cs_b_h_frame
+                type: Transform
+                translation: [ 0.0, 0.0, 1.015 ]
+                elements: &CS_B_HFRAME_112
+                  Shape:
+                    geometry: { type: Box, size: [ 1.175, 0.105, 0.055 ] }
+                    <<: *ALUMINUM_APPEARANCE
+              -
+                name: Cs_tb_h_frame
+                type: Transform
+                translation: [ 0.0, 0.0, 1.07 ]
+                elements: *CS_B_HFRAME_112
+          - # 上窓
+            name: Cs_top_window
+            type: Transform
+            elements:
+              -
+                name: Cs_bottom_window
+                type: Shape
+                translation: [ 0.0, 0.0, 1.5225 ]
+                geometry: { type: Box, size: [ 1.065, 0.04, 0.85 ] }
+                <<: *GLASS_APPEARANCE
+              -
+                name: Cs_tt_h_frame
+                type: Transform
+                translation: [ 0.0, 0.0, 1.975 ]
+                elements: *CS_B_HFRAME_112
+              -
+                name: Cs_tl_v_frame
+                type: Transform
+                translation: [ -0.56, 0.0, 1.5225 ]
+                elements: &CS_T_VFRAME_112
+                  Shape:
+                    geometry: { type: Box, size: [ 0.055, 0.105, 0.85 ] }
+                    <<: *ALUMINUM_APPEARANCE
+              -
+                name: Cs_tl_v_frame
+                type: Transform
+                translation: [ 0.56, 0.0, 1.5225 ]
+                elements: *CS_T_VFRAME_112
+      -
+        name: Cs_window_wall_111_2
+        type: Transform
+        translation: [ -1.859, 1.6729, 0.8875 ]
+        elements: *CS_WINDOW_111
+  - # カンファレンス前の収納
+    name: Storage1
+    parent: Locker0
+    translation: [ -0.6225, 0.455, -0.8875 ]
+    jointType: fixed
+    mass: 100.0
+    elements:
+      -
+        name: Storage1_fl_wall
+        type: Shape
+        geometry: { type: Box, size: [ 0.525, 0.1, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Storage1_fr_wall
+        type: Shape
+        translation: [ -3.0375, 0.0, 0.0 ]
+        geometry: { type: Box, size: [ 0.75, 0.1, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Storage1_ft_wall
+        type: Shape
+        translation: [ -1.4625, 0.0, 1.025 ]
+        geometry: { type: Box, size: [ 2.4, 0.1, 0.94 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Storage1_right_wall
+        type: Shape
+        translation: [ -3.0715, -0.785, 0.0 ]
+        geometry: { type: Box, size: [ 0.05, 1.47, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Storage1_back_wall
+        type: Shape
+        translation: [ -1.29, -1.57, 0.0 ]
+        geometry: { type: Box, size: [ 4.345, 0.1, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Storage1_duct
+        type: Shape
+        translation: [ -1.4625, -1.37, 0.0 ]
+        geometry: { type: Box, size: [ 0.6, 0.3, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Storage1_left_fixed_door
+        type: Transform
+        translation: [ -0.5625, -0.02, -0.47 ]
+        elements:
+          - &STORAGE_DOOR
+            type: Shape
+            geometry: { type: Box, size: [ 0.6, 0.04, 2.05 ] }
+            <<: *WHITE_APPEARANCE
+      -
+        name: Storage1_right_fixed_door
+        type: Transform
+        translation: [ -2.3625, -0.02, -0.47 ]
+        elements: *STORAGE_DOOR
+  -
+    name: Storage1_left_door
+    parent: Storage1
+    translation: [ -1.1625, 0.02, -0.47 ]
+    jointType: prismatic
+    jointAxis: X
+    jointRange: [ 0, 0.6 ]
+    jointId: 9
+    mass: 40.0
+    elements:
+      - *STORAGE_DOOR
+      -
+        name: Storage1_door_knob
+        type: Transform
+        translation: [ -0.2, 0.05, -0.225 ]
+        rotation: [ 0, 0, 1, 180 ]
+        elements: &STORAGE1_DOOR_KNOB
+          -
+            name: Door_joint_bottom
+            type: Shape
+            translation: [ 0.0, 0.0, -0.1 ]
+            geometry: { type: Cylinder, radius: 0.015, height: 0.06 }
+            <<: *ALUMINUM_APPEARANCE
+          -
+            name: Door_joint_0
+            type: Transform
+            translation: [ 0.0, -0.032, -0.0995 ]
+            rotation: [ 1, 0, 0, -10 ]
+            elements: &DOOR_KNOB_CYLINDER
+              Shape:
+                geometry: { type: Cylinder, radius: 0.015, height: 0.01 }
+                <<: *ALUMINUM_APPEARANCE
+          -
+            name: Door_joint_1
+            type: Transform
+            translation: [ 0.0, -0.039, -0.0976 ]
+            rotation: [ 1, 0, 0, -20 ]
+            elements: *DOOR_KNOB_CYLINDER
+          -
+            name: Door_joint_2
+            type: Transform
+            translation: [ 0.0, -0.0456, -0.0945 ]
+            rotation: [ 1, 0, 0, -30 ]
+            elements: *DOOR_KNOB_CYLINDER
+          -
+            name: Door_joint_3
+            type: Transform
+            translation: [ 0.0, -0.0517, -0.0902 ]
+            rotation: [ 1, 0, 0, -40 ]
+            elements: *DOOR_KNOB_CYLINDER
+          -
+            name: Door_joint_4
+            type: Transform
+            translation: [ 0.0, -0.0569, -0.085 ]
+            rotation: [ 1, 0, 0, -50 ]
+            elements: *DOOR_KNOB_CYLINDER
+          -
+            name: Door_joint_5
+            type: Transform
+            translation: [ 0.0, -0.0611, -0.079 ]
+            rotation: [ 1, 0, 0, -60 ]
+            elements: *DOOR_KNOB_CYLINDER
+          -
+            name: Door_joint_6
+            type: Transform
+            translation: [ 0.0, -0.0641, -0.0725 ]
+            rotation: [ 1, 0, 0, -70 ]
+            elements: *DOOR_KNOB_CYLINDER
+          -
+            name: Door_joint_7
+            type: Transform
+            translation: [ 0.0, -0.066, -0.0655 ]
+            rotation: [ 1, 0, 0, -80 ]
+            elements: *DOOR_KNOB_CYLINDER
+          -
+            name: Door_joint_8
+            type: Shape
+            translation: [ 0, -0.0666, 0.1865 ]
+            rotation: [ 1, 0, 0, 90 ]
+            geometry: { type: Cylinder, radius: 0.015, height: 0.5 }
+            <<: *ALUMINUM_APPEARANCE
+          -
+            name: Door_joint_top
+            type: Shape
+            translation: [ 0.0, 0.0, 0.4736 ]
+            geometry: { type: Cylinder, radius: 0.015, height: 0.06 }
+            <<: *ALUMINUM_APPEARANCE
+          -
+            name: Door_joint_0
+            type: Transform
+            translation: [ 0.0, -0.032, 0.473 ]
+            rotation: [ 1, 0, 0, 10 ]
+            elements: *DOOR_KNOB_CYLINDER
+          -
+            name: Door_joint_1
+            type: Transform
+            translation: [ 0.0, -0.039, 0.4711 ]
+            rotation: [ 1, 0, 0, 20 ]
+            elements: *DOOR_KNOB_CYLINDER
+          -
+            name: Door_joint_2
+            type: Transform
+            translation: [ 0.0, -0.0456, 0.468 ]
+            rotation: [ 1, 0, 0, 30 ]
+            elements: *DOOR_KNOB_CYLINDER
+          -
+            name: Door_joint_3
+            type: Transform
+            translation: [ 0.0, -0.0517, 0.4637 ]
+            rotation: [ 1, 0, 0, 40 ]
+            elements: *DOOR_KNOB_CYLINDER
+          -
+            name: Door_joint_4
+            type: Transform
+            translation: [ 0.0, -0.0569, 0.4585 ]
+            rotation: [ 1, 0, 0, 50 ]
+            elements: *DOOR_KNOB_CYLINDER
+          -
+            name: Door_joint_5
+            type: Transform
+            translation: [ 0.0, -0.0611, 0.4525 ]
+            rotation: [ 1, 0, 0, 60 ]
+            elements: *DOOR_KNOB_CYLINDER
+          -
+            name: Door_joint_6
+            type: Transform
+            translation: [ 0.0, -0.0641, 0.446 ]
+            rotation: [ 1, 0, 0, 70 ]
+            elements: *DOOR_KNOB_CYLINDER
+          -
+            name: Door_joint_7
+            type: Transform
+            translation: [ 0.0, -0.066, 0.439 ]
+            rotation: [ 1, 0, 0, 80 ]
+            elements: *DOOR_KNOB_CYLINDER
+  -
+    name: Storage1_right_door
+    parent: Storage1
+    translation: [ -1.7625, 0.02, -0.47 ]
+    jointType: prismatic
+    jointAxis: -X
+    jointRange: [ 0, 0.6 ]
+    jointId: 10
+    mass: 40.0
+    elements:
+      - *STORAGE_DOOR
+      -
+        name: Storage1_door_knob
+        type: Transform
+        translation: [ 0.2, 0.05, -0.225 ]
+        rotation: [ 0, 0, 1, 180 ]
+        elements: *STORAGE1_DOOR_KNOB
+  -
+    name: UPS_room
+    parent: Storage1
+    translation: [ -2.9275, -3.32, -0.05 ]
+    jointType: fixed
+    mass: 250.0
+    elements:
+      -
+        name: UPS_fl_wall
+        type: Shape
+        geometry: { type: Box, size: [ 0.1, 3.4, 3.09 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: UPS_fr_wall
+        type: Shape
+        translation: [ 0.0, -3.515, -0.52 ]
+        geometry: { type: Box, size: [ 0.1, 0.03, 2.15 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: UPS_ft_wall
+        type: Transform
+        translation: [ 0.0, -2.615, 1.025 ]
+        elements: &DOOR_TOP_WALL_180
+          Shape:
+            geometry: { type: Box, size: [ 0.1, 1.83, 1.04 ] }
+            <<: *WHITE_WALL_APPEARANCE
+      -
+        name: UPS_right_wall
+        type: Shape
+        translation: [ 1.88, -3.58, 0.0 ]
+        geometry: { type: Box, size: [ 3.86, 0.1, 3.09 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: UPS_back_wall
+        type: Shape
+        translation: [ 3.76, -0.915, 0.0 ]
+        geometry: { type: Box, size: [ 0.1, 5.23, 3.09 ] }
+        <<: *WHITE_WALL_APPEARANCE
+  - # UPSのドア
+    name: UPS_left_door
+    parent: UPS_room
+    translation: [ -0.065, -1.685, -0.52 ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, -1 ]
+    jointAngle: 0
+    jointId: 11
+    elements: &LARGE_LEFT_DOOR_90
+      - *LARGE_DOOR_RIGID
+      - *LARGE_DOOR_CYLINDER
+      - &LARGE_DOOR_90
+        type: Shape
+        translation: [ 0.035, -0.465, 0.0 ]
+        geometry: { type: Box, size: [ 0.04, 0.9, 2.05 ] }
+        <<: *WHITE_APPEARANCE
+      - &DOOR_KNOB_IN_1 # 内側のドアノブ
+        name: UPS_left_door_knob_inside
+        type: Transform
+        translation: [ 0.0575, -0.77, 0.0 ]
+        rotation: [ [ 0, 1, 0, 180 ], [ 0, 0, 1, 90 ] ]
+        elements: *DOOR_KNOB
+      - &DOOR_KNOB_OUT_1 # 外側のドアノブ
+        name: UPS_left_door_knob_outside
+        type: Transform
+        translation: [ 0.0125, -0.77, 0.0 ]
+        rotation: [ 0, 0, 1, 90 ]
+        elements: *DOOR_KNOB
+  - # UPSのドア
+    name: UPS_right_door
+    parent: UPS_room
+    translation: [ -0.065, -3.515, -0.52 ]
+    rotation: [ 1, 0, 0, 180 ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, -1 ]
+    jointAngle: 0
+    jointId: 12
+    elements: &LARGE_RIGHT_DOOR_90
+      - *LARGE_DOOR_RIGID
+      - *LARGE_DOOR_CYLINDER
+      - *LARGE_DOOR_90
+      - *DOOR_KNOB_IN_1
+      - *DOOR_KNOB_OUT_1
+  - # プロジェクトルーム1前のロッカー
+    name: Locker1
+    parent: UPS_room
+    translation: [ 3.76, -3.972, 0.05 ]
+    jointType: fixed
+    mass: 100.0
+    elements:
+      -
+        name: Locker1_front_wall
+        type: Shape
+        geometry: { type: Box, size: [ 0.1, 0.684, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Locker1_back_wall
+        type: Shape
+        translation: [ -1.9, -0.53375, 0.0 ]
+        geometry: { type: Box, size: [ 0.1, 1.7515, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Locker1_br_wall
+        type: Shape
+        translation: [ -1.4825, 0.0, 0.0 ]
+        geometry: { type: Box, size: [ 0.735, 0.684, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      - # 手前側
+        name: Locker1_front_top
+        type: Shape
+        translation: [ -0.5825, -0.082, 0.8875 ]
+        geometry: &LOCKER_TOP { type: Box, size: [ 1.065, 0.52, 1.215 ] }
+      -
+        name: Locker1_bottom_0
+        type: Transform
+        translation: [ -0.229, -0.082, -1.2 ]
+        rotation: [ 0, 0, 1, 90 ]
+        elements: *LOCKER0
+      -
+        name: Locker1_middle_0
+        type: Transform
+        translation: [ -0.229, -0.082, -0.608 ]
+        rotation: [ 0, 0, 1, 90 ]
+        elements: *LOCKER0
+      -
+        name: Locker1_top_0
+        type: Transform
+        translation: [ -0.229, -0.082, -0.016 ]
+        rotation: [ 0, 0, 1, 90 ]
+        elements: *LOCKER0
+      -
+        name: Locker1_bottom_1
+        type: Transform
+        translation: [ -0.583, -0.082, -1.2 ]
+        rotation: [ 0, 0, 1, 90 ]
+        elements: *LOCKER0
+      -
+        name: Locker1_middle_1
+        type: Transform
+        translation: [ -0.583, -0.082, -0.608 ]
+        rotation: [ 0, 0, 1, 90 ]
+        elements: *LOCKER0
+      -
+        name: Locker1_top_1
+        type: Transform
+        translation: [ -0.583, -0.082, -0.016 ]
+        rotation: [ 0, 0, 1, 90 ]
+        elements: *LOCKER0
+      -
+        name: Locker1_bottom_2
+        type: Transform
+        translation: [ -0.937, -0.082, -1.2 ]
+        rotation: [ 0, 0, 1, 90 ]
+        elements: *LOCKER0
+      -
+        name: Locker1_middle_2
+        type: Transform
+        translation: [ -0.937, -0.082, -0.608 ]
+        rotation: [ 0, 0, 1, 90 ]
+        elements: *LOCKER0
+      -
+        name: Locker1_top_2
+        type: Transform
+        translation: [ -0.937, -0.082, -0.016 ]
+        rotation: [ 0, 0, 1, 90 ]
+        elements: *LOCKER0
+      - # 奥側
+        name: Locker1_back_top
+        type: Shape
+        translation: [ -1.375, -0.875, 0.8875 ]
+        rotation: [ 0, 0, 1, 90 ]
+        geometry: *LOCKER_TOP
+      -
+        name: Locker1_bottom_3
+        type: Transform
+        translation: [ -1.375, -0.52, -1.2 ]
+        elements: *LOCKER0
+      -
+        name: Locker1_middle_3
+        type: Transform
+        translation: [ -1.375, -0.52, -0.608 ]
+        elements: *LOCKER0
+      -
+        name: Locker1_top_3
+        type: Transform
+        translation: [ -1.375, -0.52, -0.016 ]
+        elements: *LOCKER0
+      -
+        name: Locker1_bottom_4
+        type: Transform
+        translation: [ -1.375, -0.874, -1.2 ]
+        elements: *LOCKER0
+      -
+        name: Locker1_middle_4
+        type: Transform
+        translation: [ -1.375, -0.874, -0.608 ]
+        elements: *LOCKER0
+      -
+        name: Locker1_top_4
+        type: Transform
+        translation: [ -1.375, -0.874, -0.016 ]
+        elements: *LOCKER0
+      -
+        name: Locker1_bottom_5
+        type: Transform
+        translation: [ -1.375, -1.228, -1.2 ]
+        elements: *LOCKER0
+      -
+        name: Locker1_middle_5
+        type: Transform
+        translation: [ -1.375, -1.228, -0.608 ]
+        elements: *LOCKER0
+      -
+        name: Locker1_top_5
+        type: Transform
+        translation: [ -1.375, -1.228, -0.016 ]
+        elements: *LOCKER0
+  - # プロジェクトルーム1前の収納
+    name: Storage2
+    parent: Locker1
+    translation: [ -0.95, -1.4595, 0.0 ]
+    jointType: fixed
+    mass: 250.0
+    elements:
+      -
+        name: Storage2_right_wall
+        type: Transform
+        elements: &STORAGE2_V_WALL
+          Shape:
+            geometry: { type: Box, size: [ 2.0, 0.1, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Storage2_left_wall
+        type: Transform
+        translation: [ 0.0, -1.65, 0.0 ]
+        elements: *STORAGE2_V_WALL
+      -
+        name: Storage2_back_wall
+        type: Shape
+        translation: [ -0.95, -0.825, 0.0 ]
+        geometry: { type: Box, size: [ 0.1, 1.55, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Storage2_top_wall
+        type: Shape
+        translation: [ 0.95, -0.825, 1.025 ]
+        geometry: { type: Box, size: [ 0.1, 1.55, 0.94 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Storage2_fl_wall
+        type: Transform
+        translation: [ 0.95, -1.585, -0.47 ]
+        elements: &STORAGE2_FS_WALL
+          Shape:
+            geometry: { type: Box, size: [ 0.1, 0.03, 2.05 ] }
+            <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Storage2_fr_wall
+        type: Transform
+        translation: [ 0.95, -0.065, -0.47 ]
+        elements: *STORAGE2_FS_WALL
+  - # 収納2の左ドア
+    name: Storage2_left_door
+    parent: Storage2
+    translation: [ 1.015, -1.585, -0.47 ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, -1 ]
+    jointAngle: 0
+    jointId: 13
+    elements:
+      - *LARGE_DOOR_RIGID
+      - *LARGE_DOOR_CYLINDER
+      -
+        type: Transform
+        translation: [ -0.035, 0.3875, 0.0 ]
+        elements: &STORAGE2_DOOR_745
+          Shape:
+            geometry: { type: Box, size: [ 0.04, 0.745, 2.05 ] }
+      -
+        name: Storage2_door_knob
+        type: Transform
+        translation: [ -0.01, 0.72, 0.0075 ]
+        rotation: [ 0, 0, 1, 90 ]
+        elements: &STORAGE2_DOOR_KNOB
+          -
+            name: Door_joint_bottom
+            type: Shape
+            translation: [ 0.0, 0.0, -0.1 ]
+            geometry: { type: Cylinder, radius: 0.01, height: 0.01 }
+            <<: *ALUMINUM_APPEARANCE
+          -
+            name: Door_joint_0
+            type: Transform
+            translation: [ 0.0, -0.008, -0.0993 ]
+            rotation: [ 1, 0, 0, -10 ]
+            elements: &DOOR_745_KNOB_CYLINDER
+              Shape:
+                geometry: { type: Cylinder, radius: 0.01, height: 0.01 }
+                <<: *ALUMINUM_APPEARANCE
+          -
+            name: Door_joint_1
+            type: Transform
+            translation: [ 0.0, -0.016, -0.0972 ]
+            rotation: [ 1, 0, 0, -20 ]
+            elements: *DOOR_745_KNOB_CYLINDER
+          -
+            name: Door_joint_2
+            type: Transform
+            translation: [ 0.0, -0.0235, -0.0937 ]
+            rotation: [ 1, 0, 0, -30 ]
+            elements: *DOOR_745_KNOB_CYLINDER
+          -
+            name: Door_joint_3
+            type: Transform
+            translation: [ 0.0, -0.0302, -0.0889 ]
+            rotation: [ 1, 0, 0, -40 ]
+            elements: *DOOR_745_KNOB_CYLINDER
+          -
+            name: Door_joint_4
+            type: Transform
+            translation: [ 0.0, -0.0361, -0.083 ]
+            rotation: [ 1, 0, 0, -50 ]
+            elements: *DOOR_745_KNOB_CYLINDER
+          -
+            name: Door_joint_5
+            type: Transform
+            translation: [ 0.0, -0.0408, -0.0763 ]
+            rotation: [ 1, 0, 0, -60 ]
+            elements: *DOOR_745_KNOB_CYLINDER
+          -
+            name: Door_joint_6
+            type: Transform
+            translation: [ 0.0, -0.0442, -0.0689 ]
+            rotation: [ 1, 0, 0, -70 ]
+            elements: *DOOR_745_KNOB_CYLINDER
+          -
+            name: Door_joint_7
+            type: Transform
+            translation: [ 0.0, -0.0464, -0.061 ]
+            rotation: [ 1, 0, 0, -80 ]
+            elements: *DOOR_745_KNOB_CYLINDER
+          -
+            name: Door_joint_8
+            type: Shape
+            translation: [ 0, -0.0471, -0.0077 ]
+            rotation: [ 1, 0, 0, 90 ]
+            geometry: { type: Cylinder, radius: 0.01, height: 0.1 }
+            <<: *ALUMINUM_APPEARANCE
+          -
+            name: Door_joint_top
+            type: Shape
+            translation: [ 0.0, 0.0, 0.0846 ]
+            geometry: { type: Cylinder, radius: 0.01, height: 0.01 }
+            <<: *ALUMINUM_APPEARANCE
+          -
+            name: Door_joint_0
+            type: Transform
+            translation: [ 0.0, -0.008, 0.0839 ]
+            rotation: [ 1, 0, 0, 10 ]
+            elements: *DOOR_745_KNOB_CYLINDER
+          -
+            name: Door_joint_1
+            type: Transform
+            translation: [ 0.0, -0.016, 0.0818 ]
+            rotation: [ 1, 0, 0, 20 ]
+            elements: *DOOR_745_KNOB_CYLINDER
+          -
+            name: Door_joint_2
+            type: Transform
+            translation: [ 0.0, -0.0235, 0.0783 ]
+            rotation: [ 1, 0, 0, 30 ]
+            elements: *DOOR_745_KNOB_CYLINDER
+          -
+            name: Door_joint_3
+            type: Transform
+            translation: [ 0.0, -0.0302, 0.0736 ]
+            rotation: [ 1, 0, 0, 40 ]
+            elements: *DOOR_745_KNOB_CYLINDER
+          -
+            name: Door_joint_4
+            type: Transform
+            translation: [ 0.0, -0.0361, 0.0677 ]
+            rotation: [ 1, 0, 0, 50 ]
+            elements: *DOOR_745_KNOB_CYLINDER
+          -
+            name: Door_joint_5
+            type: Transform
+            translation: [ 0.0, -0.0408, 0.061 ]
+            rotation: [ 1, 0, 0, 60 ]
+            elements: *DOOR_745_KNOB_CYLINDER
+          -
+            name: Door_joint_6
+            type: Transform
+            translation: [ 0.0, -0.0442, 0.0535 ]
+            rotation: [ 1, 0, 0, 70 ]
+            elements: *DOOR_745_KNOB_CYLINDER
+          -
+            name: Door_joint_7
+            type: Transform
+            translation: [ 0.0, -0.0464, 0.0455 ]
+            rotation: [ 1, 0, 0, 80 ]
+            elements: *DOOR_745_KNOB_CYLINDER
+            <<: *WHITE_APPEARANCE
+  - # 収納2の右ドア
+    name: Storage2_right_door
+    parent: Storage2
+    translation: [ 1.015, -0.065, -0.47 ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, 1 ]
+    jointAngle: 0
+    jointId: 14
+    elements:
+      - *LARGE_DOOR_RIGID
+      - *LARGE_DOOR_CYLINDER
+      -
+        type: Transform
+        translation: [ -0.035, -0.3875, 0.0 ]
+        elements: *STORAGE2_DOOR_745
+      -
+        name: Storage2_door_knob
+        type: Transform
+        translation: [ -0.01, -0.72, 0.0075 ]
+        rotation: [ 0, 0, 1, 90 ]
+        elements: *STORAGE2_DOOR_KNOB
+  -
+    name: Outside_door_wall
+    parent: Storage2
+    translation: [ 1.13775, -1.65, 0.0 ]
+    jointType: fixed
+    mass: 80.0
+    elements:
+      -
+        name: Outside_door_rwall
+        type: Transform
+        elements: &OUTSIDE_DOOR_WALL
+          Shape:
+            geometry: { type: Box, size: [ 0.2755, 0.1, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Outside_door_rwall
+        type: Transform
+        translation: [ 1.0755, 0.0, 0.0 ]
+        elements: *OUTSIDE_DOOR_WALL
+      -
+        name: Outside_door_rwall
+        type: Transform
+        translation: [ 0.53775, 0.0, 1.025 ]
+        elements: *DOOR_TOP_WALL_80
+  - # 荷揚へのドア
+    name: Outside_door
+    parent: Outside_door_wall
+    translation: [ 0.95275, -0.065, -0.47 ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, 1 ]
+    jointAngle: 0
+    jointId: 15
+    elements: &OUTSIDE_DOOR_80
+      - *LARGE_DOOR_RIGID
+      - *LARGE_DOOR_CYLINDER
+      -
+        type: Transform
+        translation: [ -0.415, 0.035, 0.0 ]
+        elements: &BLACK_DOOR_80
+          -
+            name: Os_door_glass
+            type: Shape
+            geometry: { type: Box, size: [ 0.5, 0.04, 1.75 ] }
+            <<: *GLASS_APPEARANCE
+          -
+            name: Os_door_l_vframe
+            type: Transform
+            translation: [ 0.325, 0.0, 0.0 ]
+            elements: &OS_DOOR_V_FRAME
+              Shape:
+                geometry: { type: Box, size: [ 0.15, 0.04, 2.05 ] }
+                <<: *BLACK_APPEARANCE
+          -
+            name: Os_door_r_vframe
+            type: Transform
+            translation: [ -0.325, 0.0, 0.0 ]
+            elements: *OS_DOOR_V_FRAME
+          -
+            name: Os_door_b_hframe
+            type: Transform
+            translation: [ 0.0, 0.0, -0.95 ]
+            elements: &OS_DOOR_H_FRAME
+              Shape:
+                geometry: { type: Box, size: [ 0.5, 0.04, 0.15 ] }
+                <<: *BLACK_APPEARANCE
+          -
+            type: Transform
+            translation: [ 0.0, 0.0, 0.95 ]
+            elements: *OS_DOOR_H_FRAME
+      - &DOOR_KNOB_IN_2 # 内側のドアノブ
+        name: Os_door_knob_inside
+        type: Transform
+        translation: [ -0.74, 0.0575, 0.0 ]
+        rotation: [ 0, 1, 0, 0 ]
+        elements: *DOOR_KNOB
+      - &DOOR_KNOB_OUT_2 # 外側のドアノブ
+        name: Os_door_knob_outside
+        type: Transform
+        translation: [ -0.74, 0.0125, 0.0 ]
+        rotation: [ [ 1, 0, 0, 180 ], [ 0, 1, 0, 0 ] ]
+        elements: *DOOR_KNOB
+  - # カンファレンス(小)2
+    name: Conference2
+    parent: Common_space
+    jointType: fixed
+    mass: 500.0
+    elements:
+      - # 仕切り収納スペース
+        name: Wall_storage
+        type: Transform
+        translation: [ -2.2025, 0.839, 1.395 ]
+        elements:
+          -
+            name: Ws_left_wall
+            type: Transform
+            elements: &WS_V_WALL
+              Shape:
+                geometry: { type: Box, size: [ 1.145, 0.1, 2.99 ] }
+                <<: *WHITE_WALL_APPEARANCE
+          -
+            name: Ws_right_wall
+            type: Transform
+            translation: [ 0.0, -2.264, 0.0 ]
+            elements: *WS_V_WALL
+          -
+            name: Ws_back_wall
+            type: Shape
+            translation: [ 0.6225, -0.914, 0.0 ]
+            geometry: { type: Box, size: [ 0.1, 2.8, 2.99 ] }
+            <<: *CHECK_TILE_APPEARANCE
+          -
+            name: Ws_fr_wall
+            type: Transform
+            translation: [ -0.5475, -1.673, 0.0 ]
+            elements: &WS_FRONT_WALL
+              Shape:
+                geometry: { type: Box, size: [ 0.05, 1.082, 2.99 ] }
+                <<: *WHITE_APPEARANCE
+          -
+            name: Ws_fl_wall
+            type: Transform
+            translation: [ -0.5475, -0.591, 0.0 ]
+            elements: *WS_FRONT_WALL
+      -
+        name: Conf2_front_wall
+        type: Transform
+        translation: [ -2.75, -1.6275, 1.395 ]
+        elements: &CONF_DOOR_WALL
+          -
+            name: Conf2_fr_wall
+            type: Shape
+            geometry: { type: Box, size: [ 0.05, 0.305, 2.99 ] }
+            <<: *WHITE_APPEARANCE
+          -
+            name: Conf2_ft_wall
+            type: Shape
+            translation: [ 0.0, -0.5525, 1.025 ]
+            geometry: { type: Box, size: [ 0.05, 0.8, 0.94 ] }
+            <<: *WHITE_APPEARANCE
+      -
+        name: Conf2_left_wall
+        type: Transform
+        translation: [ -7.275, -2.7316, 1.395 ]
+        elements:
+          - # カンファレンス(小)1, カンファレンス(小)2の仕切り
+            name: Conf2_left_wall
+            type: Transform
+            elements: &CONF2_LEFT_WALL
+              Shape:
+                geometry: { type: Box, size: [ 9.0, 0.05, 2.99 ] }
+                <<: *WHITE_APPEARANCE
+          -
+            name: Conf2_lb_wall
+            type: Shape
+            translation: [ -4.87775, 0.0, 0.0 ]
+            geometry: { type: Box, size: [ 0.7555, 0.1, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Conf2_right_wall
+        type: Transform
+        translation: [ -2.969, 1.6729, 0.8875 ]
+        elements:
+          -
+            name: Conf2_rb_wall
+            type: Shape
+            translation: [ -8.99425, -0.0475, 0.5075 ]
+            geometry: { type: Box, size: [ 1.2835, 0.2, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+          -
+            name: Conf2_window_wall_111_0
+            type: Transform
+            elements: *CS_WINDOW_111
+          -
+            name: Conf2_window_wall_112_0
+            type: Transform
+            translation: [ -1.115, 0.0, 0.0 ]
+            elements: *CS_WINDOW_112
+          -
+            name: Conf2_window_wall_111_1
+            type: Transform
+            translation: [ -2.23, 0.0, 0.0 ]
+            elements: *CS_WINDOW_111
+          -
+            name: Conf2_window_wall_111_2
+            type: Transform
+            translation: [ -3.34, 0.0, 0.0 ]
+            elements: *CS_WINDOW_111
+          -
+            name: Conf2_window_wall_112_1
+            type: Transform
+            translation: [ -4.455, 0.0, 0.0 ]
+            elements: *CS_WINDOW_112
+          -
+            name: Conf2_window_wall_111_3
+            type: Transform
+            translation: [ -5.57, 0.0, 0.0 ]
+            elements: *CS_WINDOW_111
+          -
+            name: Conf2_window_wall_111_4
+            type: Transform
+            translation: [ -6.685, 0.0, 0.0 ]
+            elements: *CS_WINDOW_111
+          -
+            name: Conf2_window_wall_109
+            type: Transform
+            translation: [ -7.775, 0.0, 0.0 ]
+            elements: *BOILER_WINDOW_109
+      -
+        name: Conf2_back_wall
+        type: Transform
+        translation: [ -12.505, 0.894, 1.395 ]
+        elements:
+          -
+            name: Conf2_br_wall
+            type: Shape
+            geometry: { type: Box, size: [ 0.2, 1.45, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+          -
+            name: Conf2_bl_wall
+            type: Shape
+            translation: [ 0.0, -3.475, 0.0 ]
+            geometry: &CONF2_BL_WALL { type: Box, size: [ 0.2, 1.5, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+          -
+            name: Conf2_window_wall_200
+            type: Transform
+            translation: [ 0.0, -1.725, -1.345 ]
+            elements: &CONF2_BACK_WINDOW_200
+              -
+                name: Conf2_window_bwall
+                type: Shape
+                geometry: { type: Box, size: [ 0.2, 2.0, 0.3 ] }
+                <<: *WHITE_WALL_APPEARANCE
+              -
+                name: Conf2_back_bwindow
+                type: Transform
+                translation: [ 0.0, 0.0, 0.575 ]
+                elements: &CONF2_BWINDOW
+                  -
+                    name: Conf2_window_bglass
+                    type: Shape
+                    geometry: { type: Box, size: [ 0.04, 1.89, 0.74 ] }
+                    <<: *GLASS_APPEARANCE
+                  -
+                    name: Conf2_window_b_hframe
+                    type: Transform
+                    translation: [ 0.0, 0.0, -0.3975 ]
+                    elements: &CONF2_WINDOW_B_HFRAME
+                      Shape:
+                        geometry: { type: Box, size: [ 0.105, 2.0, 0.055 ] }
+                        <<: *ALUMINUM_APPEARANCE
+                  -
+                    name: Conf2_window_t_hframe
+                    type: Transform
+                    translation: [ 0.0, 0.0, 0.3975 ]
+                    elements: *CONF2_WINDOW_B_HFRAME
+                  -
+                    name: Conf2_window_bl_vframe
+                    type: Transform
+                    translation: [ 0.0, -0.9725, 0.0 ]
+                    elements: &CONF2_WINDOW_B_VFRAME
+                      Shape:
+                        geometry: { type: Box, size: [ 0.105, 0.055, 0.74 ] }
+                        <<: *ALUMINUM_APPEARANCE
+                  -
+                    name: Conf2_window_br_vframe
+                    type: Transform
+                    translation: [ 0.0, 0.9725, 0.0 ]
+                    elements: *CONF2_WINDOW_B_VFRAME
+              -
+                name: Conf2_back_tr_window
+                type: Transform
+                translation: [ 0.0, 0.5, 1.44875 ]
+                elements: &CONF2_TWINDOW
+                  -
+                    name: Conf2_back_tb_glass
+                    type: Transform
+                    elements: &CONF2_BACK_GLASS
+                      Shape:
+                        geometry: { type: Box, size: [ 0.04, 0.89, 0.7875 ] }
+                        <<: *GLASS_APPEARANCE
+                  -
+                    name: Conf2_back_b_hframe
+                    type: Transform
+                    translation: [ 0.0, 0.0, -0.42125 ]
+                    elements: &CONF2_BACK_HFRAME
+                      Shape:
+                        geometry: { type: Box, size: [ 0.105, 1.0, 0.055 ] }
+                        <<: *ALUMINUM_APPEARANCE
+                  -
+                    name: Conf2_back_m_hframe
+                    type: Transform
+                    translation: [ 0.0, 0.0, 0.42125 ]
+                    elements: *CONF2_BACK_HFRAME
+                  -
+                    name: Conf2_back_bl_vframe
+                    type: Transform
+                    translation: [ 0.0, -0.4725, 0.0 ]
+                    elements: &CONF2_BACK_VFRAME
+                      Shape:
+                        geometry: { type: Box, size: [ 0.105, 0.055, 0.7875 ] }
+                        <<: *ALUMINUM_APPEARANCE
+                  -
+                    name: Conf2_back_br_vframe
+                    type: Transform
+                    translation: [ 0.0, 0.4725, 0.0 ]
+                    elements: *CONF2_BACK_VFRAME
+                  -
+                    name: Conf2_back_tt_glass
+                    type: Transform
+                    translation: [ 0.0, 0.0, 0.8425 ]
+                    elements: *CONF2_BACK_GLASS
+                  -
+                    name: Conf2_back_t_hframe
+                    type: Transform
+                    translation: [ 0.0, 0.0, 1.26375 ]
+                    elements: *CONF2_BACK_HFRAME
+                  -
+                    name: Conf2_back_tl_vframe
+                    type: Transform
+                    translation: [ 0.0, -0.4725, 0.8425 ]
+                    elements: *CONF2_BACK_VFRAME
+                  -
+                    name: Conf2_back_tr_vframe
+                    type: Transform
+                    translation: [ 0.0, 0.4725, 0.8425 ]
+                    elements: *CONF2_BACK_VFRAME
+              -
+                name: Conf2_back_tl_window
+                type: Transform
+                translation: [ 0.0, -0.5, 1.44875 ]
+                elements: *CONF2_TWINDOW
+              -
+                name: Conf2_back_top_wall
+                type: Shape
+                translation: [ 0.0, 0.0, 2.79 ]
+                geometry: { type: Box, size: [ 0.2, 2.0, 0.1 ] }
+                <<: *WHITE_WALL_APPEARANCE
+  - # カンファレンス(小)2のドア
+    name: Conf2_door
+    parent: Conference2
+    translation: [ -2.71, -1.765, 0.925 ]
+    rotation: [ [ 0, 0, 1, 90 ], [ 0, 1, 0, 180 ] ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, -1 ]
+    jointAngle: 0
+    jointId: 16
+    elements: &COM_CONF_DOOR
+      - *LARGE_DOOR_RIGID
+      - *LARGE_DOOR_CYLINDER
+      - &CONF_DOOR
+        type: Shape
+        translation: [ 0.415, 0.035, 0.0 ]
+        rotation: [ 0, 0, 1, -90 ]
+        geometry: *DOOR_80
+        <<: *WHITE_APPEARANCE
+      - &DOOR_KNOB_IN_3 # 内側のドアノブ
+        name: Conf2_door_knob_inside
+        type: Transform
+        translation: [ 0.74, 0.0575, 0.0 ]
+        rotation: [ 0, 1, 0, 180 ]
+        elements: *DOOR_KNOB
+      - &DOOR_KNOB_OUT_3 # 外側のドアノブ
+        name: Conf2_door_knob_outside
+        type: Transform
+        translation: [ 0.74, 0.0125, 0.0 ]
+        rotation: [ [ 1, 0, 0, 180 ], [ 0, 1, 0, 180 ] ]
+        elements: *DOOR_KNOB
+  - # カンファレンス(小)1
+    name: Conference1
+    parent: Conference2
+    translation: [ -2.75, -3.1325, 1.395 ]
+    jointType: fixed
+    mass: 500.0
+    elements:
+      -
+        name: Conf1_front_wall
+        type: Transform
+        elements:
+          -
+            name: Conf1_front_wall_0
+            type: Transform
+            elements: &CONF_FRONT_WALL
+              Shape:
+                geometry: { type: Box, size: [ 0.05, 1.105, 2.99 ] }
+                <<: *WHITE_APPEARANCE
+          -
+            name: Conf1_front_wall_1
+            type: Transform
+            translation: [ 0.0, -1.105, 0.0 ]
+            elements: *CONF_FRONT_WALL
+          -
+            name: Conf1_front_wall_2
+            type: Transform
+            translation: [ 0.0, -2.6095, 0.0 ]
+            rotation: [ 0, 0, 1, 180 ]
+            elements: *CONF_DOOR_WALL
+          -
+            name: Conf1_front_wall_3
+            type: Transform
+            translation: [ 0.0, -3.3145, 0.0 ]
+            elements: *CONF_FRONT_WALL
+      - # カンファレンス(大), カンファレンス(小)1との仕切り
+        name: Conf1_left_wall
+        type: Transform
+        translation: [ -4.525, -3.899, 0.0 ]
+        elements: *CONF2_LEFT_WALL
+      -
+        name: Conf1_back_wall
+        type: Transform
+        translation: [ -9.757, -3.136, 0.0 ]
+        elements:
+          -
+            name: Conf1_back_wall
+            type: Shape
+            geometry: { type: Box, size: [ 0.2, 1.875, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+          -
+            name: Conf1_window_wall_200
+            type: Transform
+            translation: [ 0.0, 1.9375, -1.345 ]
+            elements: *CONF2_BACK_WINDOW_200
+      -
+        name: Conf1_pillar
+        type: Shape
+        translation: [ -9.538, -3.699, 1.105 ]
+        geometry: { type: Box, size: [ 0.625, 0.773, 5.2 ] }
+        <<: *WHITE_WALL_APPEARANCE
+  - # カンファレンス(小)1のドア
+    name: Conf1_door
+    parent: Conference1
+    translation: [ 0.04, -1.6425, -0.47 ]
+    rotation: [ [ 0, 0, 1, 90 ], [ 0, 1, 0, 180 ] ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, -1 ]
+    jointAngle: 0
+    jointId: 17
+    elements: *COM_CONF_DOOR
+  - # カンファレンス(大)
+    name: Conference0
+    parent: Conference1
+    translation: [ 0.0, -4.0195, 0.0 ]
+    jointType: fixed
+    mass: 600.0
+    elements:
+      -
+        name: Conf0_front_wall
+        type: Transform
+        elements:
+          -
+            name: Conf0_front_wall_0
+            type: Transform
+            elements: *CONF_DOOR_WALL
+          -
+            name: Conf0_front_wall_1
+            type: Transform
+            translation: [ 0.0, -1.505, 0.0 ]
+            elements: *CONF_FRONT_WALL
+          -
+            name: Conf0_front_wall_2
+            type: Transform
+            translation: [ 0.0, -2.61, 0.0 ]
+            elements: *CONF_FRONT_WALL
+          -
+            name: Conf0_front_wall_3
+            type: Transform
+            translation: [ 0.0, -4.115, 0.0 ]
+            rotation: [ 0, 0, 1, 180 ]
+            elements: *CONF_DOOR_WALL
+          -
+            name: Conf0_front_wall_4
+            type: Shape
+            translation: [ 0.0, -4.741, 0.0 ]
+            geometry: { type: Box, size: [ 0.05, 0.947, 2.99 ] }
+      - # 仕切り収納スペース
+        name: Wall_storage
+        type: Transform
+        translation: [ 0.0, -6.049, 0.0 ]
+        elements:
+          -
+            name: Wall_storage_front_wall
+            type: Shape
+            geometry: { type: Box, size: [ 0.05, 1.47, 2.99 ] }
+          -
+            name: Wall_storage_left_wall
+            type: Shape
+            translation: [ 0.6005, 0.785, 0.0 ]
+            geometry: { type: Box, size: [ 1.251, 0.1, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+          -
+            name: Wall_storage_back_wall
+            type: Shape
+            translation: [ 1.226, 0.0, 0.0 ]
+            geometry: { type: Box, size: [ 0.1, 1.47, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Conf0_left_wall
+        type: Shape
+        translation: [ -4.1475, -6.8345, 0.0 ]
+        geometry: { type: Box, size: [ 10.646, 0.1, 2.99 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Conf0_back_wall
+        type: Transform
+        translation: [ -9.757, -0.4, 0.0 ]
+        elements:
+          -
+            name: Conf0_window_wall_200_0
+            type: Transform
+            translation: [ 0.0, -0.654, -1.345 ]
+            elements: *CONF2_BACK_WINDOW_200
+          -
+            name: Conf0_bm_wall
+            type: Shape
+            translation: [ 0.0, -2.404, 0.0 ]
+            geometry: *CONF2_BL_WALL
+            <<: *WHITE_WALL_APPEARANCE
+          -
+            name: Conf0_window_wall_205
+            type: Transform
+            translation: [ 0.0, -4.179, -1.345 ]
+            elements:
+              -
+                name: Conf0_window_bwall
+                type: Shape
+                geometry: { type: Box, size: [ 0.2, 2.05, 0.3 ] }
+                <<: *WHITE_WALL_APPEARANCE
+              -
+                name: Conf0_back_bwindow
+                type: Transform
+                translation: [ 0.0, 0.0, 0.575 ]
+                elements:
+                  -
+                    name: Conf0_window_bglass
+                    type: Shape
+                    geometry: { type: Box, size: [ 0.04, 1.94, 0.74 ] }
+                    <<: *GLASS_APPEARANCE
+                  -
+                    name: Conf0_window_b_hframe
+                    type: Transform
+                    translation: [ 0.0, 0.0, -0.3975 ]
+                    elements: &CONF0_WINDOW_B_HFRAME
+                      Shape:
+                        geometry: { type: Box, size: [ 0.105, 2.05, 0.055 ] }
+                        <<: *ALUMINUM_APPEARANCE
+                  -
+                    name: Conf0_window_t_hframe
+                    type: Transform
+                    translation: [ 0.0, 0.0, 0.3975 ]
+                    elements: *CONF0_WINDOW_B_HFRAME
+                  -
+                    name: Conf0_window_bl_vframe
+                    type: Transform
+                    translation: [ 0.0, -0.9975, 0.0 ]
+                    elements: *CONF2_WINDOW_B_VFRAME
+                  -
+                    name: Conf0_window_br_vframe
+                    type: Transform
+                    translation: [ 0.0, 0.9975, 0.0 ]
+                    elements: *CONF2_WINDOW_B_VFRAME
+              -
+                name: Conf0_back_tr_window
+                type: Transform
+                translation: [ 0.0, 0.5125, 1.44875 ]
+                elements: &CONF0_TWINDOW
+                  -
+                    name: Conf0_back_tb_glass
+                    type: Transform
+                    elements: &CONF0_BACK_GLASS
+                      Shape:
+                        geometry: { type: Box, size: [ 0.04, 0.915, 0.7875 ] }
+                        <<: *GLASS_APPEARANCE
+                  -
+                    name: Conf0_back_b_hframe
+                    type: Transform
+                    translation: [ 0.0, 0.0, -0.42125 ]
+                    elements: &CONF0_BACK_HFRAME
+                      Shape:
+                        geometry: { type: Box, size: [ 0.105, 1.025, 0.055 ] }
+                        <<: *ALUMINUM_APPEARANCE
+                  -
+                    name: Conf0_back_m_hframe
+                    type: Transform
+                    translation: [ 0.0, 0.0, 0.42125 ]
+                    elements: *CONF0_BACK_HFRAME
+                  -
+                    name: Conf0_back_bl_vframe
+                    type: Transform
+                    translation: [ 0.0, -0.485, 0.0 ]
+                    elements: *CONF2_BACK_VFRAME
+                  -
+                    name: Conf0_back_br_vframe
+                    type: Transform
+                    translation: [ 0.0, 0.485, 0.0 ]
+                    elements: *CONF2_BACK_VFRAME
+                  -
+                    name: Conf0_back_tt_glass
+                    type: Transform
+                    translation: [ 0.0, 0.0, 0.8425 ]
+                    elements: *CONF2_BACK_GLASS
+                  -
+                    name: Conf0_back_t_hframe
+                    type: Transform
+                    translation: [ 0.0, 0.0, 1.26375 ]
+                    elements: *CONF0_BACK_HFRAME
+                  -
+                    name: Conf0_back_tl_vframe
+                    type: Transform
+                    translation: [ 0.0, -0.485, 0.8425 ]
+                    elements: *CONF2_BACK_VFRAME
+                  -
+                    name: Conf0_back_tr_vframe
+                    type: Transform
+                    translation: [ 0.0, 0.485, 0.8425 ]
+                    elements: *CONF2_BACK_VFRAME
+              -
+                name: Conf2_back_tl_window
+                type: Transform
+                translation: [ 0.0, -0.5125, 1.44875 ]
+                elements: *CONF0_TWINDOW
+              -
+                name: Conf0_back_top_wall
+                type: Shape
+                translation: [ 0.0, 0.0, 2.79 ]
+                geometry: { type: Box, size: [ 0.2, 2.05, 0.1 ] }
+                <<: *WHITE_WALL_APPEARANCE
+          -
+            name: Conf0_bl_wall
+            type: Shape
+            translation: [ 0.0, -5.8425, 0.0 ]
+            geometry: { type: Box, size: [ 0.2, 1.277, 2.99 ] }
+            <<: *WHITE_WALL_APPEARANCE
+  - # カンファレンス(大)の右側ドア
+    name: Conf0_right_door
+    parent: Conference0
+    translation: [ 0.04, -0.1375, -0.47 ]
+    rotation: [ [ 0, 0, 1, 90 ], [ 0, 1, 0, 180 ] ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, -1 ]
+    jointAngle: 0
+    jointId: 18
+    elements: *COM_CONF_DOOR
+  - # カンファレンス(大)の左側ドア
+    name: Conf0_left_door
+    parent: Conference0
+    translation: [ 0.04, -3.1475, -0.47 ]
+    rotation: [ [ 0, 0, 1, 90 ], [ 0, 1, 0, 180 ] ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, -1 ]
+    jointAngle: 0
+    jointId: 19
+    elements: *COM_CONF_DOOR
+  - # 電気室
+    name: Electric_room
+    parent: UPS_room
+    translation: [ -1.495, -3.58, 0.0 ]
+    jointType: fixed
+    mass: 500.0
+    elements:
+      -
+        name: Er_fr_wall
+        type: Shape
+        geometry: { type: Box, size: [ 2.89, 0.1, 3.09 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Er_fl_wall
+        type: Shape
+        translation: [ -6.662, 0.0, 0.0 ]
+        geometry: { type: Box, size: [ 6.834, 0.1, 3.09 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Er_ft_wall
+        type: Transform
+        translation: [ -2.345, 0.0, 1.025 ]
+        rotation: [ 0, 0, 1, 90 ]
+        elements: *DOOR_TOP_WALL_180
+      -
+        name: Er_left_wall
+        type: Shape
+        translation: [ -10.029, 2.665, 0.0 ]
+        geometry: { type: Box, size: [ 0.1, 5.23, 3.09 ] }
+        <<: *WHITE_WALL_APPEARANCE
+  - # 電気室のドア
+    name: Er_right_door
+    parent: Electric_room
+    translation: [ -1.43, 0.065, -0.52 ]
+    rotation: [ 0, 0, 1, -90 ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, -1 ]
+    jointAngle: 0
+    jointId: 20
+    elements: *LARGE_LEFT_DOOR_90
+  - # 電気室のドア
+    name: Er_left_door
+    parent: Electric_room
+    translation: [ -3.26, 0.065, -0.52 ]
+    rotation: [ [ 1, 0, 0, 180 ], [ 0, 0, 1, 90 ] ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, -1 ]
+    jointAngle: 0
+    jointId: 21
+    elements: *LARGE_RIGHT_DOOR_90
+  - # 給気ファン室
+    name: Supply_air_fan
+    parent: Electric_room
+    translation: [ 3.235, -3.5015, 0.0 ]
+    jointType: fixed
+    mass: 500.0
+    elements:
+      -
+        name: Saf_fr_wall
+        type: Shape
+        geometry: { type: Box, size: [ 0.14, 0.1, 3.09 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Saf_fl_wall
+        type: Shape
+        translation: [ -7.3635, 0.0, 0.0 ]
+        geometry: { type: Box, size: [ 11.887, 0.1, 3.09 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Saf_ft_wall
+        type: Shape
+        translation: [ -0.745, 0, 1.025 ]
+        geometry: { type: Box, size: [ 1.35, 0.1, 1.04 ] }
+        <<: *WHITE_WALL_APPEARANCE
+  - # 給気ファン室へのドア
+    name: Saf_door_0
+    parent: Supply_air_fan
+    translation: [ -1.435, -0.065, -0.52 ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, -1 ]
+    jointAngle: 0
+    jointId: 22
+    elements:
+      - *LARGE_DOOR_RIGID
+      - *LARGE_DOOR_CYLINDER
+      -
+        type: Transform
+        translation: [ 0.415, 0.035, 0.0 ]
+        elements: *BLACK_DOOR_80
+      - *DOOR_KNOB_IN_3
+      - *DOOR_KNOB_OUT_3
+  -
+    name: Saf_door_1
+    parent: Supply_air_fan
+    translation: [ -0.345, -0.03, -0.52 ]
+    jointType: fixed
+    mass: 30.0
+    elements:
+      Shape:
+        geometry: { type: Box, size: [ 0.55, 0.04, 2.05 ] }
+        <<: *BLACK_APPEARANCE
+  -
+    name: MDF_room
+    parent: Supply_air_fan
+    translation: [ -11.357, 1.325, 0.0 ]
+    jointType: fixed
+    mass: 150.0
+    elements:
+      -
+        name: Mdf_fl_wall
+        type: Shape
+        geometry: { type: Box, size: [ 0.1, 2.55, 3.09 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Mdf_fr_wall
+        type: Shape
+        translation: [ -0.6 , 2.1015, 0.0 ]
+        geometry: { type: Box, size: [ 1.3, 0.05, 3.09 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Mdf_ft_wall
+        type: Transform
+        translation: [ 0.0, 1.675, 1.025 ]
+        rotation: [ 0, 0, 1, 90 ]
+        elements:
+          Shape:
+            geometry: { type: Box, size: [ 0.8, 0.1, 1.04 ] }
+            <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Mdf_bl_wall
+        type: Shape
+        translation: [ -1.3, 0.05, 0.0 ]
+        geometry: { type: Box, size: [ 0.1, 2.655, 3.09 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Mdf_br_wall
+        type: Shape
+        translation: [ -1.3, 2.1015, 0.0 ]
+        geometry: { type: Box, size: [ 0.1, 0.05, 3.09 ] }
+        <<: *WHITE_WALL_APPEARANCE
+      -
+        name: Mdf_door_wall
+        type: Transform
+        translation: [ -1.3, 1.7265, -0.9475 ]
+        elements:
+          -
+            name: Mdf_door_b_wall
+            type: Transform
+            elements: &MDF_DOOR_WALL
+              Shape:
+                geometry: { type: Box, size: [ 0.1, 0.7, 1.195 ] }
+                <<: *WHITE_WALL_APPEARANCE
+          -
+            name: Mdf_door_t_wall
+            type: Transform
+            translation: [ 0.0, 0.0, 1.895 ]
+            elements: *MDF_DOOR_WALL
+          -
+            name: Mdf_duct_door
+            type: Shape
+            translation: [ 0.0, 0.0, 0.9475 ]
+            geometry: { type: Box, size: [ 0.04, 0.7, 0.7 ] }
+            <<: *WHITE_APPEARANCE
+      -
+        name: Mdf_back_wall
+        type: Shape
+        translation: [ -1.901, 0.425, 0.0 ]
+        geometry: { type: Box, size: [ 0.1, 3.4, 3.09 ] }
+        <<: *WHITE_WALL_APPEARANCE
+  - # MDF室のドア
+    name: MDF_door
+    parent: MDF_room
+    translation: [ 0.065, 2.09, -0.52 ]
+    rotation: [ 0, 0, 1, 90 ]
+    jointType: revolute
+    jointRange: [ 0, 90 ]
+    jointAxis: [ 0, 0, 1 ]
+    jointAngle: 0
+    jointId: 23
+    elements:
+      - *LARGE_DOOR_RIGID
+      - *LARGE_DOOR_CYLINDER
+      -
+        type: Shape
+        translation: [ -0.415, 0.035, 0.0 ]
+        rotation: [ 0, 0, 1, -90 ]
+        geometry: *DOOR_80
+        <<: *WHITE_APPEARANCE
+      - *DOOR_KNOB_IN_2
+      - *DOOR_KNOB_OUT_2
+  -
+    name: Ceiling_221
+    parent: Floor
+    translation: [ -0.457, 2.8945, 4.145 ]
+    jointType: fixed
+    mass: 2500.0
+    elements:
+      Shape:
+        geometry: { type: Box, size: [ 22.664, 24.592, 2.21 ] }
+        <<: *GLASS_APPEARANCE
+        <<: *WHITE_WALL_APPEARANCE

@@ -1,0 +1,137 @@
+#####################################################################
+#
+# Low_chair.body
+#
+#  Created on: 2020/05/21
+#           Author: Tsuyoshi Anazawa
+#
+#          Outline: 低いの椅子のモデル
+#
+#####################################################################
+
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: Low_chair
+
+MAPLE_APPEARANCE: &MAPLE_APPEARANCE
+  appearance:
+    texture:
+      url: "resources/texture/maple.jpg"
+
+LEATHER_APPEARANCE: &LEATHER_APPEARANCE
+  appearance:
+    texture:
+      url: "resources/texture/leather.jpg"
+
+links:
+  -
+    name: Seat
+    translation: [ 0.0, 0.0, 0.255 ]
+    jointType: fixed
+    mass: 4.0
+    elements:
+      -
+        name: Wood_seat
+        type: Shape
+        geometry: &WOOD_SEAT { type: Box, size: [ 0.45, 0.5, 0.03 ] }
+        <<: *MAPLE_APPEARANCE
+      -
+        name: Leather_seat
+        type: Shape
+        translation: [ 0.0, 0.0, 0.03 ]
+        geometry: &LEATHER_SEAT { type: Box, size: [ 0.45, 0.5, 0.03 ] }
+        <<: *LEATHER_APPEARANCE
+  -
+    name: Seat_back
+    parent: Seat
+    translation: [ -0.2493, 0.0, 0.2092 ]
+    rotation: [ 0, 1, 0, 80 ]
+    jointType: fixed
+    mass: 2.0
+    elements:
+      -
+        name: Wood_seat_back
+        type: Shape
+        geometry: *WOOD_SEAT
+        <<: *MAPLE_APPEARANCE
+      -
+        name: Leather_seat
+        type: Shape
+        translation: [ 0.0, 0.0, 0.03 ]
+        geometry: *LEATHER_SEAT
+        <<: *LEATHER_APPEARANCE
+  -
+    name: Leg_back
+    parent: Seat
+    translation: [ -0.21, 0.0, -0.0159 ]
+    jointType: fixed
+    mass: 0.5
+    elements:
+      -
+        type: Transform
+        translation: [ 0.0, 0.265, 0.0 ]
+        rotation: [ 0, 1, 0, 5 ]
+        elements: &LEG_BACK
+          -
+            name: Leg
+            type: Shape
+            geometry: { type: Box, size: [ 0.05, 0.03, 0.476 ] }
+            <<: *MAPLE_APPEARANCE
+          -
+            name: Contact_area
+            type: Shape
+            translation: [ 0.0001, 0.0, -0.2377 ]
+            rotation: [ 0, 1, 0, -5 ]
+            geometry: { type: Box, size: [ 0.05, 0.03, 0.005 ] }
+            <<: *MAPLE_APPEARANCE
+      -
+        name: Leg_br
+        type: Transform
+        translation: [ 0.0, -0.265, 0.0 ]
+        rotation: [ 0, 1, 0, 5 ]
+        elements: *LEG_BACK
+      -
+        name: Armrest_left
+        type: Transform
+        translation: [ 0.1718, 0.265, 0.24975 ]
+        rotation: [ 0, 1, 0, -7.7 ]
+        elements: &ARMREST
+          Shape:
+            geometry: { type: Box, size: [ 0.359, 0.03, 0.03 ] }
+            <<: *MAPLE_APPEARANCE
+      -
+        name: Armrest_right
+        type: Transform
+        translation: [ 0.1718, -0.265, 0.24975 ]
+        rotation: [ 0, 1, 0, -7.6 ]
+        elements: *ARMREST
+  -
+    name: Leg_front
+    parent: Seat
+    translation: [ 0.16, 0.0, -0.005 ]
+    rotation: [ 0, 1, 0, -10 ]
+    jointType: fixed
+    mass: 0.5
+    elements:
+      -
+        type: Transform
+        translation: [ 0.0, 0.265, 0.0 ]
+        elements: &LEG_FRONT
+          - # front left leg
+            name: Leg
+            type: Shape
+            geometry: { type: Box, size: [ 0.05, 0.03, 0.5 ] }
+            <<: *MAPLE_APPEARANCE
+          -
+            name: Contact_area
+            type: Shape
+            translation: [ 0.0001, 0.0, -0.25 ]
+            rotation: [ 0, 1, 0, 10 ]
+            geometry: { type: Box, size: [ 0.049, 0.03, 0.0086 ] }
+            <<: *MAPLE_APPEARANCE
+      - # front right leg
+        name: Leg_fr
+        type: Transform
+        translation: [ 0.0, -0.265, 0.0 ]
+        elements: *LEG_FRONT

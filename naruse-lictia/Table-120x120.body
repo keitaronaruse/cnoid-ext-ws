@@ -1,0 +1,86 @@
+#####################################################################
+#
+# Table-120x120.body
+#
+#  Created on: 2020/05/22
+#           Author: Tsuyoshi Anazawa
+#
+#          Outline: 120x120のテーブル
+#
+#####################################################################
+
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: Table-120x120
+
+MAPLE_APPEARANCE: &MAPLE_APPEARANCE
+  appearance:
+    texture:
+      url: "resources/texture/maple.jpg"
+
+
+GRAY_APPEARANCE: &GRAY_APPEARANCE
+  appearance:
+    material:
+      diffuseColor: [ 0.6, 0.6, 0.6 ]
+      specularColor: [ 0.3, 0.3, 0.3 ]
+      shininess: 0.3
+
+links:
+  -
+    name: Board_top
+    translation: [ 0.0, 0.0, 0.72 ]
+    jointType: fixed
+    mass: 10.0
+    elements:
+      -
+        name: Board_top
+        type: Shape
+        geometry: { type: Box, size: [ 1.2, 1.2, 0.02 ] }
+        <<: *MAPLE_APPEARANCE
+      -
+        name: Board_bottom
+        type: Shape
+        translation: [ 0.0, 0.0, -0.015 ]
+        geometry: { type: Box, size: [ 1.2, 1.2, 0.01 ] }
+        <<: *GRAY_APPEARANCE
+  -
+    name: Leg_fl
+    parent: Board_top
+    translation: [ 0.0, 0.0, -0.34 ]
+    jointType: fixed
+    elements:
+      -
+        type: Transform
+        translation: [ -0.57, 0.57, 0.0 ]
+        elements: &LEG
+          RigidBody:
+            mass: 0.3
+            elements:
+              -
+                name: Leg
+                type: Shape
+                geometry: { type: Box, size: [ 0.06, 0.06, 0.64 ] }
+                <<: *GRAY_APPEARANCE
+              -
+                name: Caster
+                type: Shape
+                translation: [ 0.0, 0.0, -0.345 ]
+                geometry: { type: Cylinder, radius: 0.025, height: 0.05 }
+                <<: *GRAY_APPEARANCE
+      -
+        name: Leg_fr
+        type: Transform
+        translation: [ -0.57, -0.57, 0.0 ]
+        elements: *LEG
+      -
+        name: Leg_bl
+        type: Transform
+        translation: [ 0.57, 0.57, 0.0 ]
+        elements: *LEG
+      -
+        name: Leg_br
+        type: Transform
+        translation: [ 0.57, -0.57, 0.0 ]
+        elements: *LEG

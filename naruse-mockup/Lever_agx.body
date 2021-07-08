@@ -1,0 +1,68 @@
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: Lever
+
+links:
+  -
+    name: PIPE
+    jointType: fixed
+    elements:
+      -
+        type: Visual
+        resource:
+          uri: "resource/Lever_pipe.dae"
+      -
+        type: Collision
+        elements:
+          -
+            name: PIPE_H
+            type: Shape
+            translation: [ 0.02, 0.0, 0.0 ]
+            geometry: { type: Cylinder, radius: 0.02, height: 0.116 }
+          -
+            name: PIPE_F
+            type: Shape
+            translation: [ 0.049, 0.0, 0.0 ]
+            rotation: [ 0, 0, 1, 90 ]
+            geometry: { type: Cylinder, radius: 0.02, height: 0.058 }
+          -
+            name: LEVER_1_4
+            type: Shape
+            translation: [ 0.0885, 0.0, 0.0 ]
+            rotation: [ 0, 0, 1, 90 ]
+            geometry: { type: Cylinder, radius: 0.005, height: 0.021 }
+  -
+    name: LEVER
+    parent: PIPE
+    translation: [ 0.092, -0.0002, 0.000485 ]
+    jointType: revolute
+    jointAxis: X
+    jointId: 0
+    jointMotor: true
+    jointMotorCompliance: 0.3
+    mass: 1.0
+    elements:
+      -
+        type: Visual
+        resource:
+          uri: "resource/Lever_only.dae"
+      -
+        type: Collision
+        elements: &LEVER
+          -
+            name: LEVER_1_1
+            type: Shape
+            translation: [ 0.01, -0.085621, 0.0 ]
+            geometry: { type: Box, size: [ 0.01, 0.1, 0.025 ] }
+          -
+            name: LEVER_1_2
+            type: Shape
+            translation: [ 0.0, -0.021871, 0.0 ]
+            geometry: { type: Box, size: [ 0.01, 0.0475, 0.025 ] }
+          -
+            name: LEVER_1_3
+            type: Shape
+            translation: [ 0.0, 0.001, 0.0 ]
+            rotation: [ 0, 0, 1, 90 ]
+            geometry: { type: Cylinder, radius: 0.0126, height: 0.01 }

@@ -1,0 +1,89 @@
+#####################################################################
+#
+# Table-120x60.body
+#
+#  Created on: 2020/06/24
+#           Author: Tsuyoshi Anazawa
+#
+#          Outline: プロジェクトルームに設置されている机
+#
+#####################################################################
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: Table-120x60
+
+WHITE_APPEARANCE: &WHITE_APPEARANCE 
+  appearance:
+    material:
+      diffuseColor: [ 1.0, 1.0, 1.0 ]
+      specularColor: [ 0.7, 0.7, 0.7 ]
+
+SILVER_APPEARANCE: &SILVER_APPEARANCE
+  appearance:
+    material:
+      diffuseColor: [ 0.5, 0.5, 0.5 ]
+      specularColor: [ 0.8, 0.8, 0.8 ]
+      shininess: 0.8
+
+GRAY_APPEARANCE: &GRAY_APPEARANCE 
+  appearance:
+    material:
+      diffuseColor: [ 0.4, 0.4, 0.4 ]
+      specularColor: [ 0.5, 0.5, 0.5 ]
+
+links:
+  -
+    name: Top_plate
+    jointType: fixed
+    translation: [ 0.0, 0.0, 0.7065 ]
+    mass: 18.0
+    elements:
+      Shape:
+        geometry: { type: Box, size: [ 0.6, 1.2, 0.027 ] }
+        <<: *WHITE_APPEARANCE
+  -
+    name: Leg
+    parent: Top_plate
+    translation: [ 0.0, 0.0, -0.335 ]
+    jointType: fixed
+    elements:
+      -
+        name: Leg_fl
+        type: Transform
+        translation: [ 0.268, 0.568, 0.0 ]
+        rotation: [ 0, 0, 1, -45 ]
+        elements: &LEG
+          RigidBody:
+            mass: 0.8
+            elements:
+              -
+                name: Leg
+                type: Shape
+                geometry: { type: Box, size: [ 0.03, 0.06, 0.643 ] }
+                <<: *SILVER_APPEARANCE
+              -
+                name: caster
+                type: Shape
+                translation: [ 0.0, 0.0, -0.3465 ]
+                rotation: [ 0, 0, 1, 45 ]
+                geometry: { type: Cylinder, radius: 0.025, height: 0.046 }
+                <<: *GRAY_APPEARANCE
+      -
+        name: Leg_fr
+        type: Transform
+        translation: [ 0.268, -0.568, 0.0 ]
+        rotation: [ 0, 0, 1, 45 ]
+        elements: *LEG
+      -
+        name: Leg_bl
+        type: Transform
+        translation: [ -0.268, 0.568, 0.0 ]
+        rotation: [ 0, 0, 1, 45 ]
+        elements: *LEG
+      -
+        name: Leg_br
+        type: Transform
+        translation: [ -0.268, -0.568, 0.0 ]
+        rotation: [ 0, 0, 1, -45 ]
+        elements: *LEG

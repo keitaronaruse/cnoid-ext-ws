@@ -1,0 +1,39 @@
+#
+# cylinder.yaml
+#   Choreonoid body file of cylinder
+#   Author: Keitaro Naruse
+#   Date: 2021-07-06
+#   MIT License
+#
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: Cylinder
+
+links: 
+  - name: Base
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0.05 ]
+        rotation: [ 1, 0, 0, 90 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 2.1206
+          inertia: [
+            0.0035, 0,       0,
+            0,      0.0027,  0,
+            0,      0,       0.0035 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.100
+                radius: 0.050
+              appearance: &ShinyAppearance
+                material: 
+                  diffuseColor: [ 0.8, 0.8, 0.8 ] 
+                  specularColor: [ 1.0, 1.0, 1.0]
+                  shininess: 1.0
