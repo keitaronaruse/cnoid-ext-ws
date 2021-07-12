@@ -1,0 +1,104 @@
+#
+#   omini-d435.yaml
+#       Choreonoid body file of 4*D435
+#       Author: Keitaro Naruse
+#       Date:   2021-07-10
+#       License: MIT License
+#
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: Omini-D435
+
+links: 
+  - name: Base
+    jointType: fixed
+    centerOfMass: [ 0, 0, 0 ]
+    mass: 0.0544
+    inertia: [
+      91.4e-6,       0,      0,
+      0,       91.4e-6,      0,
+      0,             0, 182.8e-6 ]
+    elements:
+      Shape:
+        geometry:
+          type: Box
+          size: [ 0.142, 0.142, 0.002 ]
+        appearance: &BaseAppearance
+            material: 
+              diffuseColor: [ 0.8, 0.8, 0.8 ]
+              specularColor: [ 0.2, 0.2, 0.2 ]
+              shininess: 0.2
+  - name: FrontD435
+    parent: Base
+    jointType: fixed
+    translation: [ 0.058, 0, 0.013 ]
+    rotation: [ 0, 0, 1, 0 ]
+    centerOfMass: [ 0, 0, 0 ]
+    mass: 0.06084
+    inertia: [
+      6.76e-6,        0,        0,
+      0,       43.88e-6,        0,
+      0,              0, 43.88e-6 ]
+    elements: &D435
+    -
+      type: Camera
+      name: D435
+      translation: [  0, 0, 0 ]
+      rotation: [ [0, 1, 0, -90], [0, 0, 1, -90] ]
+      # Camera view vector is -Z
+      format: COLOR_DEPTH
+      # Fov (Filed of View) should be given by the agnle of the shorter edge
+      # Because FoV of D435 is 85.2 * 58.0 deg, it should give 58.0 deg.
+      fieldOfView: 58.0
+      nearClipDistance: 0.2
+      farClipDistance: 3.0
+      width: 428
+      height: 240
+      frameRate: 30
+      elements: &D435Frame
+        Shape:
+          geometry: 
+            type: Box
+            size: [0.090, 0.026, 0.026]
+          appearance: 
+            material: 
+              diffuseColor: [ 0.8, 0.8, 0.8 ]
+              specularColor: [ 0.2, 0.2, 0.2 ]
+              shininess: 0.2
+  - name: LeftD435
+    parent: Base
+    jointType: fixed
+    translation: [ 0, 0.058, 0.013 ]
+    rotation: [ 0, 0, 1, 90 ]
+    centerOfMass: [ 0, 0, 0 ]
+    mass: 0.06084
+    inertia: [
+      6.76e-6,        0,        0,
+      0,       43.88e-6,        0,
+      0,              0, 43.88e-6 ]
+    elements: *D435
+  - name: RearD435
+    parent: Base
+    jointType: fixed
+    translation: [ -0.058, 0, 0.013 ]
+    rotation: [ 0, 0, 1, 180 ]
+    centerOfMass: [ 0, 0, 0 ]
+    mass: 0.06084
+    inertia: [
+      6.76e-6,        0,        0,
+      0,       43.88e-6,        0,
+      0,              0, 43.88e-6 ]
+    elements: *D435
+  - name: RightD435
+    parent: Base
+    jointType: fixed
+    translation: [ 0, -0.058, 0.013 ]
+    rotation: [ 0, 0, 1, 270 ]
+    centerOfMass: [ 0, 0, 0 ]
+    mass: 0.06084
+    inertia: [
+      6.76e-6,        0,        0,
+      0,       43.88e-6,        0,
+      0,              0, 43.88e-6 ]
+    elements: *D435
