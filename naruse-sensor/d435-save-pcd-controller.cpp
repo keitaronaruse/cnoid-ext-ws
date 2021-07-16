@@ -153,7 +153,7 @@ public:
             pcl::io::savePCDFileBinaryCompressed("test-cnoid-frame.pcd", *pcPtrCnoidFrame);
             pcl::io::savePCDFileBinaryCompressed("test-pass-through-cnoid-frame.pcd", *pcPtrPassThroughCnoidFrame);
             pcl::io::savePCDFileBinaryCompressed("test-pass-through-d435-frame.pcd", *pcPtrPassThroughD435Frame);
-            // pcl::io::savePCDFileASCII ("test-image.pcd", *pcPtrCnoidFrame);
+            pcl::io::savePCDFileASCII ("test-pass-through-d435-frame.ascii.pcd", *pcPtrPassThroughD435Frame);
             os << "Saved pcd files" << std::endl;
         }
         d435PrevButtonState = buttonState;

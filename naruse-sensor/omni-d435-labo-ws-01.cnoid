@@ -19,7 +19,6 @@ items:
           name: "Labo1"
           plugin: Body
           class: BodyItem
-          is_checked: true
           data: 
             file: "${HOME}/choreonoid/share/model/Labo1/Labo1.body"
             format: CHOREONOID-BODY
@@ -28,8 +27,9 @@ items:
               1, 0, 0, 
               0, 1, 0, 
               0, 0, 1 ]
-            jointDisplacements: [ 0 ]
-            jointPositions: [ 0 ]
+            jointDisplacements: [ -4.07111e-16 ]
+            initialJointDisplacements: [ 0 ]
+            jointPositions: [ -7.10543e-18 ]
             initialRootPosition: [ 0, 0, 0 ]
             initialRootAttitude: [ 
               1, 0, 0, 
@@ -44,32 +44,6 @@ items:
             zmp: [ 0, 0, 0 ]
         - 
           id: 3
-          name: "Omini-D435"
-          plugin: Body
-          class: BodyItem
-          is_checked: true
-          data: 
-            file: "omini-d435.yaml"
-            format: CHOREONOID-BODY
-            rootPosition: [ 0, 0, 1 ]
-            rootAttitude: [ 
-              1, 0, 0, 
-              0, 1, 0, 
-              0, 0, 1 ]
-            jointPositions: [  ]
-            initialRootPosition: [ 0, 0, 1 ]
-            initialRootAttitude: [ 
-              1, 0, 0, 
-              0, 1, 0, 
-              0, 0, 1 ]
-            staticModel: true
-            collisionDetection: true
-            selfCollisionDetection: false
-            location_editable: false
-            scene_sensitive: true
-            zmp: [ 0, 0, 0 ]
-        - 
-          id: 4
           name: "AISTSimulator"
           plugin: Body
           class: AISTSimulatorItem
@@ -101,11 +75,10 @@ items:
             oldAccelSensorMode: false
           children: 
             - 
-              id: 5
+              id: 4
               name: "GLVisionSimulator"
               plugin: Body
               class: GLVisionSimulatorItem
-              is_selected: true
               data: 
                 enabled: true
                 maxFrameRate: 1000
@@ -119,6 +92,110 @@ items:
                 enableHeadLight: true
                 enableAdditionalLights: true
                 antiAliasing: false
+        - 
+          id: 5
+          name: "Omini-D435"
+          plugin: Body
+          class: BodyItem
+          is_checked: true
+          data: 
+            file: "omni-d435.yaml"
+            format: CHOREONOID-BODY
+            rootPosition: [ 0, 0, 1 ]
+            rootAttitude: [ 
+              1, 0, 0, 
+              0, 1, 0, 
+              0, 0, 1 ]
+            jointPositions: [  ]
+            initialRootPosition: [ 0, 0, 1 ]
+            initialRootAttitude: [ 
+              1, 0, 0, 
+              0, 1, 0, 
+              0, 0, 1 ]
+            staticModel: true
+            collisionDetection: true
+            selfCollisionDetection: false
+            location_editable: false
+            scene_sensitive: true
+            zmp: [ 0, 0, 0 ]
+          children: 
+            - 
+              id: 6
+              name: "SimpleController"
+              plugin: Body
+              class: SimpleControllerItem
+              data: 
+                isNoDelayMode: false
+                controllerOptions: ""
+                controller: "${HOME}/choreonoid/build/lib/choreonoid-1.8/simplecontroller/OmniD435SavePCDController"
+                baseDirectory: "None"
+                reloading: false
+                exportSymbols: false
+                isOldTargetVariableMode: false
+            - 
+              id: 7
+              name: "SensorVisualizer"
+              plugin: Body
+              class: SensorVisualizerItem
+              data: 
+                sub_items: 
+                  - 
+                    class: PointCloudVisualizerItem
+                    name: FrontD435
+                    is_checked: true
+                    translation: [ 0.058, 0, 1.013 ]
+                    rotation: [ 0.57735, -0.57735, -0.57735, 120 ]
+                    angle_unit: degree
+                    renderingMode: Point
+                    pointSize: 0
+                    voxelSize: 0.01
+                    isEditable: false
+                  - 
+                    class: PointCloudVisualizerItem
+                    name: LeftD435
+                    is_selected: true
+                    is_checked: true
+                    translation: [ 0, 0.058, 1.013 ]
+                    rotation: [ 1, -6.12323e-17, 0, 90 ]
+                    angle_unit: degree
+                    renderingMode: Point
+                    pointSize: 0
+                    voxelSize: 0.01
+                    isEditable: false
+                  - 
+                    class: PointCloudVisualizerItem
+                    name: RearD435
+                    is_checked: true
+                    translation: [ -0.058, 0, 1.013 ]
+                    rotation: [ 0.57735, 0.57735, 0.57735, 120 ]
+                    angle_unit: degree
+                    renderingMode: Point
+                    pointSize: 0
+                    voxelSize: 0.01
+                    isEditable: false
+                  - 
+                    class: PointCloudVisualizerItem
+                    name: RightD435
+                    is_checked: true
+                    translation: [ 0, -0.058, 1.013 ]
+                    rotation: [ 8.65956e-17, 0.707107, 0.707107, 180 ]
+                    angle_unit: degree
+                    renderingMode: Point
+                    pointSize: 0
+                    voxelSize: 0.01
+                    isEditable: false
+                  - 
+                    class: CameraImageVisualizerItem
+                    name: FrontD435_Image
+                  - 
+                    class: CameraImageVisualizerItem
+                    name: LeftD435_Image
+                  - 
+                    class: CameraImageVisualizerItem
+                    name: RearD435_Image
+                  - 
+                    class: CameraImageVisualizerItem
+                    name: RightD435_Image
 views: 
   - 
     id: 0
@@ -131,7 +208,7 @@ views:
     class: ItemTreeView
     mounted: true
     state: 
-      expanded: [ 1, 4 ]
+      expanded: [ 1, 2, 3, 5, 6, 7 ]
   - 
     id: 2
     name: "Location"
@@ -198,7 +275,7 @@ views:
           far: 200
           eye: [ -2.73353, -2.91532, 1.66005 ]
           direction: [ 0.631026, 0.725956, -0.273484 ]
-          up: [ 0.179416, 0.206406, 0.961876 ]
+          up: [ 0.179416, 0.206406, 0.961877 ]
         - 
           camera: [ System, Orthographic ]
           orthoHeight: 20
@@ -275,7 +352,7 @@ toolbars:
     frameRate: 1000
     playbackFrameRate: 60
     idleLoopDrivenMode: false
-    currentTime: 3.081
+    currentTime: 24.838
     speedScale: 1
     syncToOngoingUpdates: true
     autoExpansion: true
@@ -328,8 +405,8 @@ Body:
   "BodyMotionEngine": 
     updateJointVelocities: false
   "BodySelectionManager": 
-    current_body_item: 3
-    current_link: "Base"
+    current_body_item: 5
+    current_link: "BaseLink"
   "EditableSceneBody": 
     editableSceneBodies: 
       - 
@@ -338,7 +415,7 @@ Body:
         show_cm_projection: false
         show_zmp: false
       - 
-        bodyItem: 3
+        bodyItem: 5
         show_cm: false
         show_cm_projection: false
         show_zmp: false

@@ -19,7 +19,6 @@ items:
           name: "Piping-110"
           plugin: Body
           class: BodyItem
-          is_checked: true
           data: 
             file: "Piping-110.body"
             format: CHOREONOID-BODY
@@ -45,7 +44,6 @@ items:
           name: "Valve"
           plugin: Body
           class: BodyItem
-          is_checked: true
           data: 
             file: "Valve-65.body"
             format: CHOREONOID-BODY
@@ -73,7 +71,6 @@ items:
           name: "Meter"
           plugin: Body
           class: BodyItem
-          is_checked: true
           data: 
             file: "Meter.body"
             format: CHOREONOID-BODY
@@ -101,11 +98,12 @@ items:
           name: "AizuSpider"
           plugin: Body
           class: BodyItem
+          is_selected: true
           is_checked: true
           data: 
             file: "${HOME}/choreonoid/share/model/AizuSpider/AizuSpiderSS.body"
             format: CHOREONOID-BODY
-            rootPosition: [ 1, 0, 0.035 ]
+            rootPosition: [ 0, 0, 0.035 ]
             rootAttitude: [ 
               -1, -1.2246468e-16, 0, 
               1.2246468e-16, -1, 0, 
@@ -118,7 +116,7 @@ items:
               55, 55, 55, 0, 0, 0, 0, 0, 0 ]
             jointPositions: [ 
               0, 0, 0, 0, -1.65806, 1.99666, 3.36499, 0.174533, 1.5708, 0.15708, 
-              0.964209, 0.964209, 0.944531, 0, 0, 0, 0, 0, 0 ]
+              0.964209, 0.964209, 0.94453, 0, 0, 0, 0, 0, 0 ]
             initialRootPosition: [ 0, 0, 0.03503 ]
             initialRootAttitude: [ 
               1, 0, 0, 
@@ -137,6 +135,22 @@ items:
                 base_frame: 0
                 offset_frame: 0
             zmp: [ 0, 0, 0 ]
+        - 
+          id: 6
+          name: "test-omni-d435-frame.ascii"
+          plugin: Base
+          class: PointSetItem
+          is_checked: true
+          data: 
+            file: "../naruse-sensor/test-omni-d435-frame.ascii.pcd"
+            format: PCD-FILE
+            translation: [ 0, 0, 0 ]
+            rotation: [ 1, 0, 0, 0 ]
+            angle_unit: degree
+            renderingMode: Point
+            pointSize: 0
+            voxelSize: 0.01
+            isEditable: false
 views: 
   - 
     id: 0
@@ -214,9 +228,9 @@ views:
           fieldOfView: 0.610865
           near: 0.04
           far: 200
-          eye: [ 1.34264, 2.96828, 2.401 ]
-          direction: [ -0.26011, -0.849438, -0.459128 ]
-          up: [ -0.13443, -0.439007, 0.88837 ]
+          eye: [ 3.8974, 7.64052, 7.06184 ]
+          direction: [ -0.325694, -0.734942, -0.594797 ]
+          up: [ -0.240985, -0.543792, 0.803876 ]
         - 
           camera: [ System, Orthographic ]
           orthoHeight: 20
@@ -229,12 +243,17 @@ views:
       isDedicatedItemCheckEnabled: false
   - 
     id: 5
+    name: "Virtual Joystick"
+    plugin: Base
+    class: VirtualJoystickView
+  - 
+    id: 6
     plugin: Body
     class: BodyLinkView
     state: 
       showRotationMatrix: false
   - 
-    id: 6
+    id: 7
     plugin: Body
     class: JointDisplacementView
     mounted: true
@@ -247,7 +266,7 @@ views:
       show_dials: false
       show_phases: true
   - 
-    id: 7
+    id: 8
     name: "Links / Devices"
     plugin: Body
     class: LinkDeviceListView
@@ -261,7 +280,7 @@ views:
           id: 5
           selected_links: [ 13 ]
   - 
-    id: 8
+    id: 9
     name: "Link Position"
     plugin: Body
     class: LinkPositionView
@@ -275,13 +294,13 @@ views:
       show_rotation_matrix: false
       target_link_type: ik_link
   - 
-    id: 9
+    id: 10
     name: "Link Properties"
     plugin: Body
     class: LinkPropertyView
     mounted: true
   - 
-    id: 10
+    id: 11
     plugin: Python
     class: PythonConsoleView
     mounted: true
@@ -346,7 +365,7 @@ Body:
     updateJointVelocities: false
   "BodySelectionManager": 
     current_body_item: 5
-    current_link: "ARM"
+    current_link: "CHASSIS"
   "EditableSceneBody": 
     editableSceneBodies: 
       - 
@@ -390,41 +409,41 @@ viewAreas:
     contents: 
       type: splitter
       orientation: horizontal
-      sizes: [ 1415, 499 ]
+      sizes: [ 1541, 373 ]
       children: 
         - 
           type: splitter
           orientation: horizontal
-          sizes: [ 367, 1042 ]
+          sizes: [ 251, 1284 ]
           children: 
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 470, 470 ]
+              sizes: [ 450, 450 ]
               children: 
                 - 
                   type: pane
                   views: [ 1 ]
                 - 
                   type: pane
-                  views: [ 0, 9 ]
+                  views: [ 0, 10 ]
                   current: 0
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 705, 235 ]
+              sizes: [ 745, 155 ]
               children: 
                 - 
                   type: pane
                   views: [ 4 ]
                 - 
                   type: pane
-                  views: [ 3, 10 ]
+                  views: [ 3, 11 ]
                   current: 3
         - 
           type: splitter
           orientation: vertical
-          sizes: [ 187, 753 ]
+          sizes: [ 179, 721 ]
           children: 
             - 
               type: pane
@@ -432,15 +451,15 @@ viewAreas:
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 273, 474 ]
+              sizes: [ 261, 454 ]
               children: 
                 - 
                   type: pane
-                  views: [ 8 ]
+                  views: [ 9 ]
                 - 
                   type: pane
-                  views: [ 7, 6 ]
-                  current: 6
+                  views: [ 8, 7 ]
+                  current: 7
 layoutOfToolBars: 
   rows: 
     - 
