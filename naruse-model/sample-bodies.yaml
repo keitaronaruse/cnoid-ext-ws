@@ -1,0 +1,60 @@
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: Sample-Bodies
+
+links:
+  -
+   name: Primitive
+   translation: [ 0, 0, 0 ]
+   jointType: free
+   elements:
+    Shape:
+     geometry: 
+      type: Box
+      size: [0.1, 0.1, 0.1]
+     appearance: 
+      material: 
+       diffuseColor: [ 1.0, 0.0, 0.0 ]
+       specularColor: [ 0.0, 0.0, 0.0 ]
+       shininess: 1.0
+  -
+   name: Fusion-Made-STL
+   parent: Primitive
+   translation: [ 0, 0, 0.3 ]
+   jointType: free
+   elements:
+    -
+     type: Visual
+     resource:
+      uri: "Cube-Fusion360.stl"
+  -
+   name: Blender-Made-DAE
+   parent: Primitive
+   translation: [ 0, 0, 0.6 ]
+   jointType: free
+   elements:
+    -
+     type: Visual
+     resource:
+      uri: "red-cube-blender.dae"
+  -
+   name: DAE-Converted-from-STL
+   parent: Primitive
+   translation: [ 0.3, 0.0, 0.0 ]
+   jointType: free
+   elements:
+    -
+     type: Visual
+     resource:
+      uri: "dae-converted-from-stl.dae"
+  -
+   name: DAE-Colored-from-STL
+   parent: Primitive
+   translation: [ 0.3, 0, 0.3 ]
+   jointType: free
+   elements:
+    -
+     type: Visual
+     resource:
+      uri: "dae-colored-from-stl.dae"
