@@ -19,7 +19,6 @@ items:
           name: "Piping-110"
           plugin: Body
           class: BodyItem
-          is_checked: true
           data: 
             file: "Piping-110.body"
             format: CHOREONOID-BODY
@@ -45,7 +44,6 @@ items:
           name: "Valve"
           plugin: Body
           class: BodyItem
-          is_checked: true
           data: 
             file: "Valve-65.body"
             format: CHOREONOID-BODY
@@ -73,7 +71,6 @@ items:
           name: "Meter"
           plugin: Body
           class: BodyItem
-          is_checked: true
           data: 
             file: "Meter.body"
             format: CHOREONOID-BODY
@@ -101,6 +98,7 @@ items:
           name: "AISTSimulator"
           plugin: Body
           class: AISTSimulatorItem
+          is_selected: true
           data: 
             timeStep: 0.001
             realtimeSync: true
@@ -148,73 +146,9 @@ items:
                 antiAliasing: false
         - 
           id: 7
-          name: "PT-D435"
-          plugin: Body
-          class: BodyItem
-          is_selected: true
-          is_checked: true
-          data: 
-            file: "../naruse-sensor/pt-d435.yaml"
-            format: CHOREONOID-BODY
-            rootPosition: [ 0.4, 0.2, 0.8 ]
-            rootAttitude: [ 
-              1, 0, 0, 
-              0, 1, 0, 
-              0, 0, 1 ]
-            jointDisplacements: [ 0, 0 ]
-            jointPositions: [ 0, 0 ]
-            initialRootPosition: [ 0.4, 0.2, 0.8 ]
-            initialRootAttitude: [ 
-              1, 0, 0, 
-              0, 1, 0, 
-              0, 0, 1 ]
-            initialJointPositions: [ 0, 0 ]
-            staticModel: false
-            collisionDetection: true
-            selfCollisionDetection: false
-            location_editable: false
-            scene_sensitive: true
-            zmp: [ 0, 0, 0 ]
-          children: 
-            - 
-              id: 8
-              name: "SimpleController"
-              plugin: Body
-              class: SimpleControllerItem
-              data: 
-                isNoDelayMode: false
-                controllerOptions: ""
-                controller: "/usr/local/lib/choreonoid-1.8/simplecontroller/NarusePTD435SaveController"
-                baseDirectory: "None"
-                reloading: false
-                exportSymbols: false
-                isOldTargetVariableMode: false
-            - 
-              id: 9
-              name: "SensorVisualizer"
-              plugin: Body
-              class: SensorVisualizerItem
-              data: 
-                sub_items: 
-                  - 
-                    class: PointCloudVisualizerItem
-                    name: D435
-                    translation: [ 0.4, 0.2, 0.86 ]
-                    rotation: [ 0.57735, 0.57735, 0.57735, 120 ]
-                    angle_unit: degree
-                    renderingMode: Point
-                    pointSize: 0
-                    voxelSize: 0.01
-                    isEditable: false
-                  - 
-                    class: CameraImageVisualizerItem
-                    name: D435_Image
-        - 
-          id: 10
           name: "Labo1"
           plugin: Body
           class: BodyItem
-          is_checked: true
           data: 
             file: "${HOME}/choreonoid/share/model/Labo1/Labo1.body"
             format: CHOREONOID-BODY
@@ -238,6 +172,67 @@ items:
             location_editable: false
             scene_sensitive: true
             zmp: [ 0, 0, 0 ]
+        - 
+          id: 8
+          name: "D435"
+          plugin: Body
+          class: BodyItem
+          is_selected: true
+          data: 
+            file: "../naruse-sensor/d435.yaml"
+            format: CHOREONOID-BODY
+            rootPosition: [ 0.4, 0.2, 0.8 ]
+            rootAttitude: [ 
+              -1, -1.2246468e-16, 0, 
+              1.2246468e-16, -1, 0, 
+              0, 0, 1 ]
+            jointPositions: [  ]
+            initialRootPosition: [ 0.4, 0.2, 0.8 ]
+            initialRootAttitude: [ 
+              -1, -1.2246468e-16, 0, 
+              1.2246468e-16, -1, 0, 
+              0, 0, 1 ]
+            staticModel: true
+            collisionDetection: true
+            selfCollisionDetection: false
+            location_editable: false
+            scene_sensitive: true
+            zmp: [ 0, 0, 0 ]
+          children: 
+            - 
+              id: 9
+              name: "SimpleController"
+              plugin: Body
+              class: SimpleControllerItem
+              data: 
+                isNoDelayMode: false
+                controllerOptions: ""
+                controller: "/usr/local/lib/choreonoid-1.8/simplecontroller/D435SavePCDController"
+                baseDirectory: "None"
+                reloading: false
+                exportSymbols: false
+                isOldTargetVariableMode: false
+            - 
+              id: 10
+              name: "SensorVisualizer"
+              plugin: Body
+              class: SensorVisualizerItem
+              data: 
+                sub_items: 
+                  - 
+                    class: PointCloudVisualizerItem
+                    name: D435
+                    is_checked: true
+                    translation: [ 0.4, 0.2, 0.8 ]
+                    rotation: [ 0.57735, 0.57735, 0.57735, 120 ]
+                    angle_unit: degree
+                    renderingMode: Point
+                    pointSize: 0
+                    voxelSize: 0.01
+                    isEditable: false
+                  - 
+                    class: CameraImageVisualizerItem
+                    name: D435_Image
 views: 
   - 
     id: 0
@@ -315,9 +310,9 @@ views:
           fieldOfView: 0.610865
           near: 0.04
           far: 200
-          eye: [ 7.99079, -0.470476, 6.8833 ]
-          direction: [ -0.747148, 0.00474591, -0.664641 ]
-          up: [ -0.664627, 0.00422174, 0.747163 ]
+          eye: [ 5.96691, -4.08861, 4.59097 ]
+          direction: [ -0.724689, 0.471024, -0.502954 ]
+          up: [ -0.421705, 0.274094, 0.864313 ]
         - 
           camera: [ System, Orthographic ]
           orthoHeight: 20
@@ -394,7 +389,7 @@ toolbars:
     frameRate: 1000
     playbackFrameRate: 60
     idleLoopDrivenMode: false
-    currentTime: 8.263
+    currentTime: 6.496
     speedScale: 1
     syncToOngoingUpdates: true
     autoExpansion: true
@@ -447,8 +442,8 @@ Body:
   "BodyMotionEngine": 
     updateJointVelocities: false
   "BodySelectionManager": 
-    current_body_item: 7
-    current_link: "TiltPlate"
+    current_body_item: 8
+    current_link: "Base"
   "EditableSceneBody": 
     editableSceneBodies: 
       - 
@@ -472,7 +467,7 @@ Body:
         show_cm_projection: false
         show_zmp: false
       - 
-        bodyItem: 10
+        bodyItem: 8
         show_cm: false
         show_cm_projection: false
         show_zmp: false

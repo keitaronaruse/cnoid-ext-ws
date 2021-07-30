@@ -1,0 +1,1 @@
+choreonoid_add_simple_controller(ProarmHoldController proarm-hold.cpp)

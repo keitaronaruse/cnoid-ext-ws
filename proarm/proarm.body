@@ -1,0 +1,523 @@
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: ProArm
+rootLink: BASE
+
+definitions:
+  MAIN_APPEARANCE_: &MAIN_APPEARANCE
+    material:
+      diffuseColor: [ 0.8, 0.1, 0.1 ]
+      specularColor: [ 0.6, 0.6, 0.6 ]
+      shinines: 0.3
+  FINGER_APPEARANCE_: &FINGER_APPEARANCE
+    material:
+      diffuseColor: [ 0.66, 0.70, 0.71 ]
+      specularColor: [ 0.6, 0.6, 0.6 ]
+      shinines: 0.3
+  RING_APPEARANCE_: &RING_APPEARANCE
+    material:
+      diffuseColor: [ 0.66, 0.70, 0.71 ]
+      specularColor: [ 0.6, 0.6, 0.6 ]
+      shinines: 0.3
+  CAMERA_SPEC:
+    format: &CAMERA_SPEC_format COLOR
+    fieldOfView: &CAMERA_SPEC_fieldOfView 117.5
+    width: &CAMERA_SPEC_width 640
+    height: &CAMERA_SPEC_height 480
+    frameRate: &CAMERA_SPEC_frameRate 30
+
+STL: &STL
+  type: Resource
+  removeRedundantVertices: true
+
+links:
+  -
+    name: BASE
+    translation: [ 0, 0, 0.1 ]
+    rotation: [ 1, 0, 0, 90 ]
+    jointType: fixed
+    mass: 0.3169
+    centerOfMass: [ -0.0434, -0.0479, -0.0078 ]
+    inertia: [
+      0.0006, 0.0001,  0.0001,
+      0.0001, 0.0006, 0,
+      0.0001, 0, 0.0004 ]
+    elements:
+      Visual: { resource: { uri: "parts/srbtアーム_ros1.wrl" } }
+
+  -
+    name: J1
+    parent: BASE
+    jointType: revolute
+    jointAxis: [ 0, 1, 0 ]
+#    jointAxis: [ 0, -1, 0 ]
+    jointId: 0
+    translation: [ 0, 0, 0 ]
+    rotation: [ 0, 1, 0, 180 ]
+    jointRange: [ -360, 360 ]
+    jointVelocityRange: [ -1, 1 ]
+    rotorInertia: 0
+    mass: 0.2177
+    centerOfMass: [ 0.0034, 0.0226, 0.0118 ]
+    inertia: [
+      0.0002, 0, 0,
+      0, 0.0002, 0,
+      0, 0, 0.0002 ]
+    elements: 
+      Visual: { resource: { uri: "parts/srbtアーム_ros2.wrl" } }
+
+
+  -
+    name: J2
+    parent: J1
+    jointType: revolute
+    jointAxis: [ 1, 0, 0 ]
+    jointId: 1
+    translation: [ -0.0180, 0.0550, 0.0265 ]
+    jointRange: [ 0, 360 ]
+    jointVelocityRange: [ -1, 1 ]
+    rotorInertia: 0
+    mass: 0.6351
+    centerOfMass: [ 0.0456, 0.0178, -0.2595 ]
+    inertia: [
+      0.0294, 0.0001, -0.0028,
+      0.0001, 0.0295, -0.0015,
+      -0.0028, -0.0015,  0.0008 ]
+    elements:
+      Visual: { resource: { uri: "parts/srbtアーム_ros3.wrl" } }
+
+  -
+    name: J3
+    parent: J2
+    jointType: revolute
+    jointAxis: [ -1, 0, 0 ]
+    jointId: 2
+    translation: [ 0.0430, 0.0285, -0.5221 ]
+    jointRange: [ 0, 360 ]
+    jointVelocityRange: [ -1, 1 ]
+    rotorInertia: 0
+    mass:  0.3624 
+    centerOfMass: [ -0.0244, 0.0246, 0.3019 ]
+    inertia: [
+      0.0079, 0.0000, 0.0000,
+      0.0000, 0.0077, 0.0010,
+      0.0000, 0.0010,  0.0004 ]
+    elements:
+      Visual: { resource: { uri: "parts/srbtアーム_ros4.wrl" } }
+
+  -
+    name: J4
+    parent: J3
+    jointType: revolute
+    jointAxis: [ 0, -1, 0 ]
+    jointId: 3
+    translation: [ -0.0480, 0.0460, 0.4319]
+    rotation: [ 0, 0, -1, 90]
+    jointRange: [ 0, 360 ]
+    jointVelocityRange: [ -1, 1 ]
+    rotorInertia: 0
+    mass:  0.6960 
+    centerOfMass: [ 0.0038, -0.0281, 0.0292 ]
+    inertia: [
+      0.0013, 0.0000, 0.0001,
+      0.0000, 0.0011,  0.0003,
+      0.0001, 0.0003,  0.0004 ]
+    elements:
+      Visual: { resource: { uri: "parts/srbtアーム_ros6.wrl" } }
+
+  -
+    name: J5
+    parent: J4
+    jointType: revolute
+    jointAxis: [ 0, -1, 0 ]
+    jointId: 4
+    translation: [ -0.0190, -0.0200,  0.0620 ]
+    rotation: [ 0, 0, 1, 90]
+    jointRange: [ 0, 360 ]
+    jointVelocityRange: [ -1, 1 ]
+    rotorInertia: 0
+    mass:  0.3059  
+    centerOfMass: [ -0.0029, 0.0187, 0.0486 ]
+    inertia: [
+      0.0006, 0.0000, 0.0000,
+      0.0000, 0.0004, -0.0001,
+      0.0000, -0.0001, 0.0003 ]
+    elements:
+      -
+        type: Visual
+        elements:
+          -
+            type: Resource
+            uri: "parts/srbtアーム_ros7.wrl"
+      -
+        type: Camera
+        name: CAMERA
+        translation: [ 0, 0, 0.2055 ]
+#        rotation: [ [ 0, 0, 1, 90 ], [ 0, 1, 0, 180 ] ]
+        rotation: [ 0, 1, 0, 180 ]
+        format: *CAMERA_SPEC_format
+        fieldOfView: *CAMERA_SPEC_fieldOfView
+        width: *CAMERA_SPEC_width
+        height: *CAMERA_SPEC_height
+        frameRate: *CAMERA_SPEC_frameRate
+        on: true
+        nearClipDistance: 0.02
+        #farClipDistance: 3.5
+  -
+    name: HAND
+    parent: J5
+#    translation: [ 0, 0.03725, 0.06401 ]
+    translation: [ 0, 0, 0.1 ]
+#    rotation: [ [ -1, 0, 0, 60 ], [ 0, 0, 1, 90 ] ]
+    jointType: revolute
+    jointId: 5
+    jointAxis: [ 0, 0, -1 ]
+    jointRange: [ -10000, 10000 ]
+    jointVelocityRange: [ -90.0, 90.0 ]
+    centerOfMass: [ 0, 0, 0.06 ]
+    mass: 0.727
+    inertia: [
+      0.000345324, 0,           0,
+      0,           0.000345324, 0,
+      0,           0,           0.000582
+    ]
+    rotorInertia: 0.05
+    # AGX parameters
+    #jointMotorForceRange: [ -6.8, 6.8 ]
+    #jointLockForceRange: [ -6.8, 6.8 ]
+    #jointLockCompliance: 0.00256666
+    #jointLockSpookDamping: 0.1
+    jointMotorForceRange: [ -10, 10 ]
+    jointLockForceRange: [ -10, 10 ]
+    elements:
+      -
+        type: Visual
+        elements:
+          -
+            type: Shape
+            geometry: { <<: *STL, uri: "parts/JACO2/HAND.stl", creaseAngle: 40 }
+            appearance: *MAIN_APPEARANCE
+          -
+            type: Shape
+            geometry: { <<: *STL, uri: "parts/JACO2/PALM.stl", creaseAngle: 40 }
+            appearance: *FINGER_APPEARANCE
+          -
+            type: Shape
+            geometry: { <<: *STL, uri: "parts/JACO2/FINGER_BASE.stl", creaseAngle: 40 }
+            appearance: *FINGER_APPEARANCE
+      -
+        type: Collision
+        elements:
+          -
+            type: Shape
+            translation: [ 0, 0, 0.020 ]
+            rotation: [ 1, 0, 0, 90 ]
+            geometry: { type: Cylinder, height: 0.040, radius: 0.0315 }
+          -
+            type: Shape
+            translation: [ 0.01557, 0, 0.05212 ]
+            rotation: [ [ 0, 1, 0, 23.26 ], [ 1, 0, 0, 90 ] ]
+            geometry: { type: Capsule, height: 0.05655, radius: 0.026 }
+          -
+            type: Shape
+            translation: [ -0.00940, 0.0112, 0.05205 ]
+            rotation: [ [ -0.49568, -0.81436, 0.19502, 30 ], [ 1, 0, 0, 90 ] ]
+            geometry: { type: Capsule, height: 0.04950, radius: 0.030 }
+          -
+            type: Shape
+            translation: [ -0.00940, -0.0112, 0.05205 ]
+            rotation: [ [ 0.49568, -0.81436, 0.19502, 30 ], [ 1, 0, 0, 90 ] ]
+            geometry: { type: Capsule, height: 0.04950, radius: 0.030 }
+          -
+            type: Shape
+            translation: [ 0.03641, 0, 0.09870 ]
+            rotation: [ [ 0, 1, 0, 30 ], [ 1, 0, 0, 90 ] ]
+            geometry: { type: Cylinder, height: 0.00689, radius: 0.01850 }
+          -
+            type: Shape
+            translation: [ -0.03298, 0.02336, 0.09847 ]
+            rotation: [ [ 0, 0, -1, 10.6 ], [ 0, -1, 0, 30 ], [ 1, 0, 0, 90 ] ]
+            geometry: { type: Cylinder, height: 0.00689, radius: 0.01850 }
+          -
+            type: Shape
+            translation: [ -0.03298, -0.02336, 0.09847 ]
+            rotation: [ [ 0, 0, 1, 10.6 ], [ 0, -1, 0, 30 ], [ 1, 0, 0, 90 ] ]
+            geometry: { type: Cylinder, height: 0.00689, radius: 0.01850 }
+          -
+            type: Shape
+            translation: [ 0, 0, 0.101065 ]
+            rotation: [ 1, 0, 0, 90 ]
+            geometry: { type: Cylinder, height: 0.02887, radius: 0.024065 }
+          -
+            type: Shape
+            translation: [ 0.03116, 0, 0.11498 ]
+            geometry: { type: Cylinder, height: 0.015, radius: 0.006 }
+          -
+            type: Shape
+            translation: [ 0.02915, 0, 0.11150 ]
+            rotation: [ 0, 1, 0, 30 ]
+            geometry: { type: Box, size: [ 0.012, 0.015, 0.00802 ] }
+          -
+            type: Shape
+            translation: [ -0.02982, 0.02277, 0.11390 ]
+            rotation: [ 0, 0, -1, 10.6 ]
+            geometry: { type: Cylinder, height: 0.015, radius: 0.006 }
+          -
+            type: Shape
+            translation: [ -0.02774, 0.02238, 0.11033 ]
+            rotation: [ [ 0, 0, -1, 10.6 ], [ 0, -1, 0, 30 ] ]
+            geometry: { type: Box, size: [ 0.012, 0.015, 0.00830 ] }
+          -
+            type: Shape
+            translation: [ -0.02982, -0.02277, 0.11390 ]
+            rotation: [ 0, 0, 1, 10.6 ]
+            geometry: { type: Cylinder, height: 0.015, radius: 0.006 }
+          -
+            type: Shape
+            translation: [ -0.02774, -0.02238, 0.11033 ]
+            rotation: [ [ 0, 0, 1, 10.6 ], [ 0, -1, 0, 30 ] ]
+            geometry: { type: Box, size: [ 0.012, 0.015, 0.00830 ] }
+#      -
+#        type: Camera
+#        name: CAMERA
+#        translation: [ 0, 0, 0.1055 ]
+#        rotation: [ [ 0, 0, 1, 90 ], [ 0, 1, 0, 180 ] ]
+#        format: *CAMERA_SPEC_format
+#        fieldOfView: *CAMERA_SPEC_fieldOfView
+#        width: *CAMERA_SPEC_width
+#        height: *CAMERA_SPEC_height
+#        frameRate: *CAMERA_SPEC_frameRate
+#        on: true
+#        nearClipDistance: 0.02
+#        #farClipDistance: 3.5
+  -
+    name: FINGER1
+    parent: HAND
+    translation: [ 0.03116, 0, 0.11498 ]
+    rotation: [ [ 0, 0, 1, 180 ], [ 0, -1, 0, 55 ] ]
+    jointType: revolute
+    jointId: 6
+    jointAxis: [ 0, 1, 0 ]
+    jointAngle: 55
+    jointRange: [ 0, 115 ]
+    jointVelocityRange: [ -95.0, 95.0 ]
+    rotorInertia: 0.005
+    material: Hand
+    # AGX parameters
+    #jointMotorForceRange: [ -0.96, 0.96 ]
+    #jointLockForceRange: [ -0.96, 0.96 ]
+    #jointLockCompliance: 0.636318
+    #jointLockSpookDamping: 0.1
+    jointMotorForceRange: [ -10, 10 ]
+    jointLockForceRange: [ -10, 10 ]
+    elements: &FINGER_elements
+      RigidBody:
+        centerOfMass: [ 0, 0, 0.022 ]
+        mass: 0.01
+        inertia: [
+          0.000000789997, 0,          0,
+          0,              0.00000008, 0,
+          0,              0,          0.000000789997 ]
+        elements:
+          -
+            type: Visual
+            elements:
+              Shape:
+                geometry: { <<: *STL, uri: "parts/JACO2/FINGER.stl", creaseAngle: 15 }
+                appearance: *FINGER_APPEARANCE
+          -
+            type: Collision
+            elements:
+              -
+                type: Shape
+                translation: [ 0.00054, 0, -0.00214 ]
+                geometry: { type: Cylinder, height: 0.0225, radius: 0.00425 }
+              -
+                type: Shape
+                translation: [ -0.0016, 0, 0.0025 ]
+                rotation: [ 0, -1, 0, 15 ]
+                geometry: { type: Box, size: [ 0.01, 0.0225, 0.012 ] }
+              -
+                type: Shape
+                translation: [ -0.00509, 0, 0.01452 ]
+                rotation: [ 0, -1, 0, 8 ]
+                geometry: { type: Box, size: [ 0.012, 0.0225, 0.014 ] }
+              -
+                type: Shape
+                translation: [ -0.0049, 0, 0.0295 ]
+                rotation: [ 0, 1, 0, 6 ]
+                geometry: { type: Box, size: [ 0.012, 0.0225, 0.03 ] }
+              -
+                type: Shape
+                translation: [ -0.00417, 0, 0.04404 ]
+                geometry: { type: Cylinder, height: 0.0225, radius: 0.00667 }
+              -
+                type: Shape
+                translation: [ -0.01001, 0, 0.03809 ]
+                rotation: [ 0, 1, 0, 40.04 ]
+                geometry: { type: Box, size: [ 0.012, 0.0225, 0.01554 ] }
+              -
+                type: Shape
+                translation: [ -0.01451, 0, 0.01839 ]
+                rotation: [ 0, 1, 0, 2.98 ]
+                geometry: { type: Box, size: [ 0.012, 0.0225, 0.03465 ] }
+              -
+                type: Shape
+                translation: [ -0.00930, 0, 0.00236 ]
+                rotation: [ 0, -1, 0, 69.84 ]
+                geometry: { type: Box, size: [ 0.010, 0.0225, 0.02205 ] }
+  -
+    name: FINGER1_TIP
+    parent: FINGER1
+    translation: [ -0.003, 0, 0.044 ]
+    jointType: fixed
+    jointAxis: [ 0, 1, 0 ]
+    jointRange: [ 0, 115 ]
+    rotorInertia: 0.005
+    material: Hand
+    elements: &FINGER_TIP_elements
+      RigidBody:
+        centerOfMass: [ 0, 0, 0.022 ]
+        mass: 0.01
+        inertia: [
+          0.000000789997, 0,          0,
+          0,              0.00000008, 0,
+          0,              0,          0.000000789997 ]
+        elements:
+          -
+            type: Visual
+            elements:
+              Shape:
+                geometry: { <<: *STL, uri: "parts/JACO2/FINGER_TIP.stl", creaseAngle: 15 }
+                appearance: *FINGER_APPEARANCE
+          -
+            type: Collision
+            elements:
+              -
+                type: Shape
+                translation: [ -0.0044, 0, -0.0028 ]
+                rotation: [ 0, 1, 0, 0 ]
+                geometry: { type: Box, size: [ 0.0182, 0.015, 0.0122 ] }
+              -
+                type: Shape
+                translation: [ -0.0025, 0, 0.0123 ]
+                rotation: [ 0, -1, 0, 18.05 ]
+                geometry: { type: Box, size: [ 0.010, 0.020, 0.0225 ] }
+              -
+                type: Shape
+                translation: [ -0.00525, 0, 0.02545 ]
+                rotation: [ 0, -1, 0, 2.35 ]
+                geometry: { type: Box, size: [ 0.008, 0.020, 0.004 ] }
+              -
+                type: Shape
+                translation: [ -0.00511, 0, 0.02820 ]
+                rotation: [ 0, 1, 0, 11.04 ]
+                geometry: { type: Box, size: [ 0.008, 0.020, 0.004 ] }
+              -
+                type: Shape
+                translation: [ -0.00454, 0, 0.03596 ]
+                rotation: [ 0, -1, 0, 14.32 ]
+                geometry: { type: Box, size: [ 0.004, 0.020, 0.01455 ] }
+              -
+                type: Shape
+                translation: [ -0.00715, 0, 0.03432 ]
+                rotation: [ 0, 1, 0, 7.36 ]
+                geometry: { type: Box, size: [ 0.0043, 0.020, 0.01596 ] }
+              -
+                type: Shape
+                translation: [ -0.00795, 0, 0.01117 ]
+                rotation: [ 0, 1, 0, 7.86 ]
+                geometry: { type: Box, size: [ 0.00889, 0.020, 0.03286 ] }
+  -
+    name: FINGER2
+    parent: HAND
+    translation: [ -0.02982, 0.02277, 0.1139 ]
+    rotation: [ [ 0, 0, -1, 10.6 ], [ 0, -1, 0, 55 ] ]
+    jointType: revolute
+    jointId: 7
+    jointAxis: [ 0, 1, 0 ]
+    jointAngle: 55
+    jointRange: [ 0, 115 ]
+    jointVelocityRange: [ -95.0, 95.0 ]
+    rotorInertia: 0.005
+    material: Hand
+    # AGX parameters
+    #jointMotorForceRange: [ -0.96, 0.96 ]
+    #jointLockForceRange: [ -0.96, 0.96 ]
+    #jointLockCompliance: 0.636318
+    #jointLockSpookDamping: 0.1
+    jointMotorForceRange: [ -10, 10 ]
+    jointLockForceRange: [ -10, 10 ]
+    elements: *FINGER_elements
+  -
+    name: FINGER2_TIP
+    parent: FINGER2
+    translation: [ -0.003, 0, 0.044 ]
+    jointType: fixed
+    jointAxis: [ 0, 1, 0 ]
+    jointRange: [ 0, 115 ]
+    rotorInertia: 0.005
+    material: Hand
+    elements: *FINGER_TIP_elements
+  -
+    name: FINGER3
+    parent: HAND
+    translation: [ -0.02982, -0.02277, 0.1139 ]
+    rotation: [ [ 0, 0, 1, 10.6 ], [ 0, -1, 0, 55 ] ]
+    jointType: revolute
+    jointAxis: [ 0, 1, 0 ]
+    jointId: 8
+    jointAngle: 55
+    jointRange: [ 0, 115 ]
+    rotorInertia: 0.005
+    material: Hand
+    # AGX parameters
+    #jointMotorForceRange: [ -0.96, 0.96 ]
+    #jointLockForceRange: [ -0.96, 0.96 ]
+    #jointLockCompliance: 0.636318
+    #jointLockSpookDamping: 0.1
+    jointMotorForceRange: [ -10, 10 ]
+    jointLockForceRange: [ -10, 10 ]
+    jointVelocityRange: [ -95.0, 95.0 ]
+    elements: *FINGER_elements
+  -
+    name: FINGER3_TIP
+    parent: FINGER3
+    translation: [ -0.003, 0, 0.044 ]
+    jointType: fixed
+    jointAxis: [ 0, 1, 0 ]
+    jointRange: [ 0, 115 ]
+    rotorInertia: 0.005
+    material: Hand
+    elements: *FINGER_TIP_elements
+
+standardPose: [
+  90,        # J1
+  0,         # J2
+  0,         # J3
+  90,         # J4
+  90,         # J5
+  180,       # HAND
+  55,        # FINGER1
+  55,        # FINGER2
+  55         # FINGER3
+]
+
+
+collisionDetection:
+  excludeTreeDepth: 1
+  excludeLinkGroups:
+    -
+      name: ShoulderGroup
+      links: [ BASE, J1, J2 ]
+    -
+      name: ForeArmGroup
+      links: [ J3, J4, J5, HAND ]
+    -
+      name: FingerGroup
+      links: [ FINGER1, FINGER2, FINGER3 ]
+  
+  excludeLinksWireCollision: [ FINGER1, FINGER1_TIP, FINGER2, FINGER2_TIP, FINGER3, FINGER3_TIP ]
+
+

@@ -16,23 +16,66 @@ items:
       children: 
         - 
           id: 2
-          name: "Piping-110"
+          name: "LICTiA1F"
           plugin: Body
           class: BodyItem
-          is_checked: true
           data: 
-            file: "Piping-110.body"
+            file: "LICTiA1F.body"
             format: CHOREONOID-BODY
-            rootPosition: [ 0, 0, 0.036 ]
+            rootPosition: [ 0, 0, -0.05 ]
             rootAttitude: [ 
-              -1, -1.2246468e-16, 0, 
-              1.2246468e-16, -1, 0, 
+              1, 0, 0, 
+              0, 1, 0, 
+              0, 0, 1 ]
+            jointDisplacements: [ 
+              90, 90, 90, 90, 0, 0, 0, 0, 0, 0, 
+              0, -9.67057e-14, 0, 0, 0, 0, 0, 0, 0, 0, 
+              0, 0, 0, 0, 0, 0, 0 ]
+            initialJointDisplacements: [ 
+              90, 90, 90, 90, 0, 0, 0, 0, 0, 0, 
+              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+              0, 0, 0, 0, 0, 0, 0 ]
+            jointPositions: [ 
+              1.5708, 1.5708, 1.5708, 1.5708, 0, 0, 0, 0, 0, 0, 
+              0, -1.68783e-15, 0, 0, 0, 0, 0, 0, 0, 0, 
+              0, 0, 0, 0, 0, 0, 0 ]
+            initialRootPosition: [ 0, 0, -0.05 ]
+            initialRootAttitude: [ 
+              1, 0, 0, 
+              0, 1, 0, 
+              0, 0, 1 ]
+            initialJointPositions: [ 
+              1.5708, 1.5708, 1.5708, 1.5708, 0, 0, 0, 0, 0, 0, 
+              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+              0, 0, 0, 0, 0, 0, 0 ]
+            staticModel: false
+            collisionDetection: true
+            selfCollisionDetection: false
+            location_editable: true
+            scene_sensitive: true
+            link_kinematics: 
+              "Wbr_door_0": 
+                base_frame: 0
+                offset_frame: 0
+            zmp: [ 0, 0, 0 ]
+        - 
+          id: 3
+          name: "Table-120x120"
+          plugin: Body
+          class: BodyItem
+          data: 
+            file: "Table-120x120.body"
+            format: CHOREONOID-BODY
+            rootPosition: [ -4, 5, 0.72 ]
+            rootAttitude: [ 
+              1, 0, 0, 
+              0, 1, 0, 
               0, 0, 1 ]
             jointPositions: [  ]
-            initialRootPosition: [ 0, 0, 0.036 ]
+            initialRootPosition: [ -4, 5, 0.72 ]
             initialRootAttitude: [ 
-              -1, -1.2246468e-16, 0, 
-              1.2246468e-16, -1, 0, 
+              1, 0, 0, 
+              0, 1, 0, 
               0, 0, 1 ]
             staticModel: true
             collisionDetection: true
@@ -41,56 +84,25 @@ items:
             scene_sensitive: true
             zmp: [ 0, 0, 0 ]
         - 
-          id: 3
-          name: "Valve"
-          plugin: Body
-          class: BodyItem
-          is_checked: true
-          data: 
-            file: "Valve-65.body"
-            format: CHOREONOID-BODY
-            rootPosition: [ -0.01, 0, 0.9 ]
-            rootAttitude: [ 
-              1, 0, 0, 
-              0, 1, 0, 
-              0, 0, 1 ]
-            jointDisplacements: [ 0 ]
-            jointPositions: [ 0 ]
-            initialRootPosition: [ -0.01, 0, 0.9 ]
-            initialRootAttitude: [ 
-              1, 0, 0, 
-              0, 1, 0, 
-              0, 0, 1 ]
-            initialJointPositions: [ 0 ]
-            staticModel: false
-            collisionDetection: true
-            selfCollisionDetection: false
-            location_editable: false
-            scene_sensitive: true
-            zmp: [ 0, 0, 0 ]
-        - 
           id: 4
-          name: "Meter"
+          name: "Table-120x120"
           plugin: Body
           class: BodyItem
-          is_checked: true
           data: 
-            file: "Meter.body"
+            file: "Table-120x120.body"
             format: CHOREONOID-BODY
-            rootPosition: [ -0.195, 0, 1.07 ]
+            rootPosition: [ -2, 5, 0.72 ]
             rootAttitude: [ 
               1, 0, 0, 
               0, 1, 0, 
               0, 0, 1 ]
-            jointDisplacements: [ 0 ]
-            jointPositions: [ 0 ]
-            initialRootPosition: [ -0.195, 0, 1.07 ]
+            jointPositions: [  ]
+            initialRootPosition: [ -2, 5, 0.72 ]
             initialRootAttitude: [ 
               1, 0, 0, 
               0, 1, 0, 
               0, 0, 1 ]
-            initialJointPositions: [ 0 ]
-            staticModel: false
+            staticModel: true
             collisionDetection: true
             selfCollisionDetection: false
             location_editable: false
@@ -98,9 +110,160 @@ items:
             zmp: [ 0, 0, 0 ]
         - 
           id: 5
+          name: "ModifiedAizuWheel"
+          plugin: Body
+          class: BodyItem
+          data: 
+            file: "ModifiedAizuWheel.body"
+            format: CHOREONOID-BODY
+            rootPosition: [ -1.99292393, 7.0002254, 0.0592425197 ]
+            rootAttitude: [ 
+              0.999375388, -0.0353379089, -0.00025546876, 
+              0.0353377523, 0.99937525, -0.000593660043, 
+              0.000276287861, 0.000584261544, 0.999999791 ]
+            jointDisplacements: [ -5.2083, 7.53025, 7.47143, 4.95046, 7.76828, 8.87434 ]
+            initialJointDisplacements: [ 0, 0, 0, 0, 0, 0 ]
+            jointPositions: [ -0.090902, 0.131428, 0.130401, 0.0864018, 0.135582, 0.154886 ]
+            initialRootPosition: [ -2, 7, 0.059 ]
+            initialRootAttitude: [ 
+              0.999923847, -0.0122139363, -0.00176651813, 
+              0.0122169822, 0.999923884, 0.00172387547, 
+              0.00174532837, -0.00174532571, 0.999996954 ]
+            initialJointPositions: [ 0, 0, 0, 0, 0, 0 ]
+            staticModel: false
+            collisionDetection: true
+            selfCollisionDetection: false
+            location_editable: false
+            scene_sensitive: true
+            zmp: [ 0, 0, 0 ]
+        - 
+          id: 6
+          name: "PT-D435"
+          plugin: Body
+          class: BodyItem
+          data: 
+            file: "../naruse-sensor/pt-d435.yaml"
+            format: CHOREONOID-BODY
+            rootPosition: [ -2, 7, 0.3 ]
+            rootAttitude: [ 
+              2.22044605e-16, -1, 0, 
+              1, 2.22044605e-16, 0, 
+              0, 0, 1 ]
+            jointDisplacements: [ 0, 0 ]
+            jointPositions: [ 0, 0 ]
+            initialRootPosition: [ -2, 7, 0.3 ]
+            initialRootAttitude: [ 
+              2.22044605e-16, -1, 0, 
+              1, 2.22044605e-16, 0, 
+              0, 0, 1 ]
+            initialJointPositions: [ 0, 0 ]
+            staticModel: false
+            collisionDetection: true
+            selfCollisionDetection: false
+            location_editable: false
+            scene_sensitive: true
+            zmp: [ 0, 0, 0 ]
+          children: 
+            - 
+              id: 7
+              name: "SimpleController"
+              plugin: Body
+              class: SimpleControllerItem
+              data: 
+                isNoDelayMode: false
+                controllerOptions: ""
+                controller: "${HOME}/choreonoid/build/lib/choreonoid-1.8/simplecontroller/NarusePTD435SaveController"
+                baseDirectory: "None"
+                reloading: false
+                exportSymbols: false
+                isOldTargetVariableMode: false
+            - 
+              id: 8
+              name: "SensorVisualizer"
+              plugin: Body
+              class: SensorVisualizerItem
+              data: 
+                sub_items: 
+                  - 
+                    class: PointCloudVisualizerItem
+                    name: D435
+                    translation: [ -2, 7, 0.36 ]
+                    rotation: [ 5.68557e-17, 0.707107, 0.707107, 180 ]
+                    angle_unit: degree
+                    renderingMode: Point
+                    pointSize: 0
+                    voxelSize: 0.01
+                    isEditable: false
+                  - 
+                    class: CameraImageVisualizerItem
+                    name: D435_Image
+        - 
+          id: 9
+          name: "PT-D435"
+          plugin: Body
+          class: BodyItem
+          data: 
+            file: "../naruse-sensor/pt-d435.yaml"
+            format: CHOREONOID-BODY
+            rootPosition: [ -3, 5, 2.3 ]
+            rootAttitude: [ 
+              0, 1, 0, 
+              0, 0, 1, 
+              1, 0, 0 ]
+            jointDisplacements: [ 0, 0 ]
+            jointPositions: [ 0, 0 ]
+            initialRootPosition: [ -3, 5, 2.3 ]
+            initialRootAttitude: [ 
+              0, 1, 0, 
+              0, 0, 1, 
+              1, 0, 0 ]
+            initialJointPositions: [ 0, 0 ]
+            staticModel: false
+            collisionDetection: true
+            selfCollisionDetection: false
+            location_editable: false
+            scene_sensitive: true
+            zmp: [ 0, 0, 0 ]
+          children: 
+            - 
+              id: 10
+              name: "SimpleController"
+              plugin: Body
+              class: SimpleControllerItem
+              data: 
+                isNoDelayMode: false
+                controllerOptions: ""
+                controller: "${HOME}/choreonoid/build/lib/choreonoid-1.8/simplecontroller/NarusePTD435SaveController"
+                baseDirectory: "None"
+                reloading: false
+                exportSymbols: false
+                isOldTargetVariableMode: false
+            - 
+              id: 11
+              name: "SensorVisualizer"
+              plugin: Body
+              class: SensorVisualizerItem
+              data: 
+                sub_items: 
+                  - 
+                    class: PointCloudVisualizerItem
+                    name: D435
+                    translation: [ -3, 5.06, 2.3 ]
+                    rotation: [ -0.707107, -2.16489e-17, -0.707107, 4.96156e-15 ]
+                    angle_unit: degree
+                    renderingMode: Point
+                    pointSize: 0
+                    voxelSize: 0.01
+                    isEditable: false
+                  - 
+                    class: CameraImageVisualizerItem
+                    name: D435_Image
+        - 
+          id: 12
           name: "AISTSimulator"
           plugin: Body
           class: AISTSimulatorItem
+          is_selected: true
           data: 
             timeStep: 0.001
             realtimeSync: true
@@ -129,7 +292,7 @@ items:
             oldAccelSensorMode: false
           children: 
             - 
-              id: 6
+              id: 13
               name: "GLVisionSimulator"
               plugin: Body
               class: GLVisionSimulatorItem
@@ -147,28 +310,29 @@ items:
                 enableAdditionalLights: true
                 antiAliasing: false
         - 
-          id: 7
-          name: "PT-D435"
+          id: 14
+          name: "Tank"
           plugin: Body
           class: BodyItem
           is_selected: true
           is_checked: true
           data: 
-            file: "../naruse-sensor/pt-d435.yaml"
+            file: "${HOME}/choreonoid/share/model/Tank/Tank.body"
             format: CHOREONOID-BODY
-            rootPosition: [ 0.4, 0.2, 0.8 ]
+            rootPosition: [ -3, 7, 0.105749998 ]
             rootAttitude: [ 
-              1, 0, 0, 
-              0, 1, 0, 
-              0, 0, 1 ]
-            jointDisplacements: [ 0, 0 ]
-            jointPositions: [ 0, 0 ]
-            initialRootPosition: [ 0.4, 0.2, 0.8 ]
+              1, 1.07788883e-09, -6.62579985e-12, 
+              -1.07788883e-09, 1, 2.69306355e-11, 
+              6.62579988e-12, -2.69306354e-11, 1 ]
+            jointDisplacements: [ 2.2393e-10, -0.561853, 0, 0 ]
+            initialJointDisplacements: [ 0, 0, 0, 0 ]
+            jointPositions: [ 3.90832e-12, -0.00980618, 0, 0 ]
+            initialRootPosition: [ -3, 7, 0.106 ]
             initialRootAttitude: [ 
               1, 0, 0, 
               0, 1, 0, 
               0, 0, 1 ]
-            initialJointPositions: [ 0, 0 ]
+            initialJointPositions: [ 0, 0, 0, 0 ]
             staticModel: false
             collisionDetection: true
             selfCollisionDetection: false
@@ -177,20 +341,20 @@ items:
             zmp: [ 0, 0, 0 ]
           children: 
             - 
-              id: 8
+              id: 15
               name: "SimpleController"
               plugin: Body
               class: SimpleControllerItem
               data: 
                 isNoDelayMode: false
                 controllerOptions: ""
-                controller: "/usr/local/lib/choreonoid-1.8/simplecontroller/NarusePTD435SaveController"
+                controller: "/usr/local/lib/choreonoid-1.8/simplecontroller/TankJoystickController"
                 baseDirectory: "None"
                 reloading: false
                 exportSymbols: false
                 isOldTargetVariableMode: false
             - 
-              id: 9
+              id: 16
               name: "SensorVisualizer"
               plugin: Body
               class: SensorVisualizerItem
@@ -198,9 +362,20 @@ items:
                 sub_items: 
                   - 
                     class: PointCloudVisualizerItem
-                    name: D435
-                    translation: [ 0.4, 0.2, 0.86 ]
-                    rotation: [ 0.57735, 0.57735, 0.57735, 120 ]
+                    name: Kinect
+                    translation: [ 0, 0, 0 ]
+                    rotation: [ 1, 0, 0, 0 ]
+                    angle_unit: degree
+                    renderingMode: Point
+                    pointSize: 0
+                    voxelSize: 0.01
+                    isEditable: false
+                  - 
+                    class: RangeSensorVisualizerItem
+                    name: VLP-16
+                    is_checked: true
+                    translation: [ -3.00735, 7, 0.535443 ]
+                    rotation: [ 0.575454, -0.575454, -0.581125, 119.676 ]
                     angle_unit: degree
                     renderingMode: Point
                     pointSize: 0
@@ -208,51 +383,35 @@ items:
                     isEditable: false
                   - 
                     class: CameraImageVisualizerItem
-                    name: D435_Image
-        - 
-          id: 10
-          name: "Labo1"
-          plugin: Body
-          class: BodyItem
-          is_checked: true
-          data: 
-            file: "${HOME}/choreonoid/share/model/Labo1/Labo1.body"
-            format: CHOREONOID-BODY
-            rootPosition: [ 0, 0, 0 ]
-            rootAttitude: [ 
-              2.22044605e-16, -1, 0, 
-              1, 2.22044605e-16, 0, 
-              0, 0, 1 ]
-            jointDisplacements: [ -4.07111e-16 ]
-            initialJointDisplacements: [ 0 ]
-            jointPositions: [ -7.10543e-18 ]
-            initialRootPosition: [ 0, 0, 0 ]
-            initialRootAttitude: [ 
-              2.22044605e-16, -1, 0, 
-              1, 2.22044605e-16, 0, 
-              0, 0, 1 ]
-            initialJointPositions: [ 0 ]
-            staticModel: false
-            collisionDetection: true
-            selfCollisionDetection: false
-            location_editable: false
-            scene_sensitive: true
-            zmp: [ 0, 0, 0 ]
+                    name: Kinect_Image
+                  - 
+                    class: CameraImageVisualizerItem
+                    name: Theta
 views: 
   - 
     id: 0
+    name: "Kinect Image"
+    plugin: Base
+    class: ImageView
+  - 
+    id: 1
+    name: "Theta Image"
+    plugin: Base
+    class: ImageView
+  - 
+    id: 2
     plugin: Base
     class: ItemPropertyView
     mounted: true
   - 
-    id: 1
+    id: 3
     plugin: Base
     class: ItemTreeView
     mounted: true
     state: 
-      expanded: [ 1, 3, 4, 5, 7, 8, 9, 10 ]
+      expanded: [ 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16 ]
   - 
-    id: 2
+    id: 4
     name: "Location"
     plugin: Base
     class: LocationView
@@ -264,17 +423,17 @@ views:
       show_rotation_matrix: false
       coordinate: world
   - 
-    id: 3
+    id: 5
     plugin: Base
     class: MessageView
     mounted: true
   - 
-    id: 4
+    id: 6
     plugin: Base
     class: SceneView
     mounted: true
     state: 
-      editMode: true
+      editMode: false
       viewpointOperationMode: thirdPerson
       visible_polygon_elements: [ face ]
       highlighting: false
@@ -315,12 +474,12 @@ views:
           fieldOfView: 0.610865
           near: 0.04
           far: 200
-          eye: [ 7.99079, -0.470476, 6.8833 ]
-          direction: [ -0.747148, 0.00474591, -0.664641 ]
-          up: [ -0.664627, 0.00422174, 0.747163 ]
+          eye: [ 0.381285, 14.5971, 2.5866 ]
+          direction: [ -0.370247, -0.908076, -0.195741 ]
+          up: [ -0.0739021, -0.181254, 0.980656 ]
         - 
           camera: [ System, Orthographic ]
-          orthoHeight: 20
+          orthoHeight: 3.47548
           near: 0.04
           far: 200
       backgroundColor: [ 0.1, 0.1, 0.3 ]
@@ -329,19 +488,19 @@ views:
       yzgridColor: [ 0.9, 0.9, 0.9, 1 ]
       isDedicatedItemCheckEnabled: false
   - 
-    id: 5
+    id: 7
     name: "Virtual Joystick"
     plugin: Base
     class: VirtualJoystickView
     mounted: true
   - 
-    id: 6
+    id: 8
     plugin: Body
     class: BodyLinkView
     state: 
       showRotationMatrix: false
   - 
-    id: 7
+    id: 9
     plugin: Body
     class: JointDisplacementView
     mounted: true
@@ -354,22 +513,27 @@ views:
       show_dials: false
       show_phases: true
   - 
-    id: 8
+    id: 10
     name: "Links / Devices"
     plugin: Body
     class: LinkDeviceListView
     mounted: true
     state: 
-      element_type: all
+      element_type: device
       listingMode: list
+      current_body_item: 14
+      body_items: 
+        - 
+          id: 14
+          selected_links: [ 0 ]
   - 
-    id: 9
+    id: 11
     name: "Link Position"
     plugin: Body
     class: LinkPositionView
     mounted: true
     state: 
-      coordinate_mode: world
+      coordinate_mode: base
       preferred_coordinate_mode: base
       show_rpy: true
       unique_rpy: false
@@ -377,13 +541,13 @@ views:
       show_rotation_matrix: false
       target_link_type: ik_link
   - 
-    id: 10
+    id: 12
     name: "Link Properties"
     plugin: Body
     class: LinkPropertyView
     mounted: true
   - 
-    id: 11
+    id: 13
     plugin: Python
     class: PythonConsoleView
     mounted: true
@@ -394,7 +558,7 @@ toolbars:
     frameRate: 1000
     playbackFrameRate: 60
     idleLoopDrivenMode: false
-    currentTime: 8.263
+    currentTime: 13.45
     speedScale: 1
     syncToOngoingUpdates: true
     autoExpansion: true
@@ -447,8 +611,8 @@ Body:
   "BodyMotionEngine": 
     updateJointVelocities: false
   "BodySelectionManager": 
-    current_body_item: 7
-    current_link: "TiltPlate"
+    current_body_item: 14
+    current_link: "CHASSIS"
   "EditableSceneBody": 
     editableSceneBodies: 
       - 
@@ -467,12 +631,22 @@ Body:
         show_cm_projection: false
         show_zmp: false
       - 
-        bodyItem: 7
+        bodyItem: 5
         show_cm: false
         show_cm_projection: false
         show_zmp: false
       - 
-        bodyItem: 10
+        bodyItem: 6
+        show_cm: false
+        show_cm_projection: false
+        show_zmp: false
+      - 
+        bodyItem: 9
+        show_cm: false
+        show_cm_projection: false
+        show_zmp: false
+      - 
+        bodyItem: 14
         show_cm: false
         show_cm_projection: false
         show_zmp: false
@@ -497,12 +671,12 @@ viewAreas:
     contents: 
       type: splitter
       orientation: horizontal
-      sizes: [ 1550, 364 ]
+      sizes: [ 1566, 348 ]
       children: 
         - 
           type: splitter
           orientation: horizontal
-          sizes: [ 260, 1284 ]
+          sizes: [ 276, 1284 ]
           children: 
             - 
               type: splitter
@@ -511,11 +685,11 @@ viewAreas:
               children: 
                 - 
                   type: pane
-                  views: [ 1 ]
+                  views: [ 3 ]
                 - 
                   type: pane
-                  views: [ 0, 10 ]
-                  current: 0
+                  views: [ 2, 12 ]
+                  current: 2
             - 
               type: splitter
               orientation: vertical
@@ -523,11 +697,11 @@ viewAreas:
               children: 
                 - 
                   type: pane
-                  views: [ 4 ]
+                  views: [ 6 ]
                 - 
                   type: pane
-                  views: [ 3, 11 ]
-                  current: 3
+                  views: [ 5, 13 ]
+                  current: 5
         - 
           type: splitter
           orientation: vertical
@@ -535,7 +709,7 @@ viewAreas:
           children: 
             - 
               type: pane
-              views: [ 2 ]
+              views: [ 4 ]
             - 
               type: splitter
               orientation: vertical
@@ -543,7 +717,7 @@ viewAreas:
               children: 
                 - 
                   type: pane
-                  views: [ 9 ]
+                  views: [ 11 ]
                 - 
                   type: splitter
                   orientation: vertical
@@ -551,11 +725,11 @@ viewAreas:
                   children: 
                     - 
                       type: pane
-                      views: [ 8, 7 ]
-                      current: 7
+                      views: [ 10, 9 ]
+                      current: 10
                     - 
                       type: pane
-                      views: [ 5 ]
+                      views: [ 7 ]
 layoutOfToolBars: 
   rows: 
     - 
