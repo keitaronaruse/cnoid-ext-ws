@@ -46,7 +46,6 @@ items:
               name: "Valve"
               plugin: Body
               class: BodyItem
-              is_checked: true
               data: 
                 file: "Valve-65.body"
                 format: CHOREONOID-BODY
@@ -102,6 +101,7 @@ items:
           name: "ProArm"
           plugin: Body
           class: BodyItem
+          is_selected: true
           is_checked: true
           data: 
             file: "proarm.body"
@@ -200,7 +200,6 @@ items:
           name: "D435"
           plugin: Body
           class: BodyItem
-          is_selected: true
           is_checked: true
           data: 
             file: "../naruse-sensor/d435.yaml"
@@ -257,6 +256,49 @@ items:
                   - 
                     class: CameraImageVisualizerItem
                     name: D435_Image
+        - 
+          id: 12
+          name: "Human"
+          plugin: Body
+          class: BodyItem
+          is_checked: true
+          data: 
+            file: "human.yaml"
+            format: CHOREONOID-BODY
+            rootPosition: [ 4, 0, 1 ]
+            rootAttitude: [ 
+              -1, -1.2246468e-16, 0, 
+              1.2246468e-16, -1, 0, 
+              0, 0, 1 ]
+            jointDisplacements: [ 0, -120, 30.0001, 0 ]
+            initialJointDisplacements: [ 0, 0, 0 ]
+            jointPositions: [ 0, -2.0944, 0.5236, 0 ]
+            initialRootPosition: [ 4, 0, 1 ]
+            initialRootAttitude: [ 
+              -1, -1.2246468e-16, 0, 
+              1.2246468e-16, -1, 0, 
+              0, 0, 1 ]
+            initialJointPositions: [ 0, 0, 0 ]
+            staticModel: false
+            collisionDetection: true
+            selfCollisionDetection: false
+            location_editable: false
+            scene_sensitive: true
+            zmp: [ 0, 0, 0 ]
+          children: 
+            - 
+              id: 13
+              name: "SimpleController"
+              plugin: Body
+              class: SimpleControllerItem
+              data: 
+                isNoDelayMode: false
+                controllerOptions: ""
+                controller: "${HOME}/choreonoid/build/lib/choreonoid-1.8/simplecontroller/HumanHoldController"
+                baseDirectory: "None"
+                reloading: false
+                exportSymbols: false
+                isOldTargetVariableMode: false
 views: 
   - 
     id: 0
@@ -269,7 +311,7 @@ views:
     class: ItemTreeView
     mounted: true
     state: 
-      expanded: [ 1, 2, 3, 4, 5, 6, 7, 9, 10, 11 ]
+      expanded: [ 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13 ]
   - 
     id: 2
     name: "Location"
@@ -334,9 +376,9 @@ views:
           fieldOfView: 0.610865
           near: 0.04
           far: 200
-          eye: [ 1.13025, 2.00053, 1.83994 ]
-          direction: [ -0.169297, -0.84757, -0.502954 ]
-          up: [ -0.0985158, -0.493211, 0.864313 ]
+          eye: [ 6.16191, 5.17402, 4.48265 ]
+          direction: [ -0.582997, -0.682199, -0.44127 ]
+          up: [ -0.28668, -0.335461, 0.897374 ]
         - 
           camera: [ System, Orthographic ]
           orthoHeight: 20
@@ -412,7 +454,7 @@ toolbars:
     frameRate: 1000
     playbackFrameRate: 60
     idleLoopDrivenMode: false
-    currentTime: 13.527
+    currentTime: 2.328
     speedScale: 1
     syncToOngoingUpdates: true
     autoExpansion: true
@@ -465,8 +507,8 @@ Body:
   "BodyMotionEngine": 
     updateJointVelocities: false
   "BodySelectionManager": 
-    current_body_item: 9
-    current_link: "Base"
+    current_body_item: 5
+    current_link: "BASE"
   "EditableSceneBody": 
     editableSceneBodies: 
       - 
@@ -491,6 +533,11 @@ Body:
         show_zmp: false
       - 
         bodyItem: 9
+        show_cm: false
+        show_cm_projection: false
+        show_zmp: false
+      - 
+        bodyItem: 12
         show_cm: false
         show_cm_projection: false
         show_zmp: false

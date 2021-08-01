@@ -1,8 +1,8 @@
 /*
-    proarm-hold.cpp
-        Simple controller for proarm to hold a given pose
+    human-hold.cpp
+        Simple controller for human to hold a give pose
         Author: Keitaro Naruse
-        Date:   2021-07-30
+        Date:   2021-08-01
 */
 //  C++ include files
 //  For stream
@@ -15,10 +15,10 @@
 #include <cnoid/SimpleController>
 
 /*
-    class ProarmHoldController
-        Simple controller for proarm to hold a given pose
+    class HumanHoldController
+        Simple controller for human to hold a give pose
 */
-class ProarmHoldController : public cnoid::SimpleController
+class HumanHoldController : public cnoid::SimpleController
 {
 private:
     //  Class instance 
@@ -48,8 +48,10 @@ public:
             //  Set an initial referece angle
             q_ref.push_back(joint->q());
         }
-        q_ref[1] = 0.349067;
-        q_ref[2] = 0.349067;
+        q_ref[0] =  0.0;
+        q_ref[1] = -2.0944;
+        q_ref[2] =  0.5236;
+        q_ref[3] =  0.0;
 
         return( true );
     }
@@ -73,4 +75,4 @@ public:
     }
 };
 
-CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(ProarmHoldController)
+CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(HumanHoldController)

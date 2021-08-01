@@ -1,0 +1,152 @@
+#
+# human.yaml
+#   Choreonoid body file of Human 
+#   Author: Keitaro Naruse
+#   Date: 2021-08-01
+#   MIT License
+#
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: Human
+
+links: 
+  - name: Torso
+    jointType: fixed
+    translation: [ 0, 0, 1.00 ]
+    rotation: [ 1, 0, 0, 0 ]
+    elements: 
+      -
+        type: RigidBody
+        centerOfMass: [ 0, 0, 0 ]
+        mass: 48.0
+        inertia: [
+          2.08, 0,     0,
+          0,    1.60,  0,
+          0,    0,     0.80 ]
+        elements:
+          Shape:
+            geometry: 
+              type: Box
+              size: [0.2, 0.4, 0.6]
+            appearance: &GreenAppearance
+              material: 
+                diffuseColor: [ 0.2, 0.8, 0.2 ] 
+                specularColor: [ 0.1, 0.1, 0.1]
+                shininess: 0.4
+  - name: Head
+    parent: Torso
+    jointType: revolute
+    jointAxis: Z
+    jointRange: [-120.0, 120.0]
+    maxJointVeocity: 90
+    jointId: 0
+    translation: [ 0, 0, 0.4 ]
+    rotation: [ 1, 0, 0, 0 ]
+    elements: 
+      -
+        type: RigidBody
+        centerOfMass: [ 0, 0, 0 ]
+        mass: 8.0
+        inertia: [
+          0.0533, 0,     0,
+          0,     0.0533, 0,
+          0,     0,     0.0533 ]
+        elements:
+          Shape:
+            geometry: 
+              type: Box
+              size: [0.2, 0.2, 0.2]
+            appearance: *GreenAppearance
+  - name: RigihtForeArm
+    parent: Torso
+    jointType: revolute
+    jointAxis: -Y
+    jointRange: [-270, 90]
+    maxJointVeocity: 90
+    jointId: 1
+    translation: [ 0.0, -0.25, 0.25 ]
+    rotation: [ 1, 0, 0, 0 ]
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0.15 ]
+        rotation: [ 1, 0, 0, 0 ]
+        elements:
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 4.0
+          inertia: [
+            0.00567, 0,        0,
+            0,       0.00567,  0,
+            0,       0,        0.00667 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Box
+                size: [0.1, 0.1, 0.4]
+              appearance: &BlueAppearance
+                 material: 
+                  diffuseColor: [ 0.2, 0.2, 0.8 ] 
+                  specularColor: [ 0.1, 0.1, 0.1]
+                  shininess: 0.4
+  - name: RigihtLowerArm
+    parent: RigihtForeArm
+    jointType: revolute
+    jointAxis: -Y
+    jointRange: [0.0, 180.0]
+    maxJointVeocity: 90
+    jointId: 2
+    translation: [ 0, 0, 0.35 ]
+    rotation: [ 1, 0, 0, 0 ]
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0.15 ]
+        rotation: [ 1, 0, 0, 0 ]
+        elements:
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 2.0
+          inertia: [
+            0.02708,  0,       0,
+            0,        0.02833, 0,
+            0,        0,       0.002083 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Box
+                size: [0.05, 0.10, 0.4]
+              appearance: *BlueAppearance
+  - name: RightHand
+    parent: RigihtLowerArm
+    jointType: revolute
+    jointAxis: -Y
+    jointRange: [0.0, 90.0]
+    maxJointVeocity: 90
+    jointId: 3
+    translation: [ 0, 0, 0.325 ]
+    rotation: [ 1, 0, 0, 0 ]
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0.05 ]
+        rotation: [ 1, 0, 0, 0 ]
+        elements:
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.5
+          inertia: [
+            8.333e-4, 0,        0,
+            0,        5.208e-4, 0,
+            0,        0,        5.208e-4 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Box
+                size: [0.05, 0.10, 0.10]
+              appearance: &RedAppearance
+                material: 
+                  diffuseColor: [ 0.8, 0.2, 0.2 ] 
+                  specularColor: [ 0.1, 0.1, 0.1]
+                  shininess: 0.4

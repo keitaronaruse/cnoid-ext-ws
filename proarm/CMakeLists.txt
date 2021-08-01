@@ -1,1 +1,2 @@
 choreonoid_add_simple_controller(ProarmHoldController proarm-hold.cpp)
+choreonoid_add_simple_controller(HumanHoldController human-hold.cpp)
