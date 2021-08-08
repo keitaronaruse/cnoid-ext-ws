@@ -14,25 +14,25 @@ links:
   - name: BaseLink
     jointType: fixed
     centerOfMass: [ 0, 0, 0 ]
-    mass: 0.0544
+    mass: 0.1382
     inertia: [
-      91.4e-6,       0,      0,
-      0,       91.4e-6,      0,
-      0,             0, 182.8e-6 ]
+      1.544e-2,       0,        0,
+      0,       1.544e-2,        0,
+      0,              0, 3.087e-2 ]
     elements:
       Shape:
         geometry:
           type: Box
-          size: [ 0.142, 0.142, 0.002 ]
+          size: [ 0.160, 0.160, 0.002 ]
         appearance: &BaseAppearance
             material: 
-              diffuseColor: [ 0.8, 0.8, 0.8 ]
+              diffuseColor: [ 0.6, 0.6, 0.6 ]
               specularColor: [ 0.2, 0.2, 0.2 ]
               shininess: 0.2
   - name: FrontD435Link
     parent: BaseLink
     jointType: fixed
-    translation: [ 0.058, 0, 0.013 ]
+    translation: [ 0.064, 0, 0.013 ]
     rotation: [ 0, 0, 1, 0 ]
     centerOfMass: [ 0, 0, 0 ]
     mass: 0.06084
@@ -69,7 +69,7 @@ links:
   - name: LeftD435Link
     parent: BaseLink
     jointType: fixed
-    translation: [ 0, 0.058, 0.013 ]
+    translation: [ 0, 0.064, 0.013 ]
     rotation: [ 0, 0, 1, 90 ]
     centerOfMass: [ 0, 0, 0 ]
     mass: 0.06084
@@ -97,7 +97,7 @@ links:
   - name: RearD435Link
     parent: BaseLink
     jointType: fixed
-    translation: [ -0.058, 0, 0.013 ]
+    translation: [ -0.064, 0, 0.013 ]
     rotation: [ 0, 0, 1, 180 ]
     centerOfMass: [ 0, 0, 0 ]
     mass: 0.06084
@@ -125,7 +125,7 @@ links:
   - name: RightD435Link
     parent: BaseLink
     jointType: fixed
-    translation: [ 0, -0.058, 0.013 ]
+    translation: [ 0, -0.064, 0.013 ]
     rotation: [ 0, 0, 1, 270 ]
     centerOfMass: [ 0, 0, 0 ]
     mass: 0.06084

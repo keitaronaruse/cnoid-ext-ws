@@ -1,0 +1,29 @@
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: Lever
+
+links:
+  -
+    name: PIPE
+    jointType: fixed
+    elements:
+      -
+        type: Visual
+        resource:
+          uri: "resource/Lever_pipe_brass.dae"
+  -
+    name: LEVER
+    parent: PIPE
+    translation: [ 0.092, -0.0002, 0.000485 ]
+    jointType: revolute
+    jointAxis: X
+    jointId: 0
+    jointMotor: true
+    jointMotorCompliance: 0.3
+    mass: 1.0
+    elements:
+      -
+        type: Visual
+        resource:
+          uri: "resource/Lever_only_green.dae"
