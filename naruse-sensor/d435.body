@@ -1,0 +1,52 @@
+#
+#   d435.body
+#       Choreonoid body file of D435
+#       Author: Keitaro Naruse
+#       Date:   2021-07-10
+#       - 2021-07-10: Dimension and FoV updated
+#       - 2021-08-17: Rotated 180 deg. around the z-axis
+#       License: MIT License
+#
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: D435
+
+links: 
+  - name: Base
+    jointType: fixed
+    centerOfMass: [ 0, 0, 0 ]
+    mass: 0.06084
+    inertia: [
+      6.76e-6,        0,        0,
+      0,       43.88e-6,        0,
+      0,              0, 43.88e-6 ]
+    elements:
+    -
+      type: Transform
+      rotation: [ 0, 0, 1, 180 ]
+      elements: 
+        type: Camera
+        name: D435
+        translation: [ 0, 0, 0 ]
+        rotation: [ [0, 1, 0, -90], [0, 0, 1, -90] ]
+        # Camera view vector is -Z
+        format: COLOR_DEPTH
+        # Fov (Filed of View) should be given by the agnle of the shorter edge
+        # Because FoV of D435 is 85.2 * 58.0 deg, it should give 58.0 deg.
+        fieldOfView: 58.0
+        nearClipDistance: 0.2
+        farClipDistance: 3.0
+        width: 428
+        height: 240
+        frameRate: 30
+        elements: &D435Frame
+          Shape:
+            geometry: 
+              type: Box
+              size: [0.090, 0.026, 0.026]
+            appearance: 
+              material: 
+                diffuseColor: [ 0.8, 0.8, 0.8 ]
+                specularColor: [ 0.2, 0.2, 0.2 ]
+                shininess: 0.2

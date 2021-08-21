@@ -67,68 +67,6 @@ items:
                 antiAliasing: false
         - 
           id: 4
-          name: "D435"
-          plugin: Body
-          class: BodyItem
-          is_selected: true
-          is_checked: true
-          data: 
-            file: "green-lever-only/../../naruse-sensor/d435.yaml"
-            format: CHOREONOID-BODY
-            rootPosition: [ 0.078, -0.29, 0 ]
-            rootAttitude: [ 
-              -0.258819045, -0.965925826, 0, 
-              0.965925826, -0.258819045, 0, 
-              0, 0, 1 ]
-            jointPositions: [  ]
-            initialRootPosition: [ 0.078, -0.29, 0 ]
-            initialRootAttitude: [ 
-              -0.258819045, -0.965925826, 0, 
-              0.965925826, -0.258819045, 0, 
-              0, 0, 1 ]
-            staticModel: true
-            collisionDetection: true
-            selfCollisionDetection: false
-            location_editable: false
-            scene_sensitive: true
-            zmp: [ 0, 0, 0 ]
-          children: 
-            - 
-              id: 5
-              name: "SimpleController"
-              plugin: Body
-              class: SimpleControllerItem
-              data: 
-                isNoDelayMode: false
-                controllerOptions: ""
-                controller: "/usr/local/lib/choreonoid-1.8/simplecontroller/D435SavePCDController"
-                baseDirectory: "None"
-                reloading: false
-                exportSymbols: false
-                isOldTargetVariableMode: false
-            - 
-              id: 6
-              name: "SensorVisualizer"
-              plugin: Body
-              class: SensorVisualizerItem
-              data: 
-                sub_items: 
-                  - 
-                    class: PointCloudVisualizerItem
-                    name: D435
-                    is_checked: true
-                    translation: [ 0.078, -0.29, 0 ]
-                    rotation: [ 0.983106, 0.129428, 0.129428, 90.9762 ]
-                    angle_unit: degree
-                    renderingMode: Point
-                    pointSize: 0
-                    voxelSize: 0.01
-                    isEditable: false
-                  - 
-                    class: CameraImageVisualizerItem
-                    name: D435_Image
-        - 
-          id: 7
           name: "Lever"
           plugin: Body
           class: BodyItem
@@ -154,6 +92,93 @@ items:
             location_editable: true
             scene_sensitive: true
             zmp: [ 0, 0, 0 ]
+        - 
+          id: 5
+          name: "D435"
+          plugin: Body
+          class: BodyItem
+          is_checked: true
+          data: 
+            file: "../naruse-sensor/d435.body"
+            format: CHOREONOID-BODY
+            rootPosition: [ 0, -0.3, 0 ]
+            rootAttitude: [ 
+              -1.8369702e-16, 1, -0, 
+              -1, -1.8369702e-16, 0, 
+              -0, 0, 1 ]
+            jointPositions: [  ]
+            initialRootPosition: [ 0, -0.3, 0 ]
+            initialRootAttitude: [ 
+              -2.22044605e-16, 1, 0, 
+              -1, -2.22044605e-16, -0, 
+              -0, 0, 1 ]
+            staticModel: true
+            collisionDetection: true
+            selfCollisionDetection: false
+            location_editable: false
+            scene_sensitive: true
+            zmp: [ 0, 0, 0 ]
+          children: 
+            - 
+              id: 6
+              name: "SimpleController"
+              plugin: Body
+              class: SimpleControllerItem
+              data: 
+                isNoDelayMode: false
+                controllerOptions: ""
+                controller: "/usr/local/lib/choreonoid-1.8/simplecontroller/D435SavePCDController"
+                baseDirectory: "None"
+                reloading: false
+                exportSymbols: false
+                isOldTargetVariableMode: false
+            - 
+              id: 7
+              name: "SensorVisualizer"
+              plugin: Body
+              class: SensorVisualizerItem
+              data: 
+                sub_items: 
+                  - 
+                    class: PointCloudVisualizerItem
+                    name: D435
+                    is_checked: true
+                    translation: [ 0, -0.3, 0 ]
+                    rotation: [ 1, -1.83697e-16, -1.22465e-16, 90 ]
+                    angle_unit: degree
+                    renderingMode: Point
+                    pointSize: 0
+                    voxelSize: 0.01
+                    isEditable: false
+                  - 
+                    class: CameraImageVisualizerItem
+                    name: D435_Image
+        - 
+          id: 8
+          name: "Light"
+          plugin: Body
+          class: BodyItem
+          is_checked: true
+          data: 
+            file: "../naruse-sensor/light.body"
+            format: CHOREONOID-BODY
+            rootPosition: [ 0.4, 0, 0.2 ]
+            rootAttitude: [ 
+              0.866025404, 0, -0.5, 
+              0, 1, 0, 
+              0.5, 0, 0.866025404 ]
+            jointPositions: [  ]
+            initialRootPosition: [ 0.4, 0, 0.2 ]
+            initialRootAttitude: [ 
+              0.866025404, 0, -0.5, 
+              0, 1, 0, 
+              0.5, -0, 0.866025404 ]
+            staticModel: true
+            collisionDetection: true
+            selfCollisionDetection: false
+            location_editable: false
+            scene_sensitive: true
+            zmp: [ 0, 0, 0 ]
 views: 
   - 
     id: 0
@@ -166,7 +191,7 @@ views:
     class: ItemTreeView
     mounted: true
     state: 
-      expanded: [ 1, 2, 4, 5, 6, 7 ]
+      expanded: [ 1, 2, 4, 5, 6, 7, 8 ]
   - 
     id: 2
     name: "Location"
@@ -231,9 +256,9 @@ views:
           fieldOfView: 0.610865
           near: 0.04
           far: 200
-          eye: [ -0.773207, -0.00742195, 1.58146 ]
-          direction: [ 0.443948, 0.000353437, -0.896053 ]
-          up: [ 0.896052, 0.000713368, 0.443948 ]
+          eye: [ 0.225508, -1.41234, 0.551526 ]
+          direction: [ -0.121739, 0.931175, -0.343646 ]
+          up: [ -0.0445482, 0.340746, 0.939099 ]
         - 
           camera: [ System, Orthographic ]
           orthoHeight: 1.27856
@@ -310,7 +335,7 @@ toolbars:
     frameRate: 1000
     playbackFrameRate: 60
     idleLoopDrivenMode: false
-    currentTime: 3.207
+    currentTime: 3.246
     speedScale: 1
     syncToOngoingUpdates: true
     autoExpansion: true
@@ -363,7 +388,7 @@ Body:
   "BodyMotionEngine": 
     updateJointVelocities: false
   "BodySelectionManager": 
-    current_body_item: 4
+    current_body_item: 5
     current_link: "Base"
   "EditableSceneBody": 
     editableSceneBodies: 
@@ -373,7 +398,12 @@ Body:
         show_cm_projection: false
         show_zmp: false
       - 
-        bodyItem: 7
+        bodyItem: 5
+        show_cm: false
+        show_cm_projection: false
+        show_zmp: false
+      - 
+        bodyItem: 8
         show_cm: false
         show_cm_projection: false
         show_zmp: false
@@ -398,22 +428,22 @@ viewAreas:
     contents: 
       type: splitter
       orientation: horizontal
-      sizes: [ 1252, 141 ]
+      sizes: [ 1446, 468 ]
       children: 
         - 
           type: splitter
           orientation: horizontal
-          sizes: [ 374, 872 ]
+          sizes: [ 432, 1008 ]
           children: 
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 467, 306 ]
+              sizes: [ 544, 356 ]
               children: 
                 - 
                   type: splitter
                   orientation: vertical
-                  sizes: [ 231, 230 ]
+                  sizes: [ 270, 268 ]
                   children: 
                     - 
                       type: pane
@@ -427,7 +457,7 @@ viewAreas:
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 640, 133 ]
+              sizes: [ 745, 155 ]
               children: 
                 - 
                   type: pane
@@ -439,7 +469,7 @@ viewAreas:
         - 
           type: splitter
           orientation: vertical
-          sizes: [ 423, 350 ]
+          sizes: [ 492, 408 ]
           children: 
             - 
               type: pane

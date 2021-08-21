@@ -1,0 +1,51 @@
+#
+#   light.body
+#       Choreonoid body file of pot light
+#       Author: Keitaro Naruse
+#       Date:   2021-08-17
+#       - 2021-07-10: Dimension and FoV updated
+#       - 2021-08-15: Spot light has added
+#       License: MIT License
+#
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: Light
+
+links: 
+  - name: Base
+    jointType: fixed
+    centerOfMass: [ 0, 0, 0 ]
+    mass: 0.06084
+    inertia: [
+      6.76e-6,        0,        0,
+      0,       43.88e-6,        0,
+      0,              0, 43.88e-6 ]
+    elements:
+    -
+      type: Transform
+      rotation: [0, 0, 1, 180]
+      elements: 
+        type: SpotLight
+        name: Light
+        translation: [ 0, 0, 0.05 ]
+        direction: [ 1, 0, 0 ]
+        beamWidth: 90
+        cutOffAngle: 45
+        cutOffExponent: 1
+        attenuation: [ 1, 0, 0.01 ]
+        elements: &LightFrame
+          Shape:
+            rotation: [ 0, 0, 1, 90 ]
+            translation: [ -0.02, 0, 0 ]
+            geometry:
+              type: Cone
+              height: 0.02
+              radius: 0.02
+            appearance:
+              material:
+                diffuseColor: [ 0.8, 0.8, 0.8 ]
+                specularColor: [ 0.2, 0.2, 0.2 ]
+                shininess: 0.2
+                ambientIntensity: 0.3
+                emissiveColor: [ 0.8, 0.8, 0.8 ]
