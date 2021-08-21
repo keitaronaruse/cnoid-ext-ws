@@ -1,0 +1,39 @@
+#
+# I-debris.body
+#   Choreonoid body file of I-debris
+#   Author: Keitaro Naruse
+#   Date: 2021-08-21
+#   MIT License
+#
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: I-debris
+
+links: 
+  - name: Base
+    jointType: free
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0 ]
+        rotation: [ 1, 0, 0, 0 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 8.0
+          inertia: [
+            2.672, 0,      0,
+            0,     0.010,  0,
+            0,     0,      2.672 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 2.000
+                radius: 0.050
+              appearance: &GrayAluminumArroyAppearance
+                material: 
+                  diffuseColor: [ 0.5, 0.5, 0.5 ] 
+                  specularColor: [ 0.5, 0.5, 0.5]
+                  shininess: 0.5

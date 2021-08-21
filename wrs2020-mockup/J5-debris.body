@@ -1,0 +1,315 @@
+#
+# J5-debris.body
+#   Choreonoid body file of J5-debris
+#   Author: Keitaro Naruse
+#   Date: 2021-08-21
+#   MIT License
+#
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: J5-debris
+
+links: 
+  - name: Long-side
+    jointType: free
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0 ]
+        rotation: [ 1, 0, 0, 0 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.125
+          inertia: [
+            2.609e-3, 0,         0,
+            0,        9.766e-6,  0,
+            0,        0,         2.609e-3 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.500
+                radius: 0.0125
+              appearance: &GrayAluminumArroyAppearance
+                material: 
+                  diffuseColor: [ 0.5, 0.5, 0.5 ] 
+                  specularColor: [ 0.5, 0.5, 0.5]
+                  shininess: 0.5
+  - name: Short-side1
+    parent: Long-side
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        translation: [ 0.015, -0.30, 0 ]
+        rotation: [ 0, 0, 1, 15 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.03125
+          inertia: [
+            4.191e-5, 0,         0,
+            0,        2.441e-6,  0,
+            0,        0,         4.191e-5 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.125
+                radius: 0.0125
+              appearance: *GrayAluminumArroyAppearance
+  - name: Short-side2
+    parent: Short-side1
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        translation: [ 0.06, -0.41, 0 ]
+        rotation: [ 0, 0, 1, 30 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.03125
+          inertia: [
+            4.191e-5, 0,         0,
+            0,        2.441e-6,  0,
+            0,        0,         4.191e-5 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.125
+                radius: 0.0125
+              appearance: *GrayAluminumArroyAppearance
+  - name: Short-side3
+    parent: Short-side2
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        translation: [ 0.13, -0.50, 0 ]
+        rotation: [ 0, 0, 1, 45 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.03125
+          inertia: [
+            4.191e-5, 0,         0,
+            0,        2.441e-6,  0,
+            0,        0,         4.191e-5 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.125
+                radius: 0.0125
+              appearance: *GrayAluminumArroyAppearance
+  - name: Short-side4
+    parent: Short-side3
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        translation: [ 0.22, -0.57, 0 ]
+        rotation: [ 0, 0, 1, 60 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.03125
+          inertia: [
+            4.191e-5, 0,         0,
+            0,        2.441e-6,  0,
+            0,        0,         4.191e-5 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.125
+                radius: 0.0125
+              appearance: *GrayAluminumArroyAppearance
+  - name: Short-side5
+    parent: Short-side4
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        translation: [ 0.33, -0.615, 0 ]
+        rotation: [ 0, 0, 1, 75 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.03125
+          inertia: [
+            4.191e-5, 0,         0,
+            0,        2.441e-6,  0,
+            0,        0,         4.191e-5 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.125
+                radius: 0.0125
+              appearance: *GrayAluminumArroyAppearance
+  - name: Short-side6
+    parent: Short-side5
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        translation: [ 0.45, -0.63, 0 ]
+        rotation: [ 0, 0, 1, 90 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.03125
+          inertia: [
+            4.191e-5, 0,         0,
+            0,        2.441e-6,  0,
+            0,        0,         4.191e-5 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.125
+                radius: 0.0125
+              appearance: *GrayAluminumArroyAppearance
+  - name: Short-side7
+    parent: Short-side6
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        translation: [ 0.57, -0.615, 0 ]
+        rotation: [ 0, 0, 1, 105 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.03125
+          inertia: [
+            4.191e-5, 0,         0,
+            0,        2.441e-6,  0,
+            0,        0,         4.191e-5 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.125
+                radius: 0.0125
+              appearance: *GrayAluminumArroyAppearance
+  - name: Short-side8
+    parent: Short-side7
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        translation: [ 0.68, -0.57, 0 ]
+        rotation: [ 0, 0, 1, 120 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.03125
+          inertia: [
+            4.191e-5, 0,         0,
+            0,        2.441e-6,  0,
+            0,        0,         4.191e-5 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.125
+                radius: 0.0125
+              appearance: *GrayAluminumArroyAppearance
+  - name: Short-side9
+    parent: Short-side8
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        translation: [ 0.77, -0.50, 0 ]
+        rotation: [ 0, 0, 1, 135 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.03125
+          inertia: [
+            4.191e-5, 0,         0,
+            0,        2.441e-6,  0,
+            0,        0,         4.191e-5 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.125
+                radius: 0.0125
+              appearance: *GrayAluminumArroyAppearance
+  - name: Short-side10
+    parent: Short-side9
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        translation: [ 0.84, -0.41, 0 ]
+        rotation: [ 0, 0, 1, 150 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.03125
+          inertia: [
+            4.191e-5, 0,         0,
+            0,        2.441e-6,  0,
+            0,        0,         4.191e-5 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.125
+                radius: 0.0125
+              appearance: *GrayAluminumArroyAppearance
+  - name: Short-side11
+    parent: Short-side10
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        translation: [ 0.88, -0.31, 0 ]
+        rotation: [ 0, 0, 1, 165 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.03125
+          inertia: [
+            4.191e-5, 0,         0,
+            0,        2.441e-6,  0,
+            0,        0,         4.191e-5 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.125
+                radius: 0.0125
+              appearance: *GrayAluminumArroyAppearance
+  - name: Short-side12
+    parent: Short-side11
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        translation: [ 0.895, -0.20, 0 ]
+        rotation: [ 0, 0, 1, 180 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.03125
+          inertia: [
+            4.191e-5, 0,         0,
+            0,        2.441e-6,  0,
+            0,        0,         4.191e-5 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.125
+                radius: 0.0125
+              appearance: *GrayAluminumArroyAppearance

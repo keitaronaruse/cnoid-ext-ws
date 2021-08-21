@@ -1,0 +1,62 @@
+#
+# L2-debris.body
+#   Choreonoid body file of L2-debris
+#   Author: Keitaro Naruse
+#   Date: 2021-08-21
+#   MIT License
+#
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: L2-debris
+
+links: 
+  - name: Long-side
+    jointType: free
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0 ]
+        rotation: [ 1, 0, 0, 0 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 1.0
+          inertia: [
+            8.349e-2, 0,         0,
+            0,        3.125e-4,  0,
+            0,        0,         8.349e-2 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 1.000
+                radius: 0.025
+              appearance: &GrayAluminumArroyAppearance
+                material: 
+                  diffuseColor: [ 0.5, 0.5, 0.5 ] 
+                  specularColor: [ 0.5, 0.5, 0.5]
+                  shininess: 0.5
+  - name: Short-side
+    parent: Long-side
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        translation: [ 0.225, -0.475, 0 ]
+        rotation: [ 0, 0, 1, 90 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.5
+          inertia: [
+            1.049e-2, 0,         0,
+            0,        1.563e-4,  0,
+            0,        0,         1.049e-2 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.500
+                radius: 0.025
+              appearance: *GrayAluminumArroyAppearance

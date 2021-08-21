@@ -1,0 +1,108 @@
+#
+# J2-debris.body
+#   Choreonoid body file of J2-debris
+#   Author: Keitaro Naruse
+#   Date: 2021-08-21
+#   MIT License
+#
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: J2-debris
+
+links: 
+  - name: Long-side
+    jointType: free
+    elements: 
+      -
+        type: Transform
+        translation: [ 0, 0, 0 ]
+        rotation: [ 1, 0, 0, 0 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.125
+          inertia: [
+            2.609e-3, 0,         0,
+            0,        9.766e-6,  0,
+            0,        0,         2.609e-3 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.500
+                radius: 0.0125
+              appearance: &GrayAluminumArroyAppearance
+                material: 
+                  diffuseColor: [ 0.5, 0.5, 0.5 ] 
+                  specularColor: [ 0.5, 0.5, 0.5]
+                  shininess: 0.5
+  - name: Short-side1
+    parent: Long-side
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        translation: [ 0.10, -0.31, 0 ]
+        rotation: [ 0, 0, 1, 60 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.0625
+          inertia: [
+            3.280e-4, 0,         0,
+            0,        4.883e-6,  0,
+            0,        0,         3.280e-4 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.250
+                radius: 0.0125
+              appearance: *GrayAluminumArroyAppearance
+  - name: Short-side2
+    parent: Short-side1
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        translation: [ 0.31, -0.31, 0 ]
+        rotation: [ 0, 0, 1, 120 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.0625
+          inertia: [
+            3.280e-4, 0,         0,
+            0,        4.883e-6,  0,
+            0,        0,         3.280e-4 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.250
+                radius: 0.0125
+              appearance: *GrayAluminumArroyAppearance
+  - name: Short-side3
+    parent: Short-side2
+    jointType: fixed
+    elements: 
+      -
+        type: Transform
+        translation: [ 0.41, -0.13, 0 ]
+        rotation: [ 0, 0, 1, 180 ]
+        elements: 
+          type: RigidBody
+          centerOfMass: [ 0, 0, 0 ]
+          mass: 0.0625
+          inertia: [
+            3.280e-4, 0,         0,
+            0,        4.883e-6,  0,
+            0,        0,         3.280e-4 ]
+          elements:
+            Shape:
+              geometry: 
+                type: Cylinder
+                height: 0.250
+                radius: 0.0125
+              appearance: *GrayAluminumArroyAppearance
