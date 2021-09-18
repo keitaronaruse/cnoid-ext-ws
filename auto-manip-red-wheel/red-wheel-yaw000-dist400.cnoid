@@ -39,7 +39,7 @@ items:
             staticModel: false
             collisionDetection: true
             selfCollisionDetection: false
-            location_editable: false
+            location_editable: true
             scene_sensitive: true
             zmp: [ 0, 0, 0 ]
         - 
@@ -62,7 +62,7 @@ items:
               1, 0, 0, 
               0, 1, 0, 
               0, 0, 1 ]
-            staticModel: true
+            staticModel: false
             collisionDetection: true
             selfCollisionDetection: false
             location_editable: true
@@ -74,6 +74,7 @@ items:
               name: "SimpleController"
               plugin: Body
               class: SimpleControllerItem
+              is_selected: true
               data: 
                 isNoDelayMode: false
                 controllerOptions: ""
@@ -144,7 +145,7 @@ views:
     class: ItemTreeView
     mounted: true
     state: 
-      expanded: [ 1, 2, 3, 4, 5 ]
+      expanded: [ 1, 2, 3, 5 ]
   - 
     id: 2
     name: "Location"
@@ -209,9 +210,9 @@ views:
           fieldOfView: 0.610865
           near: 0.04
           far: 200
-          eye: [ 0.685687, 1.06109, 1.2446 ]
-          direction: [ -0.534739, -0.821284, -0.198865 ]
-          up: [ -0.108508, -0.166653, 0.980027 ]
+          eye: [ 0.903437, 1.18446, 1.51221 ]
+          direction: [ -0.492149, -0.807876, -0.324232 ]
+          up: [ -0.168683, -0.276898, 0.945978 ]
         - 
           camera: [ System, Orthographic ]
           orthoHeight: 2.10798
@@ -288,7 +289,7 @@ toolbars:
     frameRate: 1000
     playbackFrameRate: 60
     idleLoopDrivenMode: false
-    currentTime: 25.076
+    currentTime: 7.624
     speedScale: 1
     syncToOngoingUpdates: true
     autoExpansion: true

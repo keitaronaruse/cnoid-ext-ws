@@ -14,7 +14,7 @@ name: D435
 
 links: 
   - name: Base
-    jointType: fixed
+    jointType: free
     centerOfMass: [ 0, 0, 0 ]
     mass: 0.06084
     inertia: [
