@@ -30,7 +30,7 @@ items:
               0, 0, 1 ]
             jointDisplacements: [ 0 ]
             jointPositions: [ 0 ]
-            initialRootPosition: [ 0, 0, 1 ]
+            initialRootPosition: [ -0.1, 0, 1 ]
             initialRootAttitude: [ 
               1, 0, 0, 
               0, 1, 0, 
@@ -44,29 +44,36 @@ items:
             zmp: [ 0, 0, 0 ]
         - 
           id: 3
-          name: "D435"
+          name: "Hand-D435"
           plugin: Body
           class: BodyItem
+          is_selected: true
           is_checked: true
           data: 
-            file: "../naruse-sensor/d435.body"
+            file: "hand-d435.body"
             format: CHOREONOID-BODY
-            rootPosition: [ 0.4, 0, 1 ]
+            rootPosition: [ 0.2, 0, 1 ]
             rootAttitude: [ 
               1, 0, 0, 
               0, 1, 0, 
               0, 0, 1 ]
-            jointPositions: [  ]
-            initialRootPosition: [ 0.4, 0, 1 ]
+            jointDisplacements: [ 0, 0, 0, 0, 0, 0 ]
+            jointPositions: [ 0, 0, 0, 0, 0, 0 ]
+            initialRootPosition: [ 0.1, 0, 1 ]
             initialRootAttitude: [ 
               1, 0, 0, 
               0, 1, 0, 
               0, 0, 1 ]
+            initialJointPositions: [ 0, 0, 0, 0, 0, 0 ]
             staticModel: false
             collisionDetection: true
             selfCollisionDetection: false
             location_editable: true
             scene_sensitive: true
+            link_kinematics: 
+              "Finger1": 
+                base_frame: 0
+                offset_frame: 0
             zmp: [ 0, 0, 0 ]
           children: 
             - 
@@ -74,11 +81,10 @@ items:
               name: "SimpleController"
               plugin: Body
               class: SimpleControllerItem
-              is_selected: true
               data: 
                 isNoDelayMode: false
                 controllerOptions: ""
-                controller: "${HOME}/choreonoid/build/lib/choreonoid-1.8/simplecontroller/RecogRedWheelController"
+                controller: "${HOME}/choreonoid/build/lib/choreonoid-1.8/simplecontroller/HandD435PoseController"
                 baseDirectory: "None"
                 reloading: false
                 exportSymbols: false
@@ -145,7 +151,7 @@ views:
     class: ItemTreeView
     mounted: true
     state: 
-      expanded: [ 1, 2, 3, 5 ]
+      expanded: [ 1, 2, 3, 4, 5 ]
   - 
     id: 2
     name: "Location"
@@ -210,12 +216,12 @@ views:
           fieldOfView: 0.610865
           near: 0.04
           far: 200
-          eye: [ 0.903437, 1.18446, 1.51221 ]
-          direction: [ -0.492149, -0.807876, -0.324232 ]
-          up: [ -0.168683, -0.276898, 0.945978 ]
+          eye: [ 0.128084, 1.21053, 2.01712 ]
+          direction: [ -0.021659, -0.797594, -0.602806 ]
+          up: [ -0.0163634, -0.602584, 0.797888 ]
         - 
           camera: [ System, Orthographic ]
-          orthoHeight: 2.10798
+          orthoHeight: 0.603948
           near: 0.04
           far: 200
       backgroundColor: [ 0.1, 0.1, 0.3 ]
@@ -257,6 +263,14 @@ views:
     state: 
       element_type: all
       listingMode: list
+      current_body_item: 3
+      body_items: 
+        - 
+          id: 3
+          selected_links: [ 4 ]
+        - 
+          id: 2
+          selected_links: [ 1 ]
   - 
     id: 9
     name: "Link Position"
@@ -264,7 +278,7 @@ views:
     class: LinkPositionView
     mounted: true
     state: 
-      coordinate_mode: world
+      coordinate_mode: base
       preferred_coordinate_mode: base
       show_rpy: true
       unique_rpy: false
@@ -289,7 +303,7 @@ toolbars:
     frameRate: 1000
     playbackFrameRate: 60
     idleLoopDrivenMode: false
-    currentTime: 7.624
+    currentTime: 1.436
     speedScale: 1
     syncToOngoingUpdates: true
     autoExpansion: true
@@ -432,7 +446,7 @@ viewAreas:
                     - 
                       type: pane
                       views: [ 8, 7 ]
-                      current: 7
+                      current: 8
                     - 
                       type: pane
                       views: [ 5 ]

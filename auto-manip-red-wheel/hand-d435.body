@@ -1,0 +1,130 @@
+#
+#   hand-d435.body
+#       Choreonoid body file of D435 on robot hand
+#       Author: Keitaro Naruse
+#       Date:   2021-09-19
+#       - 2021-09-19: First model
+#       License: MIT License
+#
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: Hand-D435
+
+links: 
+  - name: Base
+    translation: [ 0, 0, 0 ]
+    joint type: fixed
+  - name: X-Slider
+    parent: Base
+    jointType: prismatic 
+    jointAxis: X
+    jointRange: [-1, 1]
+    maxJointVelocity: 1
+    jointId: 0
+  - name: Y-Slider
+    parent: X-Slider
+    jointType: prismatic 
+    jointAxis: Y
+    jointRange: [-1, 1]
+    maxJointVelocity: 1
+    jointId: 1
+  - name: Z-Slider
+    parent: Y-Slider
+    jointType: prismatic 
+    jointAxis: Z
+    jointRange: [-1, 1]
+    maxJointVelocity: 1
+    jointId: 2
+  - name: X-Rotator
+    parent: Z-Slider
+    jointType: revolute 
+    jointAxis: X
+    jointRange: [-180, 180]
+    maxJointVelocity: 90
+    jointId: 3
+  - name: Y-Rotator
+    parent: X-Rotator
+    jointType: revolute 
+    jointAxis: Y
+    jointRange: [-180, 180]
+    maxJointVelocity: 90
+    jointId: 4
+  - name: Z-Rotator
+    parent: Y-Rotator
+    jointType: revolute 
+    jointAxis: Z
+    jointRange: [-180, 180]
+    maxJointVelocity: 90
+    jointId: 5
+  - name: GraspingPoint
+    parent: Z-Rotator
+    jointType: fixed 
+  - name: Finger1
+    parent: GraspingPoint
+    translation: [ 0.020, 0.040, 0 ]
+    jointType: fixed
+    centerOfMass: [ 0, 0, 0 ]
+    elements:
+      Shape: &FingerShape
+        geometry:
+          type: Box
+          size: [ 0.080, 0.010, 0.030 ]
+        appearance: &BodyAppearance
+          material:
+            diffuseColor: [ 0.6, 0.6, 0.6 ]
+            specularColor: [ 0.1, 0.1, 0.1 ]
+            shininess: 0.6
+  - name: Finger2
+    parent: GraspingPoint
+    translation: [ 0.020, -0.040, 0 ]
+    jointType: fixed
+    centerOfMass: [ 0, 0, 0 ]
+    elements:
+      Shape: *FingerShape
+  - name: Hand
+    parent: GraspingPoint
+    translation: [ 0.090, 0, 0 ]
+    jointType: fixed
+    centerOfMass: [ 0, 0, 0 ]
+    elements:
+      Shape: &HandShape
+        geometry:
+          type: Box
+          size: [ 0.060, 0.090, 0.030 ]
+        appearance: *BodyAppearance
+  - name: CameraBody
+    parent: GraspingPoint
+    translation: [ 0.078, 0.01, 0.073 ]
+    jointType: fixed
+    centerOfMass: [ 0, 0, 0 ]
+    mass: 0.06084
+    inertia: [
+      6.76e-6,        0,        0,
+      0,       43.88e-6,        0,
+      0,              0, 43.88e-6 ]
+    elements:
+    -
+      type: Transform
+      rotation: [ 0, 0, 1, 180 ]
+      elements: 
+        type: Camera
+        name: D435
+        translation: [ 0, 0, 0 ]
+        rotation: [ [0, 1, 0, -90], [0, 0, 1, -90] ]
+        # Camera view vector is -Z
+        format: COLOR_DEPTH
+        # Fov (Filed of View) should be given by the agnle of the shorter edge
+        # Because FoV of D435 is 85.2 * 58.0 deg, it should give 58.0 deg.
+        fieldOfView: 58.0
+        nearClipDistance: 0.1
+        farClipDistance: 3.0
+        width: 428
+        height: 240
+        frameRate: 30
+        elements: &D435Frame
+          Shape:
+            geometry: 
+              type: Box
+              size: [0.090, 0.026, 0.026]
+            appearance: *BodyAppearance

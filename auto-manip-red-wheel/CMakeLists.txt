@@ -5,8 +5,8 @@ include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
-set(sources recog-red-wheel-controller.cpp)
-set(target RecogRedWheelController)
-choreonoid_add_simple_controller(RecogRedWheelController recog-red-wheel-controller.cpp)
+set(sources hand-d435-pose-controller.cpp)
+set(target HandD435PoseController)
+choreonoid_add_simple_controller(HandD435PoseController hand-d435-pose-controller.cpp)
 
 target_link_libraries(${target} ${PCL_LIBRARIES} )
