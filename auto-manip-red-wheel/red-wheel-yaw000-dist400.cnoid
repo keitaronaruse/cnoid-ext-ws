@@ -30,7 +30,7 @@ items:
               0, 0, 1 ]
             jointDisplacements: [ 0 ]
             jointPositions: [ 0 ]
-            initialRootPosition: [ -0.1, 0, 1 ]
+            initialRootPosition: [ 0, 0, 1 ]
             initialRootAttitude: [ 
               1, 0, 0, 
               0, 1, 0, 
@@ -47,7 +47,6 @@ items:
           name: "Hand-D435"
           plugin: Body
           class: BodyItem
-          is_selected: true
           is_checked: true
           data: 
             file: "hand-d435.body"
@@ -59,7 +58,7 @@ items:
               0, 0, 1 ]
             jointDisplacements: [ 0, 0, 0, 0, 0, 0 ]
             jointPositions: [ 0, 0, 0, 0, 0, 0 ]
-            initialRootPosition: [ 0.1, 0, 1 ]
+            initialRootPosition: [ 0.2, 0, 1 ]
             initialRootAttitude: [ 
               1, 0, 0, 
               0, 1, 0, 
@@ -81,16 +80,37 @@ items:
               name: "SimpleController"
               plugin: Body
               class: SimpleControllerItem
+              is_selected: true
               data: 
                 isNoDelayMode: false
-                controllerOptions: ""
+                controllerOptions: "0.3 0.2 0.1 0.866 -0.5 0 0.5 0.866 0 0 0 1"
                 controller: "${HOME}/choreonoid/build/lib/choreonoid-1.8/simplecontroller/HandD435PoseController"
                 baseDirectory: "None"
                 reloading: false
                 exportSymbols: false
                 isOldTargetVariableMode: false
+            - 
+              id: 5
+              name: "SensorVisualizer"
+              plugin: Body
+              class: SensorVisualizerItem
+              data: 
+                sub_items: 
+                  - 
+                    class: PointCloudVisualizerItem
+                    name: D435
+                    translation: [ -0.01, 0.378, 1.073 ]
+                    rotation: [ 1.43451e-16, 0.707107, 0.707107, 180 ]
+                    angle_unit: degree
+                    renderingMode: Point
+                    pointSize: 0
+                    voxelSize: 0.01
+                    isEditable: false
+                  - 
+                    class: CameraImageVisualizerItem
+                    name: D435_Image
         - 
-          id: 5
+          id: 6
           name: "AISTSimulator"
           plugin: Body
           class: AISTSimulatorItem
@@ -122,7 +142,7 @@ items:
             oldAccelSensorMode: false
           children: 
             - 
-              id: 6
+              id: 7
               name: "GLVisionSimulator"
               plugin: Body
               class: GLVisionSimulatorItem
@@ -151,7 +171,7 @@ views:
     class: ItemTreeView
     mounted: true
     state: 
-      expanded: [ 1, 2, 3, 4, 5 ]
+      expanded: [ 1, 2, 3, 4, 5, 6 ]
   - 
     id: 2
     name: "Location"
@@ -216,9 +236,9 @@ views:
           fieldOfView: 0.610865
           near: 0.04
           far: 200
-          eye: [ 0.128084, 1.21053, 2.01712 ]
-          direction: [ -0.021659, -0.797594, -0.602806 ]
-          up: [ -0.0163634, -0.602584, 0.797888 ]
+          eye: [ 0.0578672, 0.744058, 1.84263 ]
+          direction: [ -0.0267405, -0.71949, -0.693988 ]
+          up: [ -0.0257749, -0.693509, 0.719987 ]
         - 
           camera: [ System, Orthographic ]
           orthoHeight: 0.603948
@@ -263,11 +283,11 @@ views:
     state: 
       element_type: all
       listingMode: list
-      current_body_item: 3
+      current_body_item: 2
       body_items: 
         - 
           id: 3
-          selected_links: [ 4 ]
+          selected_links: [ 0 ]
         - 
           id: 2
           selected_links: [ 1 ]
@@ -278,7 +298,7 @@ views:
     class: LinkPositionView
     mounted: true
     state: 
-      coordinate_mode: base
+      coordinate_mode: world
       preferred_coordinate_mode: base
       show_rpy: true
       unique_rpy: false
@@ -299,11 +319,11 @@ views:
 toolbars: 
   "TimeBar": 
     minTime: 0
-    maxTime: 30
+    maxTime: 46.635
     frameRate: 1000
     playbackFrameRate: 60
     idleLoopDrivenMode: false
-    currentTime: 1.436
+    currentTime: 1.595
     speedScale: 1
     syncToOngoingUpdates: true
     autoExpansion: true
@@ -356,8 +376,8 @@ Body:
   "BodyMotionEngine": 
     updateJointVelocities: false
   "BodySelectionManager": 
-    current_body_item: 3
-    current_link: "Base"
+    current_body_item: 2
+    current_link: "HANDLE"
   "EditableSceneBody": 
     editableSceneBodies: 
       - 

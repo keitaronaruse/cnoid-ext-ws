@@ -77,7 +77,14 @@ links:
             shininess: 0.6
   - name: Finger2
     parent: GraspingPoint
-    translation: [ 0.020, -0.040, 0 ]
+    translation: [ 0.020, -0.040, 0.02 ]
+    jointType: fixed
+    centerOfMass: [ 0, 0, 0 ]
+    elements:
+      Shape: *FingerShape
+  - name: Finger3
+    parent: GraspingPoint
+    translation: [ 0.020, -0.040, -0.02 ]
     jointType: fixed
     centerOfMass: [ 0, 0, 0 ]
     elements:
@@ -91,7 +98,7 @@ links:
       Shape: &HandShape
         geometry:
           type: Box
-          size: [ 0.060, 0.090, 0.030 ]
+          size: [ 0.060, 0.090, 0.080 ]
         appearance: *BodyAppearance
   - name: CameraBody
     parent: GraspingPoint

@@ -215,8 +215,8 @@ private:
         reg.setSearchMethod(tree);
 
         //  Shishiki parameters
-         reg.setDistanceThreshold(100);
-         reg.setPointColorThreshold(20); // 10//25
+        reg.setDistanceThreshold(100);
+        reg.setPointColorThreshold(20); // 10//25
         reg.setRegionColorThreshold(19); // 9//24
         // reg.setMinClusterSize(1500); // 1000
         // reg.setMaxClusterSize(5000); // 5000
