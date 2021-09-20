@@ -318,22 +318,12 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr
 pcl::PointCloud<pcl::PointXYZRGB>::Ptr 
     HandD435PoseController::segment_and_find_target(pcl::PointCloud<pcl::PointXYZRGB>::Ptr scene_pc_ptr)
 {
-    //  Apply pass through (range) filter for retrieving ROI(region of interest)
-    //  We assume that the depth is in the z-direction and set a range from 0.1 to 0.5
-    pcl::IndicesPtr pass_indices_ptr(new std::vector<int>);
-    pcl::PassThrough<pcl::PointXYZRGB> pass;
-    pass.setInputCloud(scene_pc_ptr);
-    pass.setFilterFieldName("z");
-    pass.setFilterLimits (0.1, 0.5);
-    pass.filter(*pass_indices_ptr);
-
     //  Segmentation by RegionGrowingRGB method
     //  Segmentation object of RegtionGrowingRGB
     pcl::RegionGrowingRGB<pcl::PointXYZRGB> reg;
     //  Search object for RegtionGrowingRGB
     pcl::search::Search<pcl::PointXYZRGB>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZRGB>);
     reg.setInputCloud(scene_pc_ptr);
-    reg.setIndices(pass_indices_ptr);
     reg.setSearchMethod(tree);
 
     //  Shishiki parameters
