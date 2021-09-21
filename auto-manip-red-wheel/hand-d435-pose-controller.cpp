@@ -49,7 +49,8 @@ private:
     bool PrevBButtonState;
     bool PrevXButtonState;
     bool PrevYButtonState;
-    
+    cnoid::Link *CameraBody;
+
     //  Reference of pose
     Eigen::Vector3f t_ref;
     Eigen::Matrix3f r_ref;
@@ -62,6 +63,8 @@ private:
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr segment_and_find_target(pcl::PointCloud<pcl::PointXYZRGB>::Ptr scene_pc_ptr);
     static void rgb2hsv(float r, float g, float b, float &h, float &s, float &v);
     void ransac_circle(pcl::PointCloud<pcl::PointXYZRGB>::Ptr target_pc_ptr, Eigen::Vector3f& circle_center_vector, float& circle_radius, Eigen::Vector3f& circle_norm_vector);
+    Eigen::Isometry3f find_trans_mat_from_new_cam_frame_to_hand_frame(const Eigen::Vector3f& pos_vect_cam_frame, const Eigen::Vector3f& norm_vect_cam_frame);
+
 public:
     virtual bool initialize(cnoid::SimpleControllerIO* io) override
     {
@@ -92,6 +95,9 @@ public:
             joint -> setActuationMode(cnoid::Link::JointDisplacement);
             io -> enableIO(joint);
         }
+        CameraBody = io -> body() -> link("CameraBody");
+        CameraBody -> setActuationMode(cnoid::Link::LinkPosition);
+        io->enableIO(CameraBody);
 
         return true;
     }
@@ -143,14 +149,36 @@ public:
                     pcl::io::savePCDFileBinaryCompressed(std::string("debug.target.pcd"), *pcPtrTargetD435Frame);
                     os << "Saved: debug.target.pcd" << std::endl;
                     //  Pose estimation of circle
-                    Eigen::Vector3f circle_center_vector;
-                    float circle_radius;
-                    Eigen::Vector3f circle_norm_vector;
-                    ransac_circle(pcPtrTargetD435Frame, circle_center_vector, circle_radius, circle_norm_vector);
+                    Eigen::Vector3f wheel_pos_vect_cam_frame;
+                    float wheel_radius;
+                    Eigen::Vector3f wheel_norm_vect_cam_frame;
+
+                    ransac_circle(pcPtrTargetD435Frame, wheel_pos_vect_cam_frame, wheel_radius, wheel_norm_vect_cam_frame);
                     //  Disply the results of the pose estimation
-                    os << "Red handle center position vector in Camera Frame: " << std::endl << circle_center_vector << std::endl;
-                    os << "Red handle normal vector in Camera Frame: " << std::endl << circle_norm_vector << std::endl;
-                    os << "Red handle radius in Camera Frame: " << std::endl << circle_radius << std::endl;
+                    os << "Red wheel position vector in Camera Frame: " << std::endl << wheel_pos_vect_cam_frame << std::endl;
+                    os << "Red wheel normal vector in Camera Frame: " << std::endl << wheel_norm_vect_cam_frame << std::endl;
+                    os << "Red wheel radius in Camera Frame: " << std::endl << wheel_radius << std::endl;
+
+                    //  Find a transformation from a camera frame to the base
+                    Eigen::Translation<float, 3> trans06(t_ref);
+                    Eigen::AngleAxisf a06;
+                    a06.fromRotationMatrix(r_ref);
+                    Eigen::Isometry3f t06 = trans06 * a06;
+                    // cnoid::Isometry3 t06 = CameraBody -> position();
+                    os << "t_ref" << std::endl << t_ref << std::endl;
+                    os << "t06.translation()" << std::endl << t06.translation() << std::endl;
+                    os << "t06.linear()" << std::endl << t06.linear() << std::endl;
+
+                    //  Calculate standby position
+                    const float standby_distance = 0.1;
+                    Eigen::Vector3f standby_pos_vect_cam_frame 
+                        = wheel_pos_vect_cam_frame + standby_distance * wheel_norm_vect_cam_frame;
+                    Eigen::Vector3f standby_pos_vect_base_frame;     
+                    os << "Standby position in Camera Frame: " << std::endl << standby_pos_vect_cam_frame << std::endl;
+                    Eigen::Isometry3f t68 = 
+                        find_trans_mat_from_new_cam_frame_to_hand_frame(standby_pos_vect_cam_frame, wheel_norm_vect_cam_frame);
+                    // os << "t68.translation()" << std::endl << t68.translation() << std::endl;
+                    // os << "t68.linear()" << std::endl << t68.linear() << std::endl;
                 }
             }
         }
@@ -483,6 +511,41 @@ void HandD435PoseController::ransac_circle(pcl::PointCloud<pcl::PointXYZRGB>::Pt
     }
     //  Circle radius
     circle_radius = circle_model(3);
+}
+
+Eigen::Isometry3f HandD435PoseController::find_trans_mat_from_new_cam_frame_to_hand_frame(
+    const Eigen::Vector3f& pos_vect_cam_frame, const Eigen::Vector3f& norm_vect_cam_frame)
+{
+    //  Find a transformation matrix from the camera frame to the hand
+    //  Camera position in the hand frame
+    Eigen::Translation<float, 3> trans67(0.01, 0.060, -0.065);
+    //  Camera orientation in the hand frame
+    Eigen::AngleAxisf a67 = Eigen::AngleAxisf(M_PI, Eigen::Vector3f::UnitZ());
+    Eigen::Isometry3f t67 = trans67 * a67;
+
+    //  Find a transformation matrix from the new camera to the current camera
+    //  Translation
+    Eigen::Translation<float, 3> trans78(pos_vect_cam_frame);
+    //  Orientation = x, y, z axis
+    //  z8 is given by the normal vector of the red wheel 
+    Eigen::Vector3f z8 = norm_vect_cam_frame;
+    //  x8 is set to (1, 0, 0) always
+    Eigen::Vector3f x8(1.0f, 0.0f, 0.0f);
+    //  y8 is found by corss of z8 and x8
+    Eigen::Vector3f y8 = z8.cross(x8); 
+    //  Rotation
+    Eigen::Matrix3f rot78;
+    rot78 << x8(0), y8(0), z8(0), 
+            x8(1), y8(1), z8(1),
+            x8(2), y8(2), z8(2);
+    Eigen::AngleAxisf a78;
+    a78.fromRotationMatrix(rot78);
+    Eigen::Isometry3f t78 = trans78 * a78;
+
+    //  Find a transformation matrix from the new camera to the hand
+    Eigen::Isometry3f t68 = t67 * t78;
+
+    return(t68);
 }
 
 CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(HandD435PoseController)
