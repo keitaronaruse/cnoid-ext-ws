@@ -18,7 +18,7 @@ public:
 
     virtual bool initialize() override
     {
-        cnoid::MessageView::instance()->putln("PCDScenePlugin::Initialted");
+        cnoid::MessageView::instance()->putln("PCDScenePlugin::Initialted.");
         return true;
     }
 
