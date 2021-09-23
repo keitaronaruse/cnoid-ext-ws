@@ -87,6 +87,8 @@ public:
         
         // Turn on and Enable IO of D435 for both Camera and RangeCamera
         d435RangeCamera = body -> findDevice<cnoid::RangeCamera>("D435");
+        d435RangeCamera -> on(true);
+        d435RangeCamera -> notifyStateChange();
         io->enableInput(d435RangeCamera);
 
         //  Initilize button states
@@ -233,6 +235,8 @@ public:
             else    {
                 os << "Wrong options string format." << std::endl;
             }
+            d435RangeCamera->notifyStateChange();
+
         }
         PrevBButtonState = BbuttonState;
 
