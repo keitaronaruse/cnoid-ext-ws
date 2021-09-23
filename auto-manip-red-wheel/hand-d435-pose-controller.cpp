@@ -11,6 +11,7 @@
 #include <string>
 //  Eigen
 #include <Eigen/Core>
+#include <Eigen/LU>
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
 //  For choreonoid
@@ -50,11 +51,22 @@ private:
     bool PrevXButtonState;
     bool PrevYButtonState;
     cnoid::Link *CameraBody;
+    cnoid::Link *Base;
 
     //  Reference of pose
     Eigen::Vector3f t_ref;
     Eigen::Matrix3f r_ref;
     Eigen::Vector3f euler_angles_ref;
+    
+    //  Frame transformation
+    //  from the hand frame to the base frame 
+    Eigen::Isometry3f T06;
+    //  from the camera frame to the hand frame
+    Eigen::Isometry3f T67;
+    //  from the camera frame to the base frame
+    Eigen::Isometry3f T07;
+    //  from the base frame to the camera frame
+    Eigen::Isometry3f T70;
 
     //  Class methods
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr makeColoredPointCloudOfCurrentSceneInCnoidFrame(void);
@@ -64,6 +76,8 @@ private:
     static void rgb2hsv(float r, float g, float b, float &h, float &s, float &v);
     void ransac_circle(pcl::PointCloud<pcl::PointXYZRGB>::Ptr target_pc_ptr, Eigen::Vector3f& circle_center_vector, float& circle_radius, Eigen::Vector3f& circle_norm_vector);
     Eigen::Isometry3f find_trans_mat_from_new_cam_frame_to_hand_frame(const Eigen::Vector3f& pos_vect_cam_frame, const Eigen::Vector3f& norm_vect_cam_frame);
+    Eigen::Isometry3f get_T06(void);
+    Eigen::Isometry3f get_T67(void);
 
 public:
     virtual bool initialize(cnoid::SimpleControllerIO* io) override
@@ -89,6 +103,12 @@ public:
             0.0f, 0.0f, 1.0f;
         euler_angles_ref << 0.0f, 0.0f, 0.0f;
 
+        //  Frame transformation
+        T06 = get_T06();
+        T67 = get_T67();
+        T07 = T06 * T67;
+        T70 = T07.inverse();
+
         //  Initialize joint actuation mode and io
         for(int i = 0; i < io -> body() -> numJoints(); ++i){
             cnoid::Link* joint = io -> body() -> joint(i);
@@ -98,6 +118,10 @@ public:
         CameraBody = io -> body() -> link("CameraBody");
         CameraBody -> setActuationMode(cnoid::Link::LinkPosition);
         io->enableIO(CameraBody);
+
+        Base = io -> body() -> link("Base");
+        Base -> setActuationMode(cnoid::Link::LinkPosition);
+        io->enableIO(Base);
 
         return true;
     }
@@ -164,7 +188,7 @@ public:
                     Eigen::AngleAxisf a06;
                     a06.fromRotationMatrix(r_ref);
                     Eigen::Isometry3f t06 = trans06 * a06;
-                    // cnoid::Isometry3 t06 = CameraBody -> position();
+
                     os << "t_ref" << std::endl << t_ref << std::endl;
                     os << "t06.translation()" << std::endl << t06.translation() << std::endl;
                     os << "t06.linear()" << std::endl << t06.linear() << std::endl;
@@ -227,7 +251,14 @@ public:
 
         //  When Y button is pushed down at this moment
         if(YbuttonState && !PrevYButtonState){
-            ;
+            std::ostream& os = io -> os();
+            os << "Y button has pushed." << std::endl;
+            cnoid::Isometry3 t_base = Base -> position();
+            os << "t_base.translation()" << std::endl << t_base.translation() << std::endl;
+            os << "t_base.linear()" << std::endl << t_base.linear() << std::endl;
+            cnoid::Isometry3 t_camera = CameraBody -> position();
+            os << "t_camera.translation()" << std::endl << t_camera.translation() << std::endl;
+            os << "t_camera.linear()" << std::endl << t_camera.linear() << std::endl;
         }
         PrevYButtonState = YbuttonState;
         
@@ -302,6 +333,14 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr
          0.0, -1.0,  0.0,  0.0, 
          0.0,  0.0, -1.0,  0.0, 
          0.0,  0.0,  0.0,  1.0;
+
+    //  Frame transformation
+    // T06 = get_T06();
+    // T67 = get_T67();
+    //  From camera base frame to the base frame
+    // T07 = T06 * T67;
+    //  From the base frame to the camera frame
+    // T70 = T07.inverse();
 
     //  Make frame transformation
     pcl::transformPointCloud(*pc_ptr_from, *pc_ptr_to, transform);
@@ -513,12 +552,50 @@ void HandD435PoseController::ransac_circle(pcl::PointCloud<pcl::PointXYZRGB>::Pt
     circle_radius = circle_model(3);
 }
 
+
+/*
+    get_T06()
+        Return a frame transformation from the hand frame to the base frame
+*/
+Eigen::Isometry3f HandD435PoseController::get_T06(void)
+{
+    //  Hand position in the base frame
+    Eigen::Translation<float, 3> trans06(t_ref);
+    //  Hand orientation in the base frame
+    Eigen::AngleAxisf a06;
+    a06.fromRotationMatrix(r_ref);
+    //  Make a transformation matrix 
+    Eigen::Isometry3f t06 = trans06 * a06;
+
+    return(t06);
+}
+
+/*
+    get_T67()
+        Return a frame transformation from the camera frame to the hand frame
+*/
+Eigen::Isometry3f HandD435PoseController::get_T67(void)
+{
+    //  Camera positon in the hand frame
+    Eigen::Translation<float, 3> trans67(0.01, 0.060, -0.065);
+    //  Camera orientation in the hand frame
+    Eigen::Matrix3f m67;
+    m67 <<  1.0f,  0.0f,  0.0f, 
+            0.0f, -1.0f,  0.0f,
+            0.0f,  0.0f, -1.0f;
+    Eigen::AngleAxisf a67(m67); 
+    //  Make a transformation matrix
+    Eigen::Isometry3f t67 = trans67 * a67;
+    
+    return(t67);
+}
+
 Eigen::Isometry3f HandD435PoseController::find_trans_mat_from_new_cam_frame_to_hand_frame(
     const Eigen::Vector3f& pos_vect_cam_frame, const Eigen::Vector3f& norm_vect_cam_frame)
 {
     //  Find a transformation matrix from the camera frame to the hand
     //  Camera position in the hand frame
-    Eigen::Translation<float, 3> trans67(0.01, 0.060, -0.065);
+    Eigen::Translation<float, 3> trans67(0.01, -0.073, -0.078);
     //  Camera orientation in the hand frame
     Eigen::AngleAxisf a67 = Eigen::AngleAxisf(M_PI, Eigen::Vector3f::UnitZ());
     Eigen::Isometry3f t67 = trans67 * a67;

@@ -47,28 +47,28 @@ items:
           name: "Hand-D435"
           plugin: Body
           class: BodyItem
+          is_selected: true
           is_checked: true
           data: 
             file: "hand-d435.body"
             format: CHOREONOID-BODY
-            rootPosition: [ 0.2, 0, 0 ]
+            rootPosition: [ 0.3, 0.1, 0 ]
             rootAttitude: [ 
-              1, 0, 0, 
-              0, 1, 0, 
+              0.866025404, -0.5, 0, 
+              0.5, 0.866025404, -0, 
               0, 0, 1 ]
-            jointDisplacements: [ 5.72958, 5.72958, 0, -0, 0, 59.9993 ]
-            initialJointDisplacements: [ 0, 0, 0, 0, 0, 0 ]
-            jointPositions: [ 0.1, 0.1, 0, -0, 0, 1.04718 ]
-            initialRootPosition: [ 0.2, 0, 0 ]
+            jointDisplacements: [ 0, 0, 0, 0, 0, 0 ]
+            jointPositions: [ 0, 0, 0, 0, 0, 0 ]
+            initialRootPosition: [ 0.3, 0.1, 0 ]
             initialRootAttitude: [ 
-              1, 0, 0, 
-              0, 1, 0, 
+              0.866025404, -0.5, 0, 
+              0.5, 0.866025404, 0, 
               0, 0, 1 ]
             initialJointPositions: [ 0, 0, 0, 0, 0, 0 ]
             staticModel: false
             collisionDetection: true
             selfCollisionDetection: false
-            location_editable: true
+            location_editable: false
             scene_sensitive: true
             link_kinematics: 
               "Finger1": 
@@ -117,6 +117,7 @@ items:
           name: "AISTSimulator"
           plugin: Body
           class: AISTSimulatorItem
+          is_selected: true
           data: 
             timeStep: 0.001
             realtimeSync: true
@@ -149,13 +150,12 @@ items:
               name: "GLVisionSimulator"
               plugin: Body
               class: GLVisionSimulatorItem
-              is_selected: true
               data: 
                 enabled: true
                 maxFrameRate: 1000
                 maxLatency: 1
                 recordVisionData: true
-                threadMode: Screen
+                threadMode: Sensor
                 bestEffort: true
                 allSceneObjects: false
                 rangeSensorPrecisionRatio: 2
@@ -240,9 +240,9 @@ views:
           fieldOfView: 0.610865
           near: 0.04
           far: 200
-          eye: [ 0.138533, 0.857569, 0.645475 ]
-          direction: [ -0.0131484, -0.76665, -0.641931 ]
-          up: [ -0.0110078, -0.641836, 0.766763 ]
+          eye: [ 0.105985, 0.54436, 0.929351 ]
+          direction: [ 0.0149859, -0.456009, -0.889849 ]
+          up: [ 0.0292274, -0.889369, 0.456255 ]
         - 
           camera: [ System, Orthographic ]
           orthoHeight: 0.603948
@@ -290,11 +290,11 @@ views:
       current_body_item: 3
       body_items: 
         - 
-          id: 2
-          selected_links: [ 1 ]
-        - 
           id: 3
           selected_links: [ 12 ]
+        - 
+          id: 2
+          selected_links: [ 1 ]
   - 
     id: 9
     name: "Link Position"
@@ -327,7 +327,7 @@ toolbars:
     frameRate: 1000
     playbackFrameRate: 60
     idleLoopDrivenMode: false
-    currentTime: 5.14
+    currentTime: 1.002
     speedScale: 1
     syncToOngoingUpdates: true
     autoExpansion: true
