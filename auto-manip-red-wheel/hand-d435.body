@@ -14,7 +14,7 @@ name: Hand-D435
 links: 
   - name: Base
     translation: [ 0, 0, 0 ]
-    joint type: fixed
+    joint type: free
   - name: X-Slider
     parent: Base
     jointType: prismatic 
@@ -129,6 +129,7 @@ links:
         width: 428
         height: 240
         frameRate: 30
+        on: true
         elements: &D435Frame
           Shape:
             geometry: 

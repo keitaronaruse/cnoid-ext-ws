@@ -50,7 +50,6 @@ private:
     bool PrevBButtonState;
     bool PrevXButtonState;
     bool PrevYButtonState;
-    cnoid::Link *CameraBody;
     cnoid::Link *Base;
 
     //  Reference of pose
@@ -106,10 +105,10 @@ public:
         euler_angles_ref << 0.0f, 0.0f, 0.0f;
 
         //  Frame transformation
-        T06 = get_T06();
-        T67 = get_T67();
-        T07 = T06 * T67;
-        T70 = T07.inverse();
+        // T06 = get_T06();
+        // T67 = get_T67();
+        // T07 = T06 * T67;
+        // T70 = T07.inverse();
 
         //  Initialize joint actuation mode and io
         for(int i = 0; i < io -> body() -> numJoints(); ++i){
@@ -117,10 +116,6 @@ public:
             joint -> setActuationMode(cnoid::Link::JointDisplacement);
             io -> enableIO(joint);
         }
-        CameraBody = io -> body() -> link("CameraBody");
-        CameraBody -> setActuationMode(cnoid::Link::LinkPosition);
-        io->enableIO(CameraBody);
-
         Base = io -> body() -> link("Base");
         Base -> setActuationMode(cnoid::Link::LinkPosition);
         io->enableIO(Base);
@@ -216,27 +211,6 @@ public:
             //  Set os to choreonoid message window
             std::ostream& os = io -> os();
             os << "B button has pushed." << std::endl;
-
-            //  Get option strings given in project > simple controller > options
-            std::vector<std::string> options = io -> options();
-            if(12 == options.size())    {
-                os << "Options are assigned to reference." << std::endl;
-                t_ref << std::stof(options[0]), std::stof(options[1]), std::stof(options[2]);
-                r_ref <<
-                    std::stof(options[ 3]), std::stof(options[ 4]), std::stof(options[ 5]), 
-                    std::stof(options[ 6]), std::stof(options[ 7]), std::stof(options[ 8]), 
-                    std::stof(options[ 9]), std::stof(options[10]), std::stof(options[11]);
-                //  Findl Euler angles (roll, pitch, yaw) from the rotation matrix r_ref
-                Eigen::Vector3f euler_angles = r_ref.eulerAngles(0, 1, 2);
-                euler_angles_ref(0) = euler_angles(0);
-                euler_angles_ref(1) = euler_angles(1);
-                euler_angles_ref(2) = euler_angles(2);
-            }
-            else    {
-                os << "Wrong options string format." << std::endl;
-            }
-            d435RangeCamera->notifyStateChange();
-
         }
         PrevBButtonState = BbuttonState;
 
@@ -246,10 +220,6 @@ public:
             //  Set os to choreonoid message window
             std::ostream& os = io -> os();
             os << "X button has pushed." << std::endl;
-            Eigen::Vector3f euler_angles = r_ref.eulerAngles(0, 1, 2);
-            os << "X: roll:  " << euler_angles(0) / 3.14159 * 180.0f << std::endl;
-            os << "Y: pitch: " << euler_angles(1) / 3.14159 * 180.0f << std::endl;
-            os << "Z: yaw:   " << euler_angles(2) / 3.14159 * 180.0f << std::endl;
         }
         PrevXButtonState = XbuttonState;
 
@@ -257,14 +227,26 @@ public:
         if(YbuttonState && !PrevYButtonState){
             std::ostream& os = io -> os();
             os << "Y button has pushed." << std::endl;
-            cnoid::Isometry3 t_base = Base -> position();
-            os << "t_base.translation()" << std::endl << t_base.translation() << std::endl;
-            os << "t_base.linear()" << std::endl << t_base.linear() << std::endl;
-            cnoid::Isometry3 t_camera = CameraBody -> position();
-            os << "t_camera.translation()" << std::endl << t_camera.translation() << std::endl;
-            os << "t_camera.linear()" << std::endl << t_camera.linear() << std::endl;
+            euler_angles_ref(2) -= 0.1;
         }
         PrevYButtonState = YbuttonState;
+
+        double pos = 0.0;
+        //  Angle control
+        //  Pan = Yaw angle
+        pos = joystick.getPosition(cnoid::Joystick::R_STICK_H_AXIS);
+        euler_angles_ref(2) += 0.001 * pos;
+        //  Tilt = pitch angle
+        pos = joystick.getPosition(cnoid::Joystick::R_STICK_V_AXIS);
+        euler_angles_ref(1) += 0.001 * pos;
+        
+        //  Position control
+        //  X direction
+        pos = joystick.getPosition(cnoid::Joystick::L_STICK_H_AXIS);
+        t_ref(0) -= 0.0001 * pos;
+        //  Z direction
+        pos = joystick.getPosition(cnoid::Joystick::L_STICK_V_AXIS);
+        t_ref(2) -= 0.0001 * pos;
         
         //  Control joints
         //  x, y, z positions by prismatic joint

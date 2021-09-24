@@ -1,12 +1,11 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 find_package(PCL 1.5 REQUIRED)
-
 include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
-
 set(sources hand-d435-pose-controller.cpp)
 set(target HandD435PoseController)
 choreonoid_add_simple_controller(HandD435PoseController hand-d435-pose-controller.cpp)
-
 target_link_libraries(${target} ${PCL_LIBRARIES} )
+
+# choreonoid_add_simple_controller(NaruseKinectController NaruseKinectController.cpp)

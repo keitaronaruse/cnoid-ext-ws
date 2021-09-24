@@ -10,8 +10,8 @@ items:
       plugin: Body
       class: WorldItem
       data: 
-        collisionDetection: false
-        collisionDetector: AISTCollisionDetector
+        collision_detection: false
+        collision_detector: AISTCollisionDetector
         default_material_table_file: "${SHARE}/default/materials.yaml"
       children: 
         - 
@@ -19,7 +19,6 @@ items:
           name: "Valve"
           plugin: Body
           class: BodyItem
-          is_checked: true
           data: 
             file: "../naruse-mockup/ValveRed-PipeBrass.body"
             format: CHOREONOID-BODY
@@ -44,79 +43,10 @@ items:
             zmp: [ 0, 0, 0 ]
         - 
           id: 3
-          name: "Hand-D435"
-          plugin: Body
-          class: BodyItem
-          is_checked: true
-          data: 
-            file: "hand-d435.body"
-            format: CHOREONOID-BODY
-            rootPosition: [ 0.2, 0, 0 ]
-            rootAttitude: [ 
-              1, 0, 0, 
-              0, 1, 0, 
-              0, 0, 1 ]
-            jointDisplacements: [ 5.72958, 5.72958, 0, -0, 0, 59.9993 ]
-            initialJointDisplacements: [ 0, 0, 0, 0, 0, 0 ]
-            jointPositions: [ 0.1, 0.1, 0, -0, 0, 1.04718 ]
-            initialRootPosition: [ 0.2, 0, 0 ]
-            initialRootAttitude: [ 
-              1, 0, 0, 
-              0, 1, 0, 
-              0, 0, 1 ]
-            initialJointPositions: [ 0, 0, 0, 0, 0, 0 ]
-            staticModel: false
-            collisionDetection: true
-            selfCollisionDetection: false
-            location_editable: true
-            scene_sensitive: true
-            link_kinematics: 
-              "Finger1": 
-                base_frame: 0
-                offset_frame: 0
-              "CameraBody": 
-                base_frame: 0
-                offset_frame: 0
-            zmp: [ 0, 0, 0 ]
-          children: 
-            - 
-              id: 4
-              name: "SimpleController"
-              plugin: Body
-              class: SimpleControllerItem
-              data: 
-                isNoDelayMode: false
-                controllerOptions: "0.1 0.1 0.0 0.5 -0.866 0 0.866 0.5 0 0 0 1"
-                controller: "${HOME}/choreonoid/build/lib/choreonoid-1.8/simplecontroller/HandD435PoseController"
-                baseDirectory: "None"
-                reloading: false
-                exportSymbols: false
-                isOldTargetVariableMode: false
-            - 
-              id: 5
-              name: "SensorVisualizer"
-              plugin: Body
-              class: SensorVisualizerItem
-              data: 
-                sub_items: 
-                  - 
-                    class: PointCloudVisualizerItem
-                    name: D435
-                    translation: [ -0.01, 0.378, 1.073 ]
-                    rotation: [ 1.43451e-16, 0.707107, 0.707107, 180 ]
-                    angle_unit: degree
-                    renderingMode: Point
-                    pointSize: 0
-                    voxelSize: 0.01
-                    isEditable: false
-                  - 
-                    class: CameraImageVisualizerItem
-                    name: D435_Image
-        - 
-          id: 6
           name: "AISTSimulator"
           plugin: Body
           class: AISTSimulatorItem
+          is_selected: true
           data: 
             timeStep: 0.001
             realtimeSync: true
@@ -145,24 +75,90 @@ items:
             oldAccelSensorMode: false
           children: 
             - 
-              id: 7
+              id: 4
               name: "GLVisionSimulator"
               plugin: Body
               class: GLVisionSimulatorItem
-              is_selected: true
               data: 
                 enabled: true
                 maxFrameRate: 1000
                 maxLatency: 1
                 recordVisionData: true
-                threadMode: Screen
-                bestEffort: true
+                threadMode: Sensor
+                bestEffort: false
                 allSceneObjects: false
                 rangeSensorPrecisionRatio: 2
                 depthError: 0
                 enableHeadLight: true
                 enableAdditionalLights: true
                 antiAliasing: false
+        - 
+          id: 5
+          name: "Hand-D435a"
+          plugin: Body
+          class: BodyItem
+          is_selected: true
+          is_checked: true
+          data: 
+            file: "hand-d435a.body"
+            format: CHOREONOID-BODY
+            rootPosition: [ 0.2, 0, 0 ]
+            rootAttitude: [ 
+              1, 0, 0, 
+              0, 1, 0, 
+              0, 0, 1 ]
+            jointDisplacements: [ 0, 0, 0, 0, 0, 0 ]
+            jointPositions: [ 0, 0, 0, 0, 0, 0 ]
+            initialRootPosition: [ 0.2, 0, 0 ]
+            initialRootAttitude: [ 
+              1, 0, 0, 
+              0, 1, 0, 
+              0, 0, 1 ]
+            initialJointPositions: [ 0 ]
+            staticModel: false
+            collisionDetection: true
+            selfCollisionDetection: false
+            location_editable: true
+            scene_sensitive: true
+            link_kinematics: 
+              "Z-Rotator": 
+                base_frame: 0
+                offset_frame: 0
+            zmp: [ 0, 0, 0 ]
+          children: 
+            - 
+              id: 6
+              name: "SimpleController"
+              plugin: Body
+              class: SimpleControllerItem
+              data: 
+                isNoDelayMode: false
+                controllerOptions: ""
+                controller: "${HOME}/choreonoid/build/lib/choreonoid-1.8/simplecontroller/HandD435PoseController"
+                base_directory: "None"
+                reloading: false
+                export_symbols: false
+            - 
+              id: 7
+              name: "SensorVisualizer"
+              plugin: Body
+              class: SensorVisualizerItem
+              data: 
+                sub_items: 
+                  - 
+                    class: CameraImageVisualizerItem
+                    name: D435-Image
+                  - 
+                    class: PointCloudVisualizerItem
+                    name: D435
+                    is_checked: true
+                    translation: [ 0.278, 0.01, 0.073 ]
+                    rotation: [ 0.57735, 0.57735, 0.57735, 120 ]
+                    angle_unit: degree
+                    rendering_mode: Point
+                    point_size: 0
+                    voxel_size: 0.01
+                    is_editable: false
 views: 
   - 
     id: 0
@@ -175,10 +171,9 @@ views:
     class: ItemTreeView
     mounted: true
     state: 
-      expanded: [ 1, 2, 3, 4, 5, 6 ]
+      expanded: [ 1, 2, 3, 5, 6, 7 ]
   - 
     id: 2
-    name: "Location"
     plugin: Base
     class: LocationView
     mounted: true
@@ -255,7 +250,6 @@ views:
       isDedicatedItemCheckEnabled: false
   - 
     id: 5
-    name: "Virtual Joystick"
     plugin: Base
     class: VirtualJoystickView
     mounted: true
@@ -280,24 +274,18 @@ views:
       show_phases: true
   - 
     id: 8
-    name: "Links / Devices"
     plugin: Body
     class: LinkDeviceListView
     mounted: true
     state: 
       element_type: all
       listingMode: list
-      current_body_item: 3
       body_items: 
         - 
           id: 2
           selected_links: [ 1 ]
-        - 
-          id: 3
-          selected_links: [ 12 ]
   - 
     id: 9
-    name: "Link Position"
     plugin: Body
     class: LinkPositionView
     mounted: true
@@ -311,7 +299,6 @@ views:
       target_link_type: ik_link
   - 
     id: 10
-    name: "Link Properties"
     plugin: Body
     class: LinkPropertyView
     mounted: true
@@ -327,7 +314,7 @@ toolbars:
     frameRate: 1000
     playbackFrameRate: 60
     idleLoopDrivenMode: false
-    currentTime: 5.14
+    currentTime: 1.896
     speedScale: 1
     syncToOngoingUpdates: true
     autoExpansion: true
@@ -380,8 +367,8 @@ Body:
   "BodyMotionEngine": 
     updateJointVelocities: false
   "BodySelectionManager": 
-    current_body_item: 3
-    current_link: "Base"
+    current_body_item: 5
+    current_link: "Z-Rotator"
   "EditableSceneBody": 
     editableSceneBodies: 
       - 
@@ -390,7 +377,7 @@ Body:
         show_cm_projection: false
         show_zmp: false
       - 
-        bodyItem: 3
+        bodyItem: 5
         show_cm: false
         show_cm_projection: false
         show_zmp: false
