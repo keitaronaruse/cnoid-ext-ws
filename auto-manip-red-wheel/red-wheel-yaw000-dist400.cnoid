@@ -107,14 +107,15 @@ items:
               1, 0, 0, 
               0, 1, 0, 
               0, 0, 1 ]
-            jointDisplacements: [ 0, 0, 0, 0, 0, 0 ]
-            jointPositions: [ 0, 0, 0, 0, 0, 0 ]
+            jointDisplacements: [ 0.464095, 0, -0.641712, 0, -17.246, -18.7357 ]
+            initialJointDisplacements: [ 0, 0, 0, 0, 0, 0 ]
+            jointPositions: [ 0.00809999, 0, -0.0112, 0, -0.301, -0.326999 ]
             initialRootPosition: [ 0.2, 0, 0 ]
             initialRootAttitude: [ 
               1, 0, 0, 
               0, 1, 0, 
               0, 0, 1 ]
-            initialJointPositions: [ 0 ]
+            initialJointPositions: [ 0, 0, 0, 0, 0, 0 ]
             staticModel: false
             collisionDetection: true
             selfCollisionDetection: false
@@ -152,8 +153,8 @@ items:
                     class: PointCloudVisualizerItem
                     name: D435
                     is_checked: true
-                    translation: [ 0.278, 0.01, 0.073 ]
-                    rotation: [ 0.57735, 0.57735, 0.57735, 120 ]
+                    translation: [ 0.260071, -0.0155837, 0.0813699 ]
+                    rotation: [ 0.652141, 0.413492, 0.635403, 101.902 ]
                     angle_unit: degree
                     rendering_mode: Point
                     point_size: 0
@@ -194,7 +195,7 @@ views:
     class: SceneView
     mounted: true
     state: 
-      editMode: false
+      editMode: true
       viewpointOperationMode: thirdPerson
       visible_polygon_elements: [ face ]
       highlighting: false
@@ -235,7 +236,7 @@ views:
           fieldOfView: 0.610865
           near: 0.04
           far: 200
-          eye: [ 0.138533, 0.857569, 0.645475 ]
+          eye: [ 0.139859, 0.934904, 0.840548 ]
           direction: [ -0.0131484, -0.76665, -0.641931 ]
           up: [ -0.0110078, -0.641836, 0.766763 ]
         - 
@@ -250,17 +251,80 @@ views:
       isDedicatedItemCheckEnabled: false
   - 
     id: 5
+    name: "Scene 2"
+    plugin: Base
+    class: SceneView
+    mounted: true
+    state: 
+      editMode: true
+      viewpointOperationMode: thirdPerson
+      visible_polygon_elements: [ face ]
+      highlighting: false
+      collisionLines: false
+      restrictCameraRoll: true
+      verticalAxis: Z
+      lightingMode: normal
+      cullingMode: enabled
+      defaultHeadLight: true
+      defaultHeadLightIntensity: 0.75
+      headLightLightingFromBack: false
+      worldLight: true
+      worldLightIntensity: 0.5
+      worldLightAmbient: 0.25
+      additionalLights: true
+      fog: true
+      floorGrid: true
+      floorGridSpan: 10
+      floorGridInterval: 0.5
+      xzGridSpan: 10
+      xzGridInterval: 0.5
+      xzGrid: false
+      yzGridSpan: 10
+      yzGridInterval: 0.5
+      texture: true
+      lineWidth: 1
+      pointSize: 1
+      normalVisualization: false
+      normalLength: 0.01
+      lightweightViewChange: false
+      coordinateAxes: true
+      fpsTestIteration: 1
+      upsideDown: false
+      cameras: 
+        - 
+          camera: [ System, Perspective ]
+          fieldOfView: 0.610865
+          near: 0.04
+          far: 200
+          eye: [ 3, 1.5, 1.2 ]
+          direction: [ -0.880451, -0.440225, -0.17609 ]
+          up: [ -0.1575, -0.0787499, 0.984374 ]
+        - 
+          camera: [ System, Orthographic ]
+          orthoHeight: 20
+          near: 0.04
+          far: 200
+        - 
+          camera: [ Hand-D435a, D435 ]
+          isCurrent: true
+      backgroundColor: [ 0.1, 0.1, 0.3 ]
+      gridColor: [ 0.9, 0.9, 0.9, 1 ]
+      xzgridColor: [ 0.9, 0.9, 0.9, 1 ]
+      yzgridColor: [ 0.9, 0.9, 0.9, 1 ]
+      isDedicatedItemCheckEnabled: false
+  - 
+    id: 6
     plugin: Base
     class: VirtualJoystickView
     mounted: true
   - 
-    id: 6
+    id: 7
     plugin: Body
     class: BodyLinkView
     state: 
       showRotationMatrix: false
   - 
-    id: 7
+    id: 8
     plugin: Body
     class: JointDisplacementView
     mounted: true
@@ -273,7 +337,7 @@ views:
       show_dials: false
       show_phases: true
   - 
-    id: 8
+    id: 9
     plugin: Body
     class: LinkDeviceListView
     mounted: true
@@ -285,7 +349,7 @@ views:
           id: 2
           selected_links: [ 1 ]
   - 
-    id: 9
+    id: 10
     plugin: Body
     class: LinkPositionView
     mounted: true
@@ -298,12 +362,12 @@ views:
       show_rotation_matrix: false
       target_link_type: ik_link
   - 
-    id: 10
+    id: 11
     plugin: Body
     class: LinkPropertyView
     mounted: true
   - 
-    id: 11
+    id: 12
     plugin: Python
     class: PythonConsoleView
     mounted: true
@@ -314,7 +378,7 @@ toolbars:
     frameRate: 1000
     playbackFrameRate: 60
     idleLoopDrivenMode: false
-    currentTime: 1.896
+    currentTime: 18.499
     speedScale: 1
     syncToOngoingUpdates: true
     autoExpansion: true
@@ -419,20 +483,28 @@ viewAreas:
                   views: [ 1 ]
                 - 
                   type: pane
-                  views: [ 0, 10 ]
+                  views: [ 0, 11 ]
                   current: 0
             - 
               type: splitter
               orientation: vertical
-              sizes: [ 675, 225 ]
+              sizes: [ 422, 478 ]
               children: 
                 - 
                   type: pane
                   views: [ 4 ]
                 - 
-                  type: pane
-                  views: [ 3, 11 ]
-                  current: 3
+                  type: splitter
+                  orientation: vertical
+                  sizes: [ 236, 236 ]
+                  children: 
+                    - 
+                      type: pane
+                      views: [ 5 ]
+                    - 
+                      type: pane
+                      views: [ 3, 12 ]
+                      current: 3
         - 
           type: splitter
           orientation: vertical
@@ -448,7 +520,7 @@ viewAreas:
               children: 
                 - 
                   type: pane
-                  views: [ 9 ]
+                  views: [ 10 ]
                 - 
                   type: splitter
                   orientation: vertical
@@ -456,11 +528,11 @@ viewAreas:
                   children: 
                     - 
                       type: pane
-                      views: [ 8, 7 ]
-                      current: 7
+                      views: [ 9, 8 ]
+                      current: 8
                     - 
                       type: pane
-                      views: [ 5 ]
+                      views: [ 6 ]
 layoutOfToolBars: 
   rows: 
     - 

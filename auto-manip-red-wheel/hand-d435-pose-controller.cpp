@@ -54,18 +54,31 @@ private:
 
     //  Reference of pose
     Eigen::Vector3f t_ref;
-    Eigen::Matrix3f r_ref;
     Eigen::Vector3f euler_angles_ref;
     
+    //  c_7 is the center of the valve (red wheel handle) in the camera frame
+    Eigen::Vector3f c_7;
+    //  o_7 is the offset of the ceter position in the camera frame
+    Eigen::Vector3f o_7;
+    //  p_7 is the stadby position of the hand in the camera frame
+    //  0.2[m] away from the center point in the direction of the normal vector
+    Eigen::Vector3f p_7;
+    //  n_7 is the normal vector of the valve in the camera frame
+    Eigen::Vector3f n_7;
+    //  r_7 is the radius of the red wheel in the camera frame
+    float r_7;
+
     //  Frame transformation
-    //  from the hand frame to the base frame 
+    //  from the hand frame(6) to the base frame(0) 
     Eigen::Isometry3f T06;
-    //  from the camera frame to the hand frame
+    //  from the camera frame(7) to the hand frame(6)
     Eigen::Isometry3f T67;
-    //  from the camera frame to the base frame
-    Eigen::Isometry3f T07;
-    //  from the base frame to the camera frame
-    Eigen::Isometry3f T70;
+    //  Inverse matrix of T67
+    Eigen::Isometry3f T67inv;
+    //  from the new camera frame(8) to the current frame(7)
+    Eigen::Isometry3f T78;
+    //  from the new hand frame(6) to the base frame(0) 
+    Eigen::Isometry3f S06;
 
     //  Class methods
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr makeColoredPointCloudOfCurrentSceneInCnoidFrame(void);
@@ -74,9 +87,9 @@ private:
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr segment_and_find_target(pcl::PointCloud<pcl::PointXYZRGB>::Ptr scene_pc_ptr);
     static void rgb2hsv(float r, float g, float b, float &h, float &s, float &v);
     void ransac_circle(pcl::PointCloud<pcl::PointXYZRGB>::Ptr target_pc_ptr, Eigen::Vector3f& circle_center_vector, float& circle_radius, Eigen::Vector3f& circle_norm_vector);
-    Eigen::Isometry3f find_trans_mat_from_new_cam_frame_to_hand_frame(const Eigen::Vector3f& pos_vect_cam_frame, const Eigen::Vector3f& norm_vect_cam_frame);
     Eigen::Isometry3f get_T06(void);
     Eigen::Isometry3f get_T67(void);
+    Eigen::Isometry3f get_T78(void);
 
 public:
     virtual bool initialize(cnoid::SimpleControllerIO* io) override
@@ -98,17 +111,28 @@ public:
         
         // Initialize reference of translation, rotation, and Euler angles
         t_ref << 0.0f, 0.0f, 0.0f;
-        r_ref << 
-            1.0f, 0.0f, 0.0f, 
-            0.0f, 1.0f, 0.0f, 
-            0.0f, 0.0f, 1.0f;
         euler_angles_ref << 0.0f, 0.0f, 0.0f;
 
-        //  Frame transformation
-        // T06 = get_T06();
-        // T67 = get_T67();
-        // T07 = T06 * T67;
-        // T70 = T07.inverse();
+
+        //  c_7 is the center of the valve (red wheel handle) in the camera frame
+        c_7 = Eigen::Vector3f(0.0f, 0.0f, 0.3f);
+        //  o_7 is the offeset position of the centerin the camera frame
+        o_7 = Eigen::Vector3f(0.010f, -0.073f, -0.078f);
+        //  p_7 is the stadby position of the hand in the camera frame
+        p_7 = Eigen::Vector3f(0.0f, 0.0f, 0.2f);
+        //  n_7 is the normal vector of the valve in the camera frame
+        n_7 = Eigen::Vector3f(0.0f, 0.0f, 1.0f);
+        //  r_7 is the radius of the red wheel in the camera frame
+        r_7 = 0.03f;
+
+        //  Set transformation matrix
+        //  From the camera frame(7) to the hand frame(6)
+        T06 = get_T06();
+        //  From the camera frame(7) to the hand frame(6)
+        T67 = get_T67();
+        T67inv = T67.inverse();
+        //  From the new camera frame(8) to the camera frame(7)
+        T78 = get_T78();
 
         //  Initialize joint actuation mode and io
         for(int i = 0; i < io -> body() -> numJoints(); ++i){
@@ -170,36 +194,20 @@ public:
                     pcl::io::savePCDFileBinaryCompressed(std::string("debug.target.pcd"), *pcPtrTargetD435Frame);
                     os << "Saved: debug.target.pcd" << std::endl;
                     //  Pose estimation of circle
-                    Eigen::Vector3f wheel_pos_vect_cam_frame;
                     float wheel_radius;
-                    Eigen::Vector3f wheel_norm_vect_cam_frame;
 
-                    ransac_circle(pcPtrTargetD435Frame, wheel_pos_vect_cam_frame, wheel_radius, wheel_norm_vect_cam_frame);
-                    //  Disply the results of the pose estimation
-                    os << "Red wheel position vector in Camera Frame: " << std::endl << wheel_pos_vect_cam_frame << std::endl;
-                    os << "Red wheel normal vector in Camera Frame: " << std::endl << wheel_norm_vect_cam_frame << std::endl;
-                    os << "Red wheel radius in Camera Frame: " << std::endl << wheel_radius << std::endl;
-
-                    //  Find a transformation from a camera frame to the base
-                    Eigen::Translation<float, 3> trans06(t_ref);
-                    Eigen::AngleAxisf a06;
-                    a06.fromRotationMatrix(r_ref);
-                    Eigen::Isometry3f t06 = trans06 * a06;
-
-                    os << "t_ref" << std::endl << t_ref << std::endl;
-                    os << "t06.translation()" << std::endl << t06.translation() << std::endl;
-                    os << "t06.linear()" << std::endl << t06.linear() << std::endl;
-
+                    ransac_circle(pcPtrTargetD435Frame, c_7, r_7, n_7);
                     //  Calculate standby position
                     const float standby_distance = 0.1;
-                    Eigen::Vector3f standby_pos_vect_cam_frame 
-                        = wheel_pos_vect_cam_frame + standby_distance * wheel_norm_vect_cam_frame;
-                    Eigen::Vector3f standby_pos_vect_base_frame;     
-                    os << "Standby position in Camera Frame: " << std::endl << standby_pos_vect_cam_frame << std::endl;
-                    Eigen::Isometry3f t68 = 
-                        find_trans_mat_from_new_cam_frame_to_hand_frame(standby_pos_vect_cam_frame, wheel_norm_vect_cam_frame);
-                    // os << "t68.translation()" << std::endl << t68.translation() << std::endl;
-                    // os << "t68.linear()" << std::endl << t68.linear() << std::endl;
+                    p_7 = c_7 - standby_distance * n_7.normalized();
+                    //  p_7 is the stadby position of the hand in the camera frame
+                    //  0.1[m] away from the center point in the direction of the normal vector
+
+                    //  Disply the results of the pose estimation
+                    os << "Red wheel position vector in Camera Frame: " << std::endl << c_7 << std::endl;
+                    os << "Red wheel radius in Camera Frame: " << std::endl << r_7 << std::endl;
+                    os << "Red wheel normal vector in Camera Frame: " << std::endl << n_7 << std::endl;
+                    os << "Standby position in Camera Frame: " << std::endl << p_7 << std::endl;
                 }
             }
         }
@@ -210,12 +218,24 @@ public:
         if(BbuttonState && !PrevBButtonState){
             //  Set os to choreonoid message window
             std::ostream& os = io -> os();
-            os << "B button has pushed." << std::endl;
+            //  Frame transformation
+            //  Display T06: From the hand frame (6) to the base frame (0)
+            T06 = get_T06();
+            //  From the camera frame(7) to the hand frame(6)
+            //  T67 is fixed and already calculated
+            // T67 = get_T67();
+            T78 = get_T78();
+            //  New hand frame
+            S06 = (T06 * T67 * T78) * T67inv;
+            os << "S06.translation()" << std::endl << S06.translation() << std::endl;
+            os << "S06.linear()" << std::endl << S06.linear() << std::endl;
+            //  Set to the reference
+            t_ref = S06.translation();
+            euler_angles_ref = S06.linear().eulerAngles(0, 1, 2);
         }
         PrevBButtonState = BbuttonState;
 
         //  When X button is pushed down at this moment
-        //  Console out Euler angles claculated from r_ref
         if(XbuttonState && !PrevXButtonState){
             //  Set os to choreonoid message window
             std::ostream& os = io -> os();
@@ -227,7 +247,6 @@ public:
         if(YbuttonState && !PrevYButtonState){
             std::ostream& os = io -> os();
             os << "Y button has pushed." << std::endl;
-            euler_angles_ref(2) -= 0.1;
         }
         PrevYButtonState = YbuttonState;
 
@@ -320,14 +339,6 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr
          0.0,  0.0, -1.0,  0.0, 
          0.0,  0.0,  0.0,  1.0;
 
-    //  Frame transformation
-    // T06 = get_T06();
-    // T67 = get_T67();
-    //  From camera base frame to the base frame
-    // T07 = T06 * T67;
-    //  From the base frame to the camera frame
-    // T70 = T07.inverse();
-
     //  Make frame transformation
     pcl::transformPointCloud(*pc_ptr_from, *pc_ptr_to, transform);
         
@@ -353,7 +364,6 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr
     //  Return an outlier removed point cloud
     return(pc_ptr_to);
 }
-
 
 /*
     segment_and_find_target()
@@ -548,8 +558,10 @@ Eigen::Isometry3f HandD435PoseController::get_T06(void)
     //  Hand position in the base frame
     Eigen::Translation<float, 3> trans06(t_ref);
     //  Hand orientation in the base frame
-    Eigen::AngleAxisf a06;
-    a06.fromRotationMatrix(r_ref);
+    Eigen::AngleAxisf a06; 
+    a06 = Eigen::AngleAxisf(euler_angles_ref(0), Eigen::Vector3f::UnitX())
+        * Eigen::AngleAxisf(euler_angles_ref(1), Eigen::Vector3f::UnitY())
+        * Eigen::AngleAxisf(euler_angles_ref(2), Eigen::Vector3f::UnitZ());
     //  Make a transformation matrix 
     Eigen::Isometry3f t06 = trans06 * a06;
 
@@ -563,52 +575,51 @@ Eigen::Isometry3f HandD435PoseController::get_T06(void)
 Eigen::Isometry3f HandD435PoseController::get_T67(void)
 {
     //  Camera positon in the hand frame
-    Eigen::Translation<float, 3> trans67(0.01, 0.060, -0.065);
+    Eigen::Translation<float, 3> trans67(0.078f, 0.010f, 0.073f);
     //  Camera orientation in the hand frame
     Eigen::Matrix3f m67;
-    m67 <<  1.0f,  0.0f,  0.0f, 
-            0.0f, -1.0f,  0.0f,
-            0.0f,  0.0f, -1.0f;
-    Eigen::AngleAxisf a67(m67); 
-    //  Make a transformation matrix
+    m67 <<  0.0f,  0.0f, -1.0f, 
+            1.0f,  0.0f,  0.0f,
+            0.0f, -1.0f,  0.0f;
+    //  Convert rotation matrix to angle rotation
+    Eigen::AngleAxisf a67(m67);
     Eigen::Isometry3f t67 = trans67 * a67;
     
     return(t67);
 }
 
-Eigen::Isometry3f HandD435PoseController::find_trans_mat_from_new_cam_frame_to_hand_frame(
-    const Eigen::Vector3f& pos_vect_cam_frame, const Eigen::Vector3f& norm_vect_cam_frame)
+/*
+    get_T78()
+        Return a frame transformation from the new camera frame (8) to the camera frame (7)
+*/
+Eigen::Isometry3f HandD435PoseController::get_T78(void)
 {
-    //  Find a transformation matrix from the camera frame to the hand
-    //  Camera position in the hand frame
-    Eigen::Translation<float, 3> trans67(0.01, -0.073, -0.078);
-    //  Camera orientation in the hand frame
-    Eigen::AngleAxisf a67 = Eigen::AngleAxisf(M_PI, Eigen::Vector3f::UnitZ());
-    Eigen::Isometry3f t67 = trans67 * a67;
+    //  Translation of the new camera frame in the camera frame
+    //  Standby point
+    Eigen::Translation<float, 3> trans78(p_7 + o_7);
+    // Eigen::Translation<float, 3> trans78(p_7);
 
-    //  Find a transformation matrix from the new camera to the current camera
-    //  Translation
-    Eigen::Translation<float, 3> trans78(pos_vect_cam_frame);
-    //  Orientation = x, y, z axis
+    //  Orientation of the new camer frame in the camera frame
+    //  It is calculated as follows: 
     //  z8 is given by the normal vector of the red wheel 
-    Eigen::Vector3f z8 = norm_vect_cam_frame;
+    Eigen::Vector3f z8 = n_7.normalized();
     //  x8 is set to (1, 0, 0) always
-    Eigen::Vector3f x8(1.0f, 0.0f, 0.0f);
+    Eigen::Vector3f x8 = Eigen::Vector3f::UnitX();
+    //  x8 is set to be normal to both of UnitZ and n_7
+    // Eigen::Vector3f x8 = Eigen::Vector3f::UnitZ().cross(n_7);
     //  y8 is found by corss of z8 and x8
-    Eigen::Vector3f y8 = z8.cross(x8); 
-    //  Rotation
-    Eigen::Matrix3f rot78;
-    rot78 << x8(0), y8(0), z8(0), 
+    Eigen::Vector3f y8 = z8.cross(x8).normalized(); 
+    //  Rotation matrix
+    Eigen::Matrix3f m78;
+    m78 << x8(0), y8(0), z8(0), 
             x8(1), y8(1), z8(1),
             x8(2), y8(2), z8(2);
-    Eigen::AngleAxisf a78;
-    a78.fromRotationMatrix(rot78);
+    //  Convert rotation matrix to angle rotation
+    Eigen::AngleAxisf a78(m78);
+    
+    //  Tranformation matrix
     Eigen::Isometry3f t78 = trans78 * a78;
-
-    //  Find a transformation matrix from the new camera to the hand
-    Eigen::Isometry3f t68 = t67 * t78;
-
-    return(t68);
+    return(t78);
 }
 
 CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(HandD435PoseController)

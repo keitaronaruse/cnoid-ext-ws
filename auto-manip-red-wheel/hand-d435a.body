@@ -19,42 +19,36 @@ links:
     parent: Base
     jointType: prismatic 
     jointAxis: X
-    jointRange: [-1, 1]
     maxJointVelocity: 1
     jointId: 0
   - name: Y-Slider
     parent: X-Slider
     jointType: prismatic 
     jointAxis: Y
-    jointRange: [-1, 1]
     maxJointVelocity: 1
     jointId: 1
   - name: Z-Slider
     parent: Y-Slider
     jointType: prismatic 
     jointAxis: Z
-    jointRange: [-1, 1]
     maxJointVelocity: 1
     jointId: 2
   - name: X-Rotator
     parent: Z-Slider
     jointType: revolute 
     jointAxis: X
-    jointRange: [-180, 180]
     maxJointVelocity: 90
     jointId: 3
   - name: Y-Rotator
     parent: X-Rotator
     jointType: revolute 
     jointAxis: Y
-    jointRange: [-180, 180]
     maxJointVelocity: 90
     jointId: 4
   - name: Z-Rotator
     parent: Y-Rotator
     jointType: revolute 
     jointAxis: Z
-    jointRange: [-180, 180]
     maxJointVelocity: 90
     jointId: 5
     elements: 
