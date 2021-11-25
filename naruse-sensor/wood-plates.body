@@ -1,0 +1,41 @@
+#
+#   wood-plate.yaml
+#       Choreonoid body file of wood plate
+#       Author: Keitaro Naruse
+#       Date:   2021-10-25
+#       License: MIT License
+#
+format: ChoreonoidBody
+formatVersion: 1.0
+angleUnit: degree
+name: Wood-Plates
+
+links: 
+  - name: Plate1
+    translation: [ 0, 1.0, 0.900 ]
+    jointType: fixed
+    centerOfMass: [ 0, 0, 0 ]
+    mass: 11.0
+    inertia: [
+      2.9701,       0,      0,
+      0,       3.7125,      0,
+      0,            0, 0.7426 ]
+    elements: &WoodElement
+      Shape:
+        geometry:
+          type: Box
+          size: [ 0.900, 0.012, 1.800 ]
+        appearance: 
+            material: 
+              diffuseColor: [ 0.86, 0.71, 0.52 ]
+              specularColor: [ 0.05, 0.05, 0.05 ]
+              shininess: 0.2
+  - name: Plate2
+    parent: Plate1
+    translation: [ 0.900, 0, 00 ]
+    elements: *WoodElement
+  - name: Plate3
+    parent: Plate2
+    translation: [ 0.450, 0.450, 0 ]
+    rotation: [ 0, 0, 1, 90 ]
+    elements: *WoodElement

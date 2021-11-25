@@ -240,6 +240,32 @@ public:
             //  Set os to choreonoid message window
             std::ostream& os = io -> os();
             os << "X button has pushed." << std::endl;
+            if(0 != io->options().size()) {
+                pcl::PointCloud<pcl::PointXYZRGB>::Ptr pcPtrD435Frame(new pcl::PointCloud<pcl::PointXYZRGB>);
+                os << io->options()[0] << std::endl;
+                pcl::io::loadPCDFile(io->options()[0], *pcPtrD435Frame);
+                //  Segmentation and find a target cluster of the largest r-ratio
+                pcl::PointCloud<pcl::PointXYZRGB>::Ptr 
+                    pcPtrTargetD435Frame = segment_and_find_target(pcPtrD435Frame);
+                if(pcPtrTargetD435Frame->empty())  {
+                    os << "pcPtrTargetD435Frame is empty!" << std::endl;
+                }
+                else {
+                    //  Pose estimation of circle
+                    float wheel_radius;
+
+                    ransac_circle(pcPtrTargetD435Frame, c_7, r_7, n_7);
+                    //  Calculate standby position
+                    const float standby_distance = 0.1;
+                    p_7 = c_7 - standby_distance * n_7.normalized();
+                    
+                    //  Disply the results of the pose estimation
+                    os << "Red wheel position vector in Camera Frame: " << std::endl << c_7 << std::endl;
+                    os << "Red wheel radius in Camera Frame: " << std::endl << r_7 << std::endl;
+                    os << "Red wheel normal vector in Camera Frame: " << std::endl << n_7 << std::endl;
+                    os << "Standby position in Camera Frame: " << std::endl << p_7 << std::endl;
+                }
+            }
         }
         PrevXButtonState = XbuttonState;
 
